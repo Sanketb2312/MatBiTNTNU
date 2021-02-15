@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#9)Støtte for lokal database er implementert">
-      <change afterPath="$PROJECT_DIR$/MatBit/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#9)Tester oppsett for database">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/src/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/src/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/src/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +76,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613399037149</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="(#9)Tester oppsett for database">
+      <created>1613402886801</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1613402886801</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -94,6 +103,7 @@
     <MESSAGE value="project setup er ferdig" />
     <MESSAGE value="src mappe og MatBit mappe er opprettet" />
     <MESSAGE value="(#9)Støtte for lokal database er implementert" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#9)Støtte for lokal database er implementert" />
+    <MESSAGE value="(#9)Tester oppsett for database" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#9)Tester oppsett for database" />
   </component>
 </project>
