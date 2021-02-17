@@ -1,8 +1,13 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
+{% load static %}
 {% block content %}
-<h1 id="title">MatBit</h1>
+<h1 id="title" >MatBit</h1>
+<head>
 
-<link rel="stylesheet" href="../CSSDocs/registerUser.css">
+    <link rel="stylesheet" href="{% static 'CSSDocs/registerUser.css' %}">
+</head>
+
+
 
 
 <div class="container">
@@ -74,7 +79,4 @@
         </form>
     </div>
 </div>
-
-
-
-{% endblock content %}
+{% endblock %}

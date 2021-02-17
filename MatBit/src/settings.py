@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import mimetypes
+mimetypes.add_type("/CSSDocs/registerUser", ".css", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +28,9 @@ SECRET_KEY = 'j8va-$6(&1_&jn*o9tliou5hlx2t9&!hqu(-at)!$f=8k8jl=w'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+STATICFILES_DIRS = [
+    "../../Middagsarrangement/MatBit/static"
+]
 
 
 # Application definition

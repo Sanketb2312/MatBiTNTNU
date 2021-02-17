@@ -10,4 +10,6 @@ def frontpage(request):
 def register(request):
     template = loader.get_template("registerUser.html")
     return HttpResponse(template.render())
+def loginn(request):
+    return render(request, 'loginn.html')
 
