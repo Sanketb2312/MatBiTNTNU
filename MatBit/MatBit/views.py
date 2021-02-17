@@ -7,3 +7,6 @@ from django.shortcuts import render
 def frontpage(request):
     return render(request, 'frontpage.html')
 
+def register_user(request):
+    return render(request, 'registerUser.html')
+
