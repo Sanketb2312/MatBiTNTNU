@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="src mappe og MatBit mappe er opprettet" />
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#9)Backend er fungerende">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -25,6 +37,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -52,7 +65,28 @@
       <option name="project" value="LOCAL" />
       <updated>1613338340532</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="(#9)Støtte for lokal database er implementert">
+      <created>1613399037149</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1613399037149</updated>
+    </task>
+    <task id="LOCAL-00004" summary="(#9)Tester oppsett for database">
+      <created>1613402886801</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1613402886801</updated>
+    </task>
+    <task id="LOCAL-00005" summary="(#9)Backend er fungerende">
+      <created>1613404968275</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1613404968275</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -71,6 +105,9 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="project setup er ferdig" />
     <MESSAGE value="src mappe og MatBit mappe er opprettet" />
-    <option name="LAST_COMMIT_MESSAGE" value="src mappe og MatBit mappe er opprettet" />
+    <MESSAGE value="(#9)Støtte for lokal database er implementert" />
+    <MESSAGE value="(#9)Tester oppsett for database" />
+    <MESSAGE value="(#9)Backend er fungerende" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#9)Backend er fungerende" />
   </component>
 </project>
