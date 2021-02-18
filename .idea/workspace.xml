@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#9)Backend er fungerende">
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til">
+      <change afterPath="$PROJECT_DIR$/MatBit/templates/logginn.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/logginn.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/loginn.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/registerUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/registerUser.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="9-database-setup" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -41,6 +48,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/MatBit/static" />
+      <recent name="$PROJECT_DIR$/MatBit" />
+      <recent name="$PROJECT_DIR$/MatBit/MatBit" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -86,7 +100,35 @@
       <option name="project" value="LOCAL" />
       <updated>1613404968275</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="(#9)Templates mappe er lagt til">
+      <created>1613478691436</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1613478691437</updated>
+    </task>
+    <task id="LOCAL-00007" summary="(#9)Registrer brukere side er opprettet">
+      <created>1613550487080</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1613550487081</updated>
+    </task>
+    <task id="LOCAL-00008" summary="(#1)Koblin mellom forisde og registrering fungerer nå ved å trykke på en knapp">
+      <created>1613556494352</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1613556494352</updated>
+    </task>
+    <task id="LOCAL-00009" summary="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til">
+      <created>1613567768443</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1613567768443</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -108,6 +150,10 @@
     <MESSAGE value="(#9)Støtte for lokal database er implementert" />
     <MESSAGE value="(#9)Tester oppsett for database" />
     <MESSAGE value="(#9)Backend er fungerende" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#9)Backend er fungerende" />
+    <MESSAGE value="(#9)Templates mappe er lagt til" />
+    <MESSAGE value="(#9)Registrer brukere side er opprettet" />
+    <MESSAGE value="(#1)Koblin mellom forisde og registrering fungerer nå ved å trykke på en knapp" />
+    <MESSAGE value="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til" />
   </component>
 </project>

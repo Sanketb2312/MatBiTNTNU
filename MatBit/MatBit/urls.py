@@ -3,6 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    path('', views.frontpage, name='forside')
-
+    path('', views.frontpage, name='forside'),
+path('register/', views.register, name="register"),
+path('logginn/', views.logginn, name="logginn")
 ]
