@@ -39,12 +39,15 @@ def register(request):
                                                  'birth_date':birth_date, 'address':address, 'post_code':post_code, 'place':place})
 
 def logginn(request):
+    logged_in = False
+    error_login = False
     if request.POST:
         email = request.POST.get('email')
         password = request.POST.get('password')
-    return render(request, 'logginn.html')
-
-
-
-
-
+        try:
+            Bruker.objects.get(epost=email, passord=password)
+            logged_in = True
+            return render(request, "frontpage.html")
+        except:
+            error_login = True
+    return render(request, 'logginn.html', {'logged_in' : logged_in, 'error_login' : error_login})
