@@ -30,7 +30,9 @@ def register(request):
             emailUsed = True
 
         except Exception:
-            print("Du har nå lagd en ny bruker")
+            user = Bruker(fornavn=first_name, etternavn = last_name, fodselsdato = birth_date, adresse = address, postnummer = post_code,
+                          sted = place, eradministrator = "0", epost = email, passord = password)
+            user.save()
             return render(request, "frontpage.html")
 
     return render(request, "registerUser.html", {'emailUsed' : emailUsed, 'first_name':first_name, 'last_name':last_name,

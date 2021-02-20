@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til">
-      <change afterPath="$PROJECT_DIR$/MatBit/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" afterDir="false" />
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) En bruker som oppretter en konto med en eksisterende epost får en feilmelding, de andre kommer seg videre til forsiden. At brukeren lagres i databasen mangler fortstatt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/models.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/mymodels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/src/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/logginn.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/logginn.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/registerUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/registerUser.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -134,7 +123,14 @@
       <option name="project" value="LOCAL" />
       <updated>1613567768443</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="(#1) En bruker som oppretter en konto med en eksisterende epost får en feilmelding, de andre kommer seg videre til forsiden. At brukeren lagres i databasen mangler fortstatt">
+      <created>1613825842501</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1613825842501</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,6 +156,7 @@
     <MESSAGE value="(#9)Registrer brukere side er opprettet" />
     <MESSAGE value="(#1)Koblin mellom forisde og registrering fungerer nå ved å trykke på en knapp" />
     <MESSAGE value="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til" />
+    <MESSAGE value="(#1) En bruker som oppretter en konto med en eksisterende epost får en feilmelding, de andre kommer seg videre til forsiden. At brukeren lagres i databasen mangler fortstatt" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#1) En bruker som oppretter en konto med en eksisterende epost får en feilmelding, de andre kommer seg videre til forsiden. At brukeren lagres i databasen mangler fortstatt" />
   </component>
 </project>
