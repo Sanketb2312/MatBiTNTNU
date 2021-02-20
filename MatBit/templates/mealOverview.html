@@ -24,17 +24,17 @@
             </div>
             <div class="meal-info">
                 <h1 id="meal-title">
-                    {{ meal_title }}
+                    {{ meal.title }}
                 </h1>
                 <p id="meal-date">
-                    {{ meal_date }}
+                    {{ meal.date }}
                 </p>
                 <h3 id="meal-address">
-                    {{ meal_address }}
+                    {{ meal.address }}
                 </h3>
                 <p id="meal-description-excerpt">
                     <!-- Her må vi kutte lengden på beskrivelsen hvis den overstiger x antall tegn. Antar at dette kun kan gjøres i Python-koden -->
-                    {{ meal_description_excerpt }}
+                    {{ meal.description }}
                 </p>
             </div>
         </div>
