@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block head %}
+
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'CSSDocs/mealOverview.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <h1 id="meal-overview-header">
+            Mine påmeldinger
+        </h1>
+
+        {% for meal in meal_list %}
+        <div class="meal-overview-card">
+            <div class="meal-img">
+                <!-- Django code for loading image -->
+            </div>
+            <div class="meal-info">
+                <h1 id="meal-title">
+                    {{ meal_title }}
+                </h1>
+                <p id="meal-date">
+                    {{ meal_date }}
+                </p>
+                <h3 id="meal-address">
+                    {{ meal_address }}
+                </h3>
+                <p id="meal-description-excerpt">
+                    <!-- Her må vi kutte lengden på beskrivelsen hvis den overstiger x antall tegn. Antar at dette kun kan gjøres i Python-koden -->
+                    {{ meal_description_excerpt }}
+                </p>
+            </div>
+        </div>
+            
+    </div>
+</div>
+{% endblock %}
