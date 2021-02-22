@@ -1,11 +1,18 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from .mymodels import Bruker
 
+def is_logged_in(request):
+    if 'user_id_logged_in' in request.session:
+        site_logged_in = True
+    else:
+        site_logged_in = False
+    return site_logged_in
 
 # Create your views here.
 
 def frontpage(request):
-    return render(request, 'frontpage.html')
+    return render(request, 'frontpage.html', {'site_logged_in' : is_logged_in(request)})
 
 def register(request):
     emailUsed = False
@@ -30,19 +37,32 @@ def register(request):
             emailUsed = True
 
         except Exception:
-            print("Du har nå lagd en ny bruker")
-            return render(request, "frontpage.html")
+            user = Bruker(fornavn=first_name, etternavn = last_name, fodselsdato = birth_date, adresse = address, postnummer = post_code,
+                          sted = place, eradministrator = "0", epost = email, passord = password)
+            user.save()
+            return redirect('/')
 
     return render(request, "registerUser.html", {'emailUsed' : emailUsed, 'first_name':first_name, 'last_name':last_name,
-                                                 'birth_date':birth_date, 'address':address, 'post_code':post_code, 'place':place})
+                                                 'birth_date':birth_date, 'address':address, 'post_code':post_code, 'place':place, 'site_logged_in' : is_logged_in(request)})
 
 def logginn(request):
+    logged_in = False
+    error_login = False
+    user_id = 0
     if request.POST:
         email = request.POST.get('email')
         password = request.POST.get('password')
-    return render(request, 'logginn.html')
+        try:
+            user = Bruker.objects.get(epost=email, passord=password)
+            logged_in = True
+        except:
+            error_login = True
+        if logged_in:
+            user_id = user.brukerid
+            request.session['user_id_logged_in'] = user_id
+            return redirect('/')
+    return render(request, 'logginn.html', {'error_login' : error_login, 'site_logged_in' : is_logged_in(request)})
 
-
-
-
-
+def logout(request):
+    del request.session['user_id_logged_in']
+    return redirect('/')

@@ -1,40 +1,50 @@
 {% extends 'layout.html' %}
 {% load static %}
+
 {% block head %}
-	{{block.super}}
-	<link rel="stylesheet" href="{% static 'CSSDocs/logginn.css' %}">
+		{{block.super}}
+		<link rel="stylesheet" href="{% static 'CSSDocs/logginn.css' %}">
+		<script type="text/javascript">
+				function validateLogin(){
+						let email = window.document.login_form.email.value;
+						let password = window.document.login_form.password.value;
+						if (!email || !password){
+								document.getElementById("error_message").textContent = "Du må ha med brukernavn og passord"
+								return false;
+						}
+						else {
+							return true;
+						}
+				}
+		</script>
 {% endblock %}
 
 {% block content %}
-<div class="container h-100">
-		<div class="d-flex justify-content-center h-100">
-			<div class="user_card">
-				<div class="d-flex justify-content-center">
+<div class="container">
+		<div class="user_card">
+				<div class="">
+						<h2>MatBit</h2>
 				</div>
-				<div class="d-flex justify-content-center form_container">
-					<form>
-						<div class="input-group mb-3">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-user"></i></span>
-							</div>
-							<input type="text" name="" class="form-control input_user" value="" placeholder="username">
+				<form method="post" id="login-form" class="login-form" name="login_form" onsubmit="return validateLogin();">
+						{% csrf_token %}
+						<div class="input-group-append">
+								<label for="email">Epost</label>
+								<input type="text" name="email" class="form-control input_user" placeholder="Epost">
 						</div>
-						<div class="input-group mb-2">
-							<div class="input-group-append">
-								<span class="input-group-text"><i class="fas fa-key"></i></span>
-							</div>
-							<input type="password" name="" class="form-control input_pass" value="" placeholder="password">
+						<div class="input-group-append">
+								<label for="password">Passord</label>
+								<input type="password" name="password" class="form-control input_pass" placeholder="Passord">
 						</div>
-
-							<div class="d-flex justify-content-center mt-3 login_container">
-								<button type="button" onclick="location.href= '{% url 'logginn' %}'" name="button" class="btn login_btn">Login</button>
-				   </div>
-					</form>
-				</div>
-
-				<div class="mt-4">
-				</div>
-			</div>
+						<div class="input-group-append">
+								<p id="error_message" class="error_message"></p>
+								<input type="submit" name="submit" id="submit" class="form-submit" value="Logg inn" />
+						</div>
+				</form>
 		</div>
-	</div>
+</div>
+{% if error_login == True %}
+		<script type="text/javascript">
+				document.getElementById('error_message').textContent = "Feil brukernavn eller passord";
+		</script>
+{% endif %}
 {% endblock %}
