@@ -24,7 +24,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a onclick="location.href= '{% url 'register' %}'"><span class="glyphicon glyphicon-user"></span> Registrer Bruker</a></li>
-                        <li><a onclick="location.href= '{% url 'logginn' %}'"><span class="glyphicon glyphicon-log-in"></span> Innlogging</a></li>
+                        <li><a onclick="location.href= '{% url 'login' %}'"><span class="glyphicon glyphicon-log-in"></span> Innlogging</a></li>
                     </ul>
                 </div>
             </nav>
@@ -36,7 +36,7 @@
                     </div>
                     <ul class="nav navbar-nav">
                         <li class="active"><a onclick="location.href='{% url 'frontpage' %}'"><span class="glyphicon glyphicon-frontpage">Hjem</a></li>
-                        <li class="active"><a onclick=""><span class="glyphicon glyphicon-profile">Profil</a></li>
+                        <li class="active"><a onclick="location.href='{% url 'profile' %}'"><span class="glyphicon glyphicon-profile">Profil</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a onclick="location.href= '{% url 'logout' %}'"><span class="glyphicon glyphicon-log-out"></span> Logg ut</a></li>

@@ -45,7 +45,7 @@ def register(request):
     return render(request, "registerUser.html", {'emailUsed' : emailUsed, 'first_name':first_name, 'last_name':last_name,
                                                  'birth_date':birth_date, 'address':address, 'post_code':post_code, 'place':place, 'site_logged_in' : is_logged_in(request)})
 
-def logginn(request):
+def login(request):
     logged_in = False
     error_login = False
     user_id = 0
@@ -61,8 +61,18 @@ def logginn(request):
             user_id = user.brukerid
             request.session['user_id_logged_in'] = user_id
             return redirect('/')
-    return render(request, 'logginn.html', {'error_login' : error_login, 'site_logged_in' : is_logged_in(request)})
+    return render(request, 'login.html', {'error_login' : error_login, 'site_logged_in' : is_logged_in(request)})
 
 def logout(request):
-    del request.session['user_id_logged_in']
+    if is_logged_in(request):
+        del request.session['user_id_logged_in']
+    else:
+        return redirect('/')
     return redirect('/')
+
+def profile(request):
+    if is_logged_in(request):
+        print("hei")
+    else:
+        return redirect('/')
+    return render(request, 'profile.html', {'site_logged_in' : is_logged_in(request)})
