@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til">
-      <change afterPath="$PROJECT_DIR$/MatBit/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/mymodels.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/src/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/src/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/logginn.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/logginn.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/registerUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/registerUser.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +50,10 @@
       <recent name="$PROJECT_DIR$/MatBit/static" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="" />
@@ -161,5 +152,23 @@
     <MESSAGE value="(#1)Koblin mellom forisde og registrering fungerer nå ved å trykke på en knapp" />
     <MESSAGE value="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til" />
     <option name="LAST_COMMIT_MESSAGE" value="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2334" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613989288558">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2334" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989288558" />
+    <state x="2316" y="107" key="CommitChangelistDialog2" timestamp="1613989487007">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2316" y="107" key="CommitChangelistDialog2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989487007" />
+    <state x="2012" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1613989003606">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2012" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989003606" />
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1613989318026">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989318026" />
   </component>
 </project>
