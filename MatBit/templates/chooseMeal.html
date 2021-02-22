@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block head %}
+
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'CSSDocs/chooseMeal.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="meal-meta-card">
+            <div class="meal-img">
+                <!-- Add django code for loading actual image -->
+                <!-- <img src="{{ meal_img }}" alt=""> -->
+            </div>
+            <div class="meal-meta-info">
+                <h1 id="meal-title">
+                    {{ meal_title }}
+                </h1>
+                <p id="meal-date">
+                    {{ meal_date }}
+                </p>
+                <h3 id="meal-address">
+                    {{ meal_address }}
+                </h3>
+                <p id="meal-capacity">
+                    Totale plasser: {{ meal_capacity}}, ledige: {{ vacant_spots }}
+                </p>
+                <button type="button" class="btn btn-primary" id="meal-btn">
+                    Meld meg på/av
+                </button>
+            </div>
+        </div>
+
+        <div class="meal-description-card">
+            <p id="meal-description">
+                {{ meal_description }}
+            </p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

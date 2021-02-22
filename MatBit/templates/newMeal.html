@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block head %}
+
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'CSSDocs/newMeal.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <form method="POST" id="new-meal-form" class="new-meal-form">
+            <!-- Input: upload new image (se over label, formattering og at grupperingen blir riktig) -->
+            <input type="file" name="meal-image" accept="image/*" />
+            <!-- Input: fill in meal title -->
+            <!-- Input: fill in location -->
+            <!-- Input: select date (husk å bruk en datovelger her) -->
+            <!-- Input: fill in description (mulig vi må legge inn en ordgrense her) -->
+            <!-- Input: select allergenes (egentlig velg fra liste, men vi kan kanskje ha det som et utfyllingsfelt per nå?) -->
+            <!-- Input: select number of participants (kun godta heltall, bruk en native heltallvelger om mulig) -->
+        </form>
+        <button type="button" class="btn btn-primary" id="new-meal-btn">
+            Opprett middag
+        </button>
+    </div>
+</div>
+{% endblock %}
