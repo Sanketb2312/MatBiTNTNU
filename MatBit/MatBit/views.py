@@ -93,7 +93,7 @@ def newMeal(request):
         newMeal.save()
 
 
-    return render(request, 'newMeal.html')
+    return render(request, 'newMeal.html', {'site_logged_in' : is_logged_in(request)})
 
 def mealOverview(request):
 
@@ -101,4 +101,4 @@ def mealOverview(request):
     context = {
         "object_list" : queryset
     }
-    return render(request, 'mealOverview.html', context)
+    return render(request, 'mealOverview.html', context, {'site_logged_in' : is_logged_in(request)})
