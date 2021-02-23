@@ -3,10 +3,27 @@
 
 {% block head %}
 		{{block.super}}
+        <link rel="stylesheet" href="{% static 'CSSDocs/profile.css' %}">
+
 {% endblock %}
-
 {% block content %}
-    <div class="">
 
-    </div>
+<div class="post-container">
+    <div class="post-thumb">
+		<img src="https://kvener.no/wp-content/uploads/2019/02/blank-profile-picture-973460_640.png" />
+	</div>
+
+	<div class="post-content">
+		<h2>Fornavn Etternavn</h2>
+		<h3> Adresse, postnr</h3>
+
+		<h3>  </h3>
+        <div class="form-row">
+			<div class = "button-style">
+				<a href = 'endreBruker/'><button type="button">  Endre Bruker </button></a>
+			</div>
+		</div>
+
+	</div>
+</div>
 {% endblock %}

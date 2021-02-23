@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="">
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) oppdatert frontpage html og css">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,15 +14,15 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="2-6-innlogging" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -45,6 +45,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\47483\Documents\middagsarrangement\MatBit\templates" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/MatBit/MatBit" />
       <recent name="$PROJECT_DIR$/MatBit" />
@@ -178,21 +179,29 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2334" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989288558" />
-    <state x="2316" y="107" key="CommitChangelistDialog2" timestamp="1613990039705">
+    <state x="2316" y="107" key="CommitChangelistDialog2" timestamp="1614083791522">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2316" y="107" key="CommitChangelistDialog2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613990039705" />
+    <state x="2316" y="107" key="CommitChangelistDialog2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614083791522" />
     <state x="2012" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1613989003606">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2012" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989003606" />
+    <state x="2444" y="222" key="RollbackChangesDialog" timestamp="1614083780962">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2444" y="222" key="RollbackChangesDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614083780962" />
     <state x="2472" y="240" key="Vcs.Push.Dialog.v2" timestamp="1613990139265">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2472" y="240" key="Vcs.Push.Dialog.v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613990139265" />
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1613990156266">
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614000398027">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613990156266" />
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614000398027" />
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1614018498024">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614018498024" />
   </component>
 </project>

@@ -1,0 +1,54 @@
+    body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #CFB6B7 !important;
+}
+
+.post-container {
+    overflow: auto
+}
+
+.post-thumb {
+    margin : 25px;
+    float: left;
+    margin-left : 220;
+    display : inline-block;
+}
+.post-thumb img {
+    display: block;
+    height : 250;
+    width : 300;
+}
+.post-content {
+    margin-right: 220px
+    text-align : justify;
+    }
+.post-title {
+    font-weight: bold;
+    font-size: 200%
+}
+.form-group{
+    position : center;
+}
+.button-style
+{
+    position: relative;
+    left:80px
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+.button {
+  border: none;
+  color: black;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  text-color : black;
+}
