@@ -96,4 +96,9 @@ def newMeal(request):
     return render(request, 'newMeal.html')
 
 def mealOverview(request):
-    return render(request, 'mealOverview.html')
+
+    queryset = Arrangement.objects.all()
+    context = {
+        "object_list" : queryset
+    }
+    return render(request, 'mealOverview.html', context)
