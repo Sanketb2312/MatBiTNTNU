@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) oppdatert frontpage html og css">
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#8) Gren for oppretting av middag merget inn i gren med database. Oppretting av en middag er mulig, og dette lagres i databasen">
+      <change afterPath="$PROJECT_DIR$/MatBit/MatBit/migrations/0001_initial.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/editUser.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/editUser.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/editUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/editUser.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -195,13 +199,13 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2472" y="240" key="Vcs.Push.Dialog.v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613990139265" />
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614000398027">
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614087503786">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614000398027" />
-    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1614018498024">
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614087503786" />
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1614089809204">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614018498024" />
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614089809204" />
   </component>
 </project>

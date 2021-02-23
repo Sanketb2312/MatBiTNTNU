@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
-from .mymodels import Bruker
+from .mymodels import Bruker, Harallergi, Arrangement, Arrangementinnhold, Innhold, Pamelding, Vertskap
 
 def is_logged_in(request):
     if 'user_id_logged_in' in request.session:
@@ -72,7 +72,36 @@ def logout(request):
 
 def profile(request):
     if is_logged_in(request):
-        print("hei")
+        user = Bruker.objects.get(brukerid = request.session['user_id_logged_in'])
+        try:
+            allergi = Harallergi.objects.get(brukerid = request.session['user_id_logged_in'])
+            print(allergi)
+        except:
+            allergi = None
+        print(allergi)
     else:
         return redirect('/')
-    return render(request, 'profile.html', {'site_logged_in' : is_logged_in(request)})
+    return render(request, 'profile.html', {'user':user,'userAllergies' : allergi,'site_logged_in' : is_logged_in(request)})
+
+def editUser(request):
+    if is_logged_in(request):
+        user = Bruker.objects.get(brukerid = request.session['user_id_logged_in'])
+
+        if request.POST:
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            address = request.POST.get('address')
+            post_code = request.POST.get('post_code')
+            place = request.POST.get('place')
+
+            user.fornavn = first_name
+            user.etternavn = last_name
+            user.adresse = address
+            user.postnummer = post_code
+            user.sted = place
+            user.save()
+            return redirect('../../profil/')
+
+    else:
+        return redirect('/')
+    return render(request, 'editUser.html', {'user':user,'site_logged_in': is_logged_in(request)})

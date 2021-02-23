@@ -14,15 +14,25 @@
 	</div>
 
 	<div class="post-content">
-		<h2>Fornavn Etternavn</h2>
-		<h3> Adresse, postnr</h3>
+		<h2>{{user.fornavn }} {{user.etternavn }} </h2>
+		<h3> {{user.epost}}</h3>
+		<h3> {{user.adresse }}</h3>
+		<h3> {{user.postnummer }} {{user.sted }}</h3>
 
 		<h3>  </h3>
         <div class="form-row">
 			<div class = "button-style">
-				<a href = 'endreBruker/'><button type="button">  Endre Bruker </button></a>
+				<a onclick="location.href= '{% url 'editUser' %}'"><button type="button">  Endre Bruker </button></a>
 			</div>
 		</div>
+
+	</div>
+	<div>
+		{% if userAllergies != None %}
+			<h3> {{user.fornavn}} har allergier</h3>
+		{% else %}
+			<h3> {{user.fornavn}} har ingen allergier</h3>
+		{% endif %}
 
 	</div>
 </div>
