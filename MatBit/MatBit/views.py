@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .mymodels import Bruker, Harallergi, Arrangement, Arrangementinnhold, Innhold, Pamelding, Vertskap
+import datetime
+
 
 def is_logged_in(request):
     if 'user_id_logged_in' in request.session:
@@ -87,12 +89,27 @@ def profile(request):
             allergiDict.update({innhold.innholdid : innhold.navn })
 
         arrangement = Pamelding.objects.filter(brukerid = request.session['user_id_logged_in'])
+        for arrangements in arrangement:
 
+            arrangements = arrangements.__dict__
+
+            dinnerInformation = Arrangement.objects.get(arrangementid = arrangements['arrangementid'])
+            arrangementDict.update({dinnerInformation.arrangementid : [dinnerInformation.arrangementnavn,
+                                                                       dinnerInformation.lokasjon,
+                                                                       dinnerInformation.tidspunkt] })
 
         hosting = Vertskap.objects.filter(brukerid = request.session['user_id_logged_in'])
+        for hostingArrengement in hosting:
+            hostingArrengement = hostingArrengement.__dict__
+
+            hostingInformation = Arrangement.objects.get(arrangementid=hostingArrengement['arrangementid'])
+            hostingDict.update({hostingInformation.arrangementid: [hostingInformation.arrangementnavn,
+                                                                    hostingInformation.tidspunkt,
+                                                                    hostingInformation.antallplasser]})
+
     else:
         return redirect('/')
-    return render(request, 'profile.html', {'user':user,'userAllergies' : allergi, 'arrangement' : arrangement, 'hosting' : hosting, 'site_logged_in' : is_logged_in(request)})
+    return render(request, 'profile.html', {'user':user,'userAllergies' : allergiDict, 'arrangement' : arrangementDict, 'hosting' : hostingDict, 'site_logged_in' : is_logged_in(request)})
 
 
 def editUser(request):

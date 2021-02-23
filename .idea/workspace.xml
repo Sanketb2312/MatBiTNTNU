@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/mymodels.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/mymodels.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/profile.html" afterDir="false" />
     </list>
@@ -170,7 +169,13 @@
       <option name="presentableId" value="LOCAL−00013" />
       <updated>1614091648449</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL−00014" summary="(#3) Vis påmeldte og egne middager, vis allergier på profilside">
+      <created>1614096585262</created>
+      <option name="number" value="LOCAL−00014" />
+      <option name="presentableId" value="LOCAL−00014" />
+      <updated>1614096585262</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -198,17 +203,18 @@
     <MESSAGE value="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til" />
     <MESSAGE value="(#1) oppdatert frontpage html og css" />
     <MESSAGE value="(#3) Redigere profil" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#3) Redigere profil" />
+    <MESSAGE value="(#3) Vis påmeldte og egne middager, vis allergier på profilside" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#3) Vis påmeldte og egne middager, vis allergier på profilside" />
   </component>
   <component name="WindowStateProjectService">
     <state x="2334" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613989288558">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2334" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989288558" />
-    <state x="2316" y="107" key="CommitChangelistDialog2" timestamp="1614091647737">
+    <state x="2316" y="107" key="CommitChangelistDialog2" timestamp="1614096584662">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2316" y="107" key="CommitChangelistDialog2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614091647737" />
+    <state x="2316" y="107" key="CommitChangelistDialog2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614096584662" />
     <state x="2012" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1613989003606">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -217,17 +223,17 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2444" y="222" key="RollbackChangesDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614083780962" />
-    <state x="2472" y="240" key="Vcs.Push.Dialog.v2" timestamp="1614091650694">
+    <state x="2472" y="240" key="Vcs.Push.Dialog.v2" timestamp="1614096590247">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2472" y="240" key="Vcs.Push.Dialog.v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614091650694" />
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614087503786">
+    <state x="2472" y="240" key="Vcs.Push.Dialog.v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614096590247" />
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614099696936">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614087503786" />
-    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1614094768042">
+    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614099696936" />
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1614105216796">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614094768042" />
+    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614105216796" />
   </component>
 </project>
