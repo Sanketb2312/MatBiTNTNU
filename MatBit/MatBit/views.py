@@ -48,21 +48,25 @@ def register(request):
                                                  'birth_date':birth_date, 'address':address, 'post_code':post_code, 'place':place, 'site_logged_in' : is_logged_in(request)})
 
 def login(request):
-    logged_in = False
-    error_login = False
-    user_id = 0
-    if request.POST:
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        try:
-            user = Bruker.objects.get(epost=email, passord=password)
-            logged_in = True
-        except:
-            error_login = True
-        if logged_in:
-            user_id = user.brukerid
-            request.session['user_id_logged_in'] = user_id
-            return redirect('/')
+    if is_logged_in(request) == False:
+        logged_in = False
+        error_login = False
+        user_id = 0
+        if request.POST:
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            try:
+                user = Bruker.objects.get(epost=email, passord=password)
+                logged_in = True
+            except:
+                error_login = True
+            if logged_in:
+                user_id = user.brukerid
+                request.session['user_id_logged_in'] = user_id
+                return redirect('/')
+
+    else:
+        return redirect('/')
     return render(request, 'login.html', {'error_login' : error_login, 'site_logged_in' : is_logged_in(request)})
 
 def logout(request):
@@ -135,30 +139,43 @@ def editUser(request):
 
 
 def newMeal(request):
+    if is_logged_in(request):
+        if request.POST:
+            arrangement_name = request.POST.get('arrangement_name')
+            description = request.POST.get('description')
+            seats = request.POST.get('seats')
+            location = request.POST.get('location')
+            date = request.POST.get('date')
+            time = request.POST.get('time')
+            prize = request.POST.get('prize')
 
-    if request.POST:
-        arrangement_name = request.POST.get('arrangement_name')
-        description = request.POST.get('description')
-        seats = request.POST.get('seats')
-        location = request.POST.get('location')
-        time = request.POST.get('time')
-        prize = request.POST.get('prize')
+            datetime = date+" "+time+":00"
 
-        newMeal = Arrangement(arrangementnavn = arrangement_name, beskrivelse = description, antallplasser =seats, lokasjon = location,
-                              tidspunkt = time, opprettet = timezone.now(), pris = prize, avlyst = 0)
-        newMeal.save()
+            newMeal = Arrangement(arrangementnavn = arrangement_name, beskrivelse = description, antallplasser =seats, lokasjon = location,
+                                  tidspunkt = datetime, opprettet = timezone.now(), pris = prize, avlyst = 0)
+            newMeal.save()
 
+            new_arrangemntid = newMeal.arrangementid
+
+            host = Vertskap(brukerid = request.session['user_id_logged_in'], arrangementid = new_arrangemntid)
+            host.save()
+
+            return redirect('../../profil/')
+    else:
+        return redirect("/")
 
     return render(request, 'newMeal.html', {'site_logged_in' : is_logged_in(request)})
 
 def mealOverview(request):
+    if is_logged_in(request):
+        queryset = Arrangement.objects.all()
 
-    queryset = Arrangement.objects.all()
+    else:
+        return redirect("/")
 
     return render(request, 'mealOverview.html', {"object_list" : queryset, 'site_logged_in' : is_logged_in(request)})
 
 def chooseMeal(request, arrangementid):
-
     if is_logged_in(request):
         print(arrangementid, " AI")
         print(request.session['user_id_logged_in'], " bruker")
