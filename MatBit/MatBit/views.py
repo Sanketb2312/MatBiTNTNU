@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .mymodels import Bruker, Harallergi, Arrangement, Arrangementinnhold, Innhold, Pamelding, Vertskap
+from django.utils import timezone
+
 
 def is_logged_in(request):
     if 'user_id_logged_in' in request.session:
@@ -118,3 +120,25 @@ def editUser(request):
         return redirect('/')
     return render(request, 'editUser.html', {'user':user,'site_logged_in': is_logged_in(request)})
 
+
+def newMeal(request):
+    if request.POST:
+        arrangement_name = request.POST.get('arrangement_name')
+        description = request.POST.get('description')
+        seats = request.POST.get('seats')
+        location = request.POST.get('location')
+        time = request.POST.get('time')
+        prize = request.POST.get('prize')
+
+        newMeal = Arrangement(arrangementnavn = arrangement_name, beskrivelse = description, antallplasser =seats, lokasjon = location,
+                              tidspunkt = time, opprettet = timezone.now(), pris = prize, avlyst = 0)
+        newMeal.save()
+
+
+    return render(request, 'newMeal.html', {'site_logged_in' : is_logged_in(request)})
+
+def mealOverview(request):
+
+    queryset = Arrangement.objects.all()
+
+    return render(request, 'mealOverview.html', {"object_list" : queryset, 'site_logged_in' : is_logged_in(request)})
