@@ -98,7 +98,5 @@ def newMeal(request):
 def mealOverview(request):
 
     queryset = Arrangement.objects.all()
-    context = {
-        "object_list" : queryset
-    }
-    return render(request, 'mealOverview.html', context, {'site_logged_in' : is_logged_in(request)})
+
+    return render(request, 'mealOverview.html', {"object_list" : queryset, 'site_logged_in' : is_logged_in(request)})
