@@ -18,7 +18,14 @@
         </h1>
 
         {% for instance in object_list %}
-        <p>{{instance.arrangementnavn}}</p>
+        <div class=middager" onclick="location.href= '{% url 'chooseMeal' arrangementid=instance.arrangementid %}' ">
+            <h3>{{instance.arrangementnavn}}</h3>
+            <p>{{instance.antallplasser}}</p>
+            <p>{{instance.tidspunkt}}</p>
+            <p>{{instance.pris}}</p>
+            <br>
+
+        </div>
         {% endfor %}
 
         {% for meal in meal_list %}
@@ -43,7 +50,7 @@
             </div>
             {% endfor %}
         </div>
-            
+
     </div>
 </div>
 {% endblock %}

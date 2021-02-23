@@ -142,3 +142,32 @@ def mealOverview(request):
     queryset = Arrangement.objects.all()
 
     return render(request, 'mealOverview.html', {"object_list" : queryset, 'site_logged_in' : is_logged_in(request)})
+
+def chooseMeal(request, arrangementid):
+
+    if is_logged_in(request):
+        print(arrangementid, " AI")
+        print(request.session['user_id_logged_in'], " bruker")
+        dinner = Arrangement.objects.get(arrangementid = arrangementid)
+        try:
+            in_dinner = Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid = arrangementid)
+
+
+            print(in_dinner, " h")
+            is_in_dinner = True
+        except:
+            is_in_dinner = False
+
+        if request.POST:
+            if(is_in_dinner):
+                in_dinner.delete()
+                return redirect("../../oversikt/")
+            else:
+                in_dinner = Pamelding(brukerid = request.session['user_id_logged_in'], arrangementid = arrangementid, tidspunkt = timezone.now())
+                in_dinner.save()
+                return redirect("../../oversikt/")
+
+    else:
+        return redirect("/")
+
+    return render(request, 'chooseMeal.html', {'dinner': dinner, 'is_in_dinner':is_in_dinner ,'site_logged_in': is_logged_in(request)})

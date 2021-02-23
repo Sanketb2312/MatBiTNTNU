@@ -20,20 +20,29 @@
             </div>
             <div class="meal-meta-info">
                 <h1 id="meal-title">
-                    {{ meal_title }}
+                    {{ dinner.arrangementnavn }}
                 </h1>
                 <p id="meal-date">
-                    {{ meal_date }}
+                    {{ dinner.tidspunkt }}
                 </p>
                 <h3 id="meal-address">
-                    {{ meal_address }}
+                     {{ dinner.antallplasser }}
                 </h3>
                 <p id="meal-capacity">
                     Totale plasser: {{ meal_capacity}}, ledige: {{ vacant_spots }}
                 </p>
-                <button type="button" class="btn btn-primary" id="meal-btn">
-                    Meld meg på/av
-                </button>
+
+            <form method="POST">
+                {% csrf_token %}
+                {% if is_in_dinner %}
+                    <input type="submit" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
+
+                {% else %}
+                    <input type="submit" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
+
+                {% endif %}
+            </form>
+
             </div>
         </div>
 
