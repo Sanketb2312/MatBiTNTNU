@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block head %}
+
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'CSSDocs/newMeal.css' %}">
+<link rel="stylesheet" href="{% static 'CSSDocs/registerUser.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <form method="POST" id="new-meal-form" class="new-meal-form">
+            <!-- Input: upload new image (se over label, formattering og at grupperingen blir riktig) -->
+            <input type="file" name="meal-image" accept="image/*" />
+            <!-- Input: fill in meal title -->
+            <!-- Input: fill in location -->
+            <!-- Input: select date (husk å bruk en datovelger her) -->
+            <!-- Input: fill in description (mulig vi må legge inn en ordgrense her) -->
+            <!-- Input: select allergenes (egentlig velg fra liste, men vi kan kanskje ha det som et utfyllingsfelt per nå?) -->
+            <!-- Input: select number of participants (kun godta heltall, bruk en native heltallvelger om mulig) -->
+        </form>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="signup-content">
+        <form method="POST" id="new_arrangement_form" class="new_arrangement_form" name="new_arrangement_form">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="arrangement_name">Arrangementnavn</label>
+                    <input type="text" class="form-input" name="arrangement_name" id="arrangement_name" />
+                </div>
+                <div class="form-group">
+                    <label for="description">Beskrivelse</label>
+                    <input type="text" class="form-input" name="description" id="description" />
+                </div>
+            </div>
+
+
+            <div>
+                <div class="form-group">
+                    <label for="seats">Antall plasser</label>
+                    <input type="number" class="form-input" name="seats" id="seats" />
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location">Lokasjon</label>
+                    <input type="" class="location" name="location" id="location" />
+                </div>
+                <div class="form-group">
+                    <label for="time">Tidspunkt</label>
+                    <input type="text" class="form-input" name="time" id="time" />
+                </div>
+            </div>
+
+
+            <div class="form-row">
+                <div class="form-group form-icon">
+                    <label for="prize">Pris</label>
+                    <input type="number" class="form-input" name="prize" id="prize">
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" name="submit" id="submit" class="form-submit" value="Submit" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
