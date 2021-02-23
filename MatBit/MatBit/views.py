@@ -135,6 +135,7 @@ def editUser(request):
 
 
 def newMeal(request):
+
     if request.POST:
         arrangement_name = request.POST.get('arrangement_name')
         description = request.POST.get('description')
