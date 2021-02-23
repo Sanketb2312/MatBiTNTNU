@@ -28,12 +28,44 @@
 
 	</div>
 	<div>
-		{% if userAllergies != None %}
-			<h3> {{user.fornavn}} har allergier</h3>
+		{% if userAllergies %}
+			<h3> {{user.fornavn}} har allergier </h3>
+			<div>
+				{% for allergies in userAllergies %}
+				<p>{{allergies.innholdid}}</p>
+				{% endfor %}
+			</div>
 		{% else %}
 			<h3> {{user.fornavn}} har ingen allergier</h3>
 		{% endif %}
 
 	</div>
+		<div>
+		{% if arrangement %}
+			<h3> {{user.fornavn}} er påmeldt middager: </h3>
+			<div>
+				{% for dinner in arrangement %}
+				<p>{{dinner.arrangementid}} kl {{dinner.tidspunkt}} </p>
+				{% endfor %}
+			</div>
+		{% else %}
+			<h3> {{user.fornavn}} er ikke påmeldt noen middager</h3>
+		{% endif %}
+
+	</div>
+			<div>
+		{% if hosting %}
+			<h3> {{user.fornavn}} arrangerer disse middagene: </h3>
+			<div>
+				{% for dinner in hosting %}
+				<p>{{dinner.arrangementid}}</p>
+				{% endfor %}
+			</div>
+		{% else %}
+			<h3> {{user.fornavn}} arrangerer ingen middager</h3>
+		{% endif %}
+
+	</div>
 </div>
+
 {% endblock %}

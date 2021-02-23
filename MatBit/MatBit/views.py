@@ -72,16 +72,28 @@ def logout(request):
 
 def profile(request):
     if is_logged_in(request):
+        allergiDict = {}
+        hostingDict = {}
+        arrangementDict = {}
+
         user = Bruker.objects.get(brukerid = request.session['user_id_logged_in'])
-        try:
-            allergi = Harallergi.objects.get(brukerid = request.session['user_id_logged_in'])
-            print(allergi)
-        except:
-            allergi = None
-        print(allergi)
+
+        allergi = Harallergi.objects.filter(brukerid = request.session['user_id_logged_in'])
+        #allergi = {'allergi' : allergi}
+        for allergies in allergi:
+            allergies = allergies.__dict__
+
+            innhold = Innhold.objects.get(innholdid = allergies['innholdid'])
+            allergiDict.update({innhold.innholdid : innhold.navn })
+
+        arrangement = Pamelding.objects.filter(brukerid = request.session['user_id_logged_in'])
+
+
+        hosting = Vertskap.objects.filter(brukerid = request.session['user_id_logged_in'])
     else:
         return redirect('/')
-    return render(request, 'profile.html', {'user':user,'userAllergies' : allergi,'site_logged_in' : is_logged_in(request)})
+    return render(request, 'profile.html', {'user':user,'userAllergies' : allergi, 'arrangement' : arrangement, 'hosting' : hosting, 'site_logged_in' : is_logged_in(request)})
+
 
 def editUser(request):
     if is_logged_in(request):
@@ -105,3 +117,4 @@ def editUser(request):
     else:
         return redirect('/')
     return render(request, 'editUser.html', {'user':user,'site_logged_in': is_logged_in(request)})
+

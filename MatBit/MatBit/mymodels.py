@@ -52,7 +52,7 @@ class Bruker(models.Model):
 
 
 class Harallergi(models.Model):
-    brukerid = models.IntegerField(db_column='BrukerID')  # Field name made lowercase.
+    brukerid = models.IntegerField(db_column='BrukerID', primary_key = True, unique = False)  # Field name made lowercase.
     innholdid = models.IntegerField(db_column='InnholdID')  # Field name made lowercase.
 
     class Meta:
@@ -70,7 +70,7 @@ class Innhold(models.Model):
 
 
 class Pamelding(models.Model):
-    brukerid = models.IntegerField(db_column='BrukerID')  # Field name made lowercase.
+    brukerid = models.IntegerField(db_column='BrukerID', primary_key = True, unique = False)  # Field name made lowercase.
     arrangementid = models.IntegerField(db_column='ArrangementID')  # Field name made lowercase.
     tidspunkt = models.DateTimeField(db_column='Tidspunkt')  # Field name made lowercase.
 
@@ -80,7 +80,7 @@ class Pamelding(models.Model):
 
 
 class Vertskap(models.Model):
-    brukerid = models.IntegerField(db_column='BrukerID')  # Field name made lowercase.
+    brukerid = models.IntegerField(db_column='BrukerID', primary_key = True, unique = False)  # Field name made lowercase.
     arrangementid = models.IntegerField(db_column='ArrangementID')  # Field name made lowercase.
 
     class Meta:
