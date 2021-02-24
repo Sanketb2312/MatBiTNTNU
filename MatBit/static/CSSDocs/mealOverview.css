@@ -1,4 +1,34 @@
-.middager {
-border-style: solid;
-border-color: black;
+
+
+.flex-container {
+
+  display: flex;
+  flex-direction: row;
+  max-width: 80%;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right:auto;
+
+}
+
+.flex-child {
+
+width: 300px;
+padding: 10px;
+background-color: azure;
+border-radius: 15px;
+margin: 15px;
+padding: 10px;
+box-shadow: -1px 6px 16px 0px #8888884d;
+transition: transform 0.4s, background-color 0.5s ease;
+}
+
+
+.flex-child:hover {
+    transform: scale(1.2);
+    background-color: #cfefef;
+}
+
+.flex-child:active {
+    background-color: #abe8e8;
 }

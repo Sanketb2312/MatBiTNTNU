@@ -11,46 +11,26 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="d-flex justify-content-center">
+
+
         <h1 id="meal-overview-header">
             Middagsoversikt
         </h1>
 
+
+<div class="flex-container">
         {% for instance in object_list %}
-        <div class=middager" onclick="location.href= '{% url 'chooseMeal' arrangementid=instance.arrangementid %}' ">
-            <h3>{{instance.arrangementnavn}}</h3>
-            <p>{{instance.antallplasser}}</p>
-            <p>{{instance.tidspunkt}}</p>
-            <p>{{instance.pris}}</p>
-            <br>
+        <div class="url" onclick="location.href= '{% url 'chooseMeal' arrangementid=instance.arrangementid %}' ">
 
-        </div>
+                <div class="flex-child">
+                    <h3>{{instance.arrangementnavn}}</h3>
+                    <h5>Antall plasser: {{instance.antallplasser}}</h5>
+                    <h5>Tidspunkt: {{instance.tidspunkt}}</h5>
+                    <h5>Pris: {{instance.pris}}</h5>
+                    <br>
+                </div>
+            </div>
+
         {% endfor %}
-
-        {% for meal in meal_list %}
-        <div class="meal-overview-card">
-            <div class="meal-img">
-                <!-- Django code for loading image -->
-            </div>
-            <div class="meal-info">
-                <h1 id="meal-title">
-                    {{ meal.title }}
-                </h1>
-                <p id="meal-date">
-                    {{ meal.date }}
-                </p>
-                <h3 id="meal-address">
-                    {{ meal.address }}
-                </h3>
-                <p id="meal-description-excerpt">
-                    <!-- Her må vi kutte lengden på beskrivelsen hvis den overstiger x antall tegn. Antar at dette kun kan gjøres i Python-koden -->
-                    {{ meal.description }}
-                </p>
-            </div>
-            {% endfor %}
-        </div>
-
-    </div>
 </div>
 {% endblock %}
