@@ -177,14 +177,10 @@ def mealOverview(request):
 
 def chooseMeal(request, arrangementid):
     if is_logged_in(request):
-        print(arrangementid, " AI")
-        print(request.session['user_id_logged_in'], " bruker")
         dinner = Arrangement.objects.get(arrangementid = arrangementid)
         try:
             in_dinner = Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid = arrangementid)
 
-
-            print(in_dinner, " h")
             is_in_dinner = True
         except:
             is_in_dinner = False
