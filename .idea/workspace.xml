@@ -19,8 +19,16 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) Vis påmeldte og egne middager, vis allergier på profilside">
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) 3-6 merget inn i 7">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/registerUser.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/registerUser.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/registerUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/registerUser.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +76,7 @@
       <recent name="$PROJECT_DIR$/MatBit/static" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -179,7 +187,14 @@
       <option name="presentableId" value="LOCAL−00015" />
       <updated>1614107926310</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="(#3) 3-6 merget inn i 7">
+      <created>1614111986500</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1614111986500</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -218,44 +233,7 @@
     <MESSAGE value="(#1) oppdatert frontpage html og css" />
     <MESSAGE value="(#3) Redigere profil" />
     <MESSAGE value="(#3) Vis påmeldte og egne middager, vis allergier på profilside" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#3) Vis påmeldte og egne middager, vis allergier på profilside" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="2334" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1613989288558">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2334" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989288558" />
-    <state x="2316" y="107" key="CommitChangelistDialog2" timestamp="1614108233680">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2316" y="107" key="CommitChangelistDialog2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614108233680" />
-    <state x="2012" y="92" width="1736" height="856" key="DiffContextDialog" timestamp="1613989003606">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2012" y="92" width="1736" height="856" key="DiffContextDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1613989003606" />
-    <state x="2360" y="230" key="MergeDialog" timestamp="1614107965741">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2360" y="230" key="MergeDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614107965741" />
-    <state x="2518" y="281" key="MultipleFileMergeDialog" timestamp="1614107965748">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2518" y="281" key="MultipleFileMergeDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614107965748" />
-    <state x="2444" y="222" key="RollbackChangesDialog" timestamp="1614108080995">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2444" y="222" key="RollbackChangesDialog/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614108080995" />
-    <state x="2472" y="240" key="Vcs.Push.Dialog.v2" timestamp="1614107930185">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2472" y="240" key="Vcs.Push.Dialog.v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614107930185" />
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1614099696936">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2689" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614099696936" />
-    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1614105216796">
-      <screen x="1920" y="0" width="1920" height="1040" />
-    </state>
-    <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1614105216796" />
+    <MESSAGE value="(#3) 3-6 merget inn i 7" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#3) 3-6 merget inn i 7" />
   </component>
 </project>

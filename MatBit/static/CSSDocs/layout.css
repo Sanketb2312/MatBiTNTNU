@@ -4,5 +4,57 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
-    background: #CFB6B7 !important;
+    background: #E4FCF1 !important;
 }
+
+ul {
+	background: 0 0;
+	position: relative;
+	z-index: 9;
+}
+ul li {
+	padding: 5px 0;
+	z-index: 2;
+	color: #222;
+	font-size: 14px;
+	font-weight: 900;
+}
+ul li:not(.init):hover,
+ul li.selected:not(.init) {
+	background: #1da0f2;
+	color: #fff;
+}
+li.init {
+	cursor: pointer;
+	position: relative;
+	border: 1px solid #ebebeb;
+	padding: 12px 20px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+}
+li.init:after {
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	font-size: 18px;
+	color: #999;
+	font-family: material-design-iconic-font;
+	content: '\f2f9';
+	font-weight: 400;
+}
+
+
+
+
+
+
+
+
