@@ -20,11 +20,10 @@
                         <a class="navbar-brand" onclick="location.href='{% url 'frontpage' %}'">MatBit</a>
                     </div>
                     <ul class="nav navbar-nav">
-                        <li class=""><a onclick="location.href='{% url 'frontpage' %}'"><span class="glyphicon glyphicon-frontpage">Hjem</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a onclick="location.href= '{% url 'register' %}'"><span class="glyphicon glyphicon-user"></span> Registrer Bruker</a></li>
-                        <li><a onclick="location.href= '{% url 'login' %}'"><span class="glyphicon glyphicon-log-in"></span> Innlogging</a></li>
+                        <li><a class="link" onclick="location.href= '{% url 'register' %}'"><span class="glyphicon glyphicon-user"></span> Registrer Bruker</a></li>
+                        <li><a class="link" onclick="location.href= '{% url 'login' %}'"><span class="glyphicon glyphicon-log-in"></span> Innlogging</a></li>
                     </ul>
                 </div>
             </nav>
@@ -35,10 +34,9 @@
                         <a class="navbar-brand" onclick="location.href='{% url 'frontpage' %}'">MatBit</a>
                     </div>
                     <ul class="nav navbar-nav">
-                        <li class=""><a onclick="location.href='{% url 'frontpage' %}'"><span class="glyphicon glyphicon-frontpage">Hjem</a></li>
-                        <li class=""><a onclick="location.href='{% url 'profile' %}'"><span class="glyphicon glyphicon-profile">Profil</a></li>
-                        <li class=""><a onclick="location.href='{% url 'newMeal' %}'"><span class="glyphicon glyphicon-profile">Ny Middag</a></li>
-                        <li class=""><a onclick="location.href='{% url 'mealOverview' %}'"><span class="glyphicon glyphicon-profile">Oversikt</a></li>
+                        <li class="navbarbutton"><a onclick="location.href='{% url 'mealOverview' %}'"><span class="glyphicon glyphicon-profile">Oversikt</a></li>
+                        <li class="navbarbutton"><a onclick="location.href='{% url 'newMeal' %}'"><span class="glyphicon glyphicon-profile">Ny Middag</a></li>
+                        <li class="navbarbutton"><a onclick="location.href='{% url 'profile' %}'"><span class="glyphicon glyphicon-profile">Profil</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a onclick="location.href= '{% url 'logout' %}'"><span class="glyphicon glyphicon-log-out"></span> Logg ut</a></li>

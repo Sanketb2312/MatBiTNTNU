@@ -19,16 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) 3-6 merget inn i 7">
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) Noen små CSS justeringer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/frontpage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/registerUser.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/registerUser.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/frontpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/frontpage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/registerUser.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/registerUser.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +190,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614111986500</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="(#3) Noen små CSS justeringer">
+      <created>1614161430859</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1614161430860</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -234,6 +237,7 @@
     <MESSAGE value="(#3) Redigere profil" />
     <MESSAGE value="(#3) Vis påmeldte og egne middager, vis allergier på profilside" />
     <MESSAGE value="(#3) 3-6 merget inn i 7" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#3) 3-6 merget inn i 7" />
+    <MESSAGE value="(#3) Noen små CSS justeringer" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#3) Noen små CSS justeringer" />
   </component>
 </project>
