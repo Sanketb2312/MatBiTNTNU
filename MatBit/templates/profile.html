@@ -8,6 +8,97 @@
 {% endblock %}
 {% block content %}
 
+
+<div class="allstuff">
+
+	<div class="topstuff">
+		<img src="https://kvener.no/wp-content/uploads/2019/02/blank-profile-picture-973460_640.png"/>
+
+		<div class="userinfo">
+
+			<h2>{{user.fornavn }} {{user.etternavn }} </h2>
+			<h3> {{user.epost}}</h3>
+			<h3> {{user.adresse }}</h3>
+			<h3> {{user.postnummer }} {{user.sted }}</h3>
+
+		</div>
+
+
+	</div>
+	<a onclick="location.href= '{% url 'editUser' %}'"><button type="button">  Endre Bruker </button></a>
+
+	<div class="allergies">
+
+		{% if userAllergies %}
+			<h3> Du har allergier </h3>
+			<div>
+				{% for key, value in userAllergies.items %}
+				<tr>
+					<td> {{ value }} </td>
+				</tr>
+			{% endfor %}
+			</div>
+		{% else %}
+			<h3> Du har ingen allergier:</h3>
+		{% endif %}
+
+
+	</div>
+
+	<div class="isindinner">
+
+
+	</div>
+
+	<div class="arrangeddinners">
+
+		<div class="parent">
+			{% if arrangement %}
+			<h3> Du har meldt seg på følgende middag: </h3>
+
+				{% for key, name in arrangement.items %}
+				<li><div class="flex-child">
+					{{ name.arrangementnavn }}
+					{% for dinner in name %}
+						 {{ dinner }}
+					{% endfor %}
+				</li>
+			{% endfor %}
+			</div>
+		{% else %}
+			<h3> Du er ikke påmeldt noen middager</h3>
+		{% endif %}
+
+
+			<div class="parent">
+			{% if hosting %}
+			<h3> Du arrangerer disse middagene:  </h3>
+
+				{% for key, name in hosting.items %}
+				<li>
+					<div class="flex-child">
+					{% for dinner in name %}
+						<td> {{ dinner }} </td>
+					{% endfor %}
+				</li>
+			{% endfor %}
+				{% else %}
+			<h3> Du arrangerer ingen middager </h3>
+		{% endif %}
+
+
+	</div>
+
+
+
+	</div>
+
+</div>
+
+
+
+
+<!--
 <div class="post-container">
     <div class="post-thumb">
 		<img src="https://kvener.no/wp-content/uploads/2019/02/blank-profile-picture-973460_640.png" />
@@ -19,7 +110,6 @@
 		<h3> {{user.adresse }}</h3>
 		<h3> {{user.postnummer }} {{user.sted }}</h3>
 
-		<h3>  </h3>
         <div class="form-row">
 			<div class = "button-style">
 				<a onclick="location.href= '{% url 'editUser' %}'"><button type="button">  Endre Bruker </button></a>
@@ -79,5 +169,5 @@
 	</div>
 </div>
 </div>
-</div>
+</div>-->
 {% endblock %}

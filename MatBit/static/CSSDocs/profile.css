@@ -1,37 +1,43 @@
-    body,
-html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: #E4FCF1 !important;
+
+.allstuff {
+ margin-left: 10%;
 }
 
-.post-container {
-    overflow: auto
+.topstuff{
+    overflow: hidden;
+    content: center;
+    text-align: center;
+    font-size:0;
+
+
 }
 
-.post-thumb {
-    margin : 25px;
+
+
+.topstuff img {
     float: left;
-    margin-left : 220;
-    display : inline-block;
-}
-.post-thumb img {
     display: block;
     height : 250;
     width : 300;
+    display: inline-block;
+    font-size: medium;
+    text-align: left;
+    border-radius: 10px;
+
+
 }
-.post-content {
+.userinfo {
+    float: left;
     margin-right: 220px
     text-align : justify;
+    padding: 10px;
+    display: inline-block;
+    font-size: medium;
+    text-align: left;
+    margin-left: 2%;
+
     }
-.post-title {
-    font-weight: bold;
-    font-size: 200%
-}
-.form-group{
-    position : center;
-}
+
 .button-style
 {
     position: relative;
@@ -39,10 +45,14 @@ html {
     display: flex;
     justify-content: left;
     align-items: center;
+
 }
-.button {
+    button {
+  padding-top: 5%;
   border: none;
+  border-radius: 10px;
   color: black;
+  background-color: lightblue;
   padding: 15px 32px;
   text-align: center;
   text-decoration: none;
@@ -51,4 +61,49 @@ html {
   margin: 4px 2px;
   cursor: pointer;
   text-color : black;
+}
+
+
+
+
+
+
+.parent {
+
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;
+  flex-wrap: wrap;
+  margin-top: 2%;
+
+
+}
+
+.flex-child {
+
+width: 450px;
+padding: 10px;
+background-color: azure;
+border-radius: 15px;
+margin: 15px;
+padding: 10px;
+box-shadow: -1px 6px 16px 0px #8888884d;
+transition: transform 0.4s, background-color 0.5s ease;
+font-size: 20px;
+}
+
+
+
+
+.meal-overview-header {
+text-align: center;
+}
+
+.middag {
+text-align: center;
+}
+
+li {
+
+list-style-type: none;
 }

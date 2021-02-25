@@ -32,3 +32,11 @@ transition: transform 0.4s, background-color 0.5s ease;
 .flex-child:active {
     background-color: #abe8e8;
 }
+
+.meal-overview-header {
+text-align: center;
+}
+
+.middag {
+text-align: center;
+}

@@ -12,11 +12,12 @@
 {% endblock %}
 
 {% block content %}
+
+<h1 class="middag">Opprett din middag her</h1>
 <div class="container">
     <div class="signup-content">
         <form method="POST" id="new_arrangement_form" class="new_arrangement_form" name="new_arrangement_form">
             {% csrf_token %}
-            <input type="file" name="meal-image" accept="image/*" />
             <div class="form-row">
                 <div class="form-group">
                     <label for="arrangement_name">Arrangementnavn</label>

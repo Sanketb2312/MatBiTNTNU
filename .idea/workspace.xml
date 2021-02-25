@@ -19,12 +19,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) CSS endringer i navbar og forsiden">
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) CSS for middagsoversikt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/layout.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/mealOverview.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/mealOverview.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/registerUser.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/registerUser.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/mealOverview.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/mealOverview.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/newMeal.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/newMeal.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +206,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614198812791</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="(#3) CSS for middagsoversikt">
+      <created>1614205769490</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1614205769491</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -246,6 +255,7 @@
     <MESSAGE value="(#3) 3-6 merget inn i 7" />
     <MESSAGE value="(#3) Noen små CSS justeringer" />
     <MESSAGE value="(#3) CSS endringer i navbar og forsiden" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#3) CSS endringer i navbar og forsiden" />
+    <MESSAGE value="(#3) CSS for middagsoversikt" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#3) CSS for middagsoversikt" />
   </component>
 </project>
