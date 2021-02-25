@@ -340,7 +340,7 @@ ul li {
 }
 ul li:not(.init):hover,
 ul li.selected:not(.init) {
-	background: #1da0f2;
+
 	color: #fff;
 }
 li.init {
