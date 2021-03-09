@@ -24,7 +24,11 @@
 
                 <div class="flex-child">
                     <h3>{{instance.arrangementnavn}}</h3>
-                    <h5>Antall plasser: {{instance.antallplasser}}</h5>
+                    {% for key, item in available_dict.items %}
+                        {% if key == instance.arrangementid %}
+                            <h5>Ledige plasser: {{ item }}/{{instance.antallplasser}}</h5>
+                        {% endif %}
+                    {% endfor %}
                     <h5>Tidspunkt: {{instance.tidspunkt}}</h5>
                     <h5>Pris: {{instance.pris}}</h5>
                     <br>

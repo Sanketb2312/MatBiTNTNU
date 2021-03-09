@@ -168,16 +168,29 @@ def newMeal(request):
 
 def mealOverview(request):
     if is_logged_in(request):
+        available_dict = {}
+
         queryset = Arrangement.objects.all()
+
+        #Gives the number of guests allready booked for this dinner
+        for arrangements in queryset:
+            arrangements = arrangements.__dict__
+            guests = Pamelding.objects.filter(arrangementid = arrangements['arrangementid'])
+            available = arrangements['antallplasser'] - len(guests)
+            available_dict.update({arrangements['arrangementid']: available})
 
     else:
         return redirect("/")
 
-    return render(request, 'mealOverview.html', {"object_list" : queryset, 'site_logged_in' : is_logged_in(request)})
+    return render(request, 'mealOverview.html', {"object_list" : queryset, 'available_dict': available_dict, 'site_logged_in' : is_logged_in(request)})
 
 def chooseMeal(request, arrangementid):
     if is_logged_in(request):
         dinner = Arrangement.objects.get(arrangementid = arrangementid)
+        guests = Pamelding.objects.filter(arrangementid = arrangementid)
+        number_guests = len(guests)
+        available = dinner.antallplasser - number_guests
+
         try:
             in_dinner = Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid = arrangementid)
 
@@ -197,4 +210,4 @@ def chooseMeal(request, arrangementid):
     else:
         return redirect("/")
 
-    return render(request, 'chooseMeal.html', {'dinner': dinner, 'is_in_dinner':is_in_dinner ,'site_logged_in': is_logged_in(request)})
+    return render(request, 'chooseMeal.html', {'dinner': dinner, 'is_in_dinner': is_in_dinner, 'number_guests': number_guests, 'available': available ,'site_logged_in': is_logged_in(request)})

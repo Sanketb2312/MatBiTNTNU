@@ -26,10 +26,10 @@
                     {{ dinner.tidspunkt }}
                 </p>
                 <h3 id="meal-address">
-                     {{ dinner.antallplasser }}
+                     {{ dinner.lokasjon }}
                 </h3>
                 <p id="meal-capacity">
-                    Totale plasser: {{ meal_capacity}}, ledige: {{ vacant_spots }}
+                    Totale plasser: {{ dinner.antallplasser }}, ledige: {{ available }}
                 </p>
 
             <form method="POST">
@@ -38,8 +38,11 @@
                     <input type="submit" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
 
                 {% else %}
-                    <input type="submit" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
-
+                    {% if available > 0 %}
+                        <input type="submit" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
+                    {% else %}
+                        <p>Middagen er full</p>
+                    {% endif %}
                 {% endif %}
             </form>
 
