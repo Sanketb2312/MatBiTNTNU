@@ -193,21 +193,70 @@ def chooseMeal(request, arrangementid):
 
         try:
             in_dinner = Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid = arrangementid)
-
             is_in_dinner = True
         except:
             is_in_dinner = False
+        try:
+            owner = Vertskap.objects.get(brukerid = request.session['user_id_logged_in'], arrangementid = arrangementid)
+            is_owner = True
+
+        except:
+            is_owner = False
 
         if request.POST:
-            if(is_in_dinner):
-                in_dinner.delete()
-                return redirect("../../oversikt/")
-            else:
-                in_dinner = Pamelding(brukerid = request.session['user_id_logged_in'], arrangementid = arrangementid, tidspunkt = timezone.now())
-                in_dinner.save()
-                return redirect("../../oversikt/")
+
+            if ('book_dinner' in request.POST):
+                if(is_in_dinner):
+                    in_dinner.delete()
+                    return redirect("../../oversikt/")
+                else:
+                    in_dinner = Pamelding(brukerid = request.session['user_id_logged_in'], arrangementid = arrangementid, tidspunkt = timezone.now())
+                    in_dinner.save()
+                    return redirect("../../oversikt/")
+            #elif ('edit_dinner' in request.POST):
+
+            elif ('cancel_dinner' in request.POST):
+                print("cancel")
+
 
     else:
         return redirect("/")
 
-    return render(request, 'chooseMeal.html', {'dinner': dinner, 'is_in_dinner': is_in_dinner, 'number_guests': number_guests, 'available': available ,'site_logged_in': is_logged_in(request)})
+    return render(request, 'chooseMeal.html', {'dinner': dinner, 'is_in_dinner': is_in_dinner, 'is_owner':is_owner, 'number_guests': number_guests, 'available': available ,'site_logged_in': is_logged_in(request)})
+
+def editMeal(request, arrangementid):
+    if is_logged_in(request):
+        dinner = Arrangement.objects.get(arrangementid = arrangementid)
+        time_stamp = str(dinner.tidspunkt)
+        time_stamp  = time_stamp.split(" ")
+
+        date = time_stamp[0]
+        time = time_stamp[1]
+
+
+        if request.POST:
+            arrangement_name = request.POST.get('arrangement_name')
+            description = request.POST.get('description')
+            seats = request.POST.get('seats')
+            location = request.POST.get('location')
+            time = request.POST.get('time')
+            prize = request.POST.get('prize')
+            date = request.POST.get('date')
+
+            datetime = date + " " + time
+
+
+            dinner.arrangementnavn = arrangement_name
+            dinner.beskrivelse = description
+            dinner.antallplasser = seats
+            dinner.lokasjon = location
+            dinner.tidspunkt = datetime
+            dinner.pris = prize
+
+
+            dinner.save()
+            return redirect('../../../')
+
+    else:
+        return redirect('/')
+    return render(request, 'editMeal.html', {'dinner':dinner, 'date':date, 'time':time, 'site_logged_in': is_logged_in(request)})

@@ -31,21 +31,33 @@
                 <p id="meal-capacity">
                     Totale plasser: {{ dinner.antallplasser }}, ledige: {{ available }}
                 </p>
+                {% if is_owner == False %}
+                <form method="POST" >
 
-            <form method="POST">
-                {% csrf_token %}
-                {% if is_in_dinner %}
-                    <input type="submit" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
+                    {% csrf_token %}
+                        {% if is_in_dinner %}
+                            <input type="submit" name = "book_dinner" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
+
+                        {% else %}
+                            {% if available > 0 %}
+                                <input type="submit" name = "book_dinner" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
+                            {% else %}
+                                <p>Middagen er full</p>
+                            {% endif %}
+                        {% endif %}
+
+
+                </form>
 
                 {% else %}
-                    {% if available > 0 %}
-                        <input type="submit" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
-                    {% else %}
-                        <p>Middagen er full</p>
-                    {% endif %}
-                {% endif %}
-            </form>
+                    <button onclick="location.href= '{% url 'editMeal' arrangementid=dinner.arrangementid %}' ", name = "edit_dinner" class="btn btn-primary" id="in_dinner" >Rediger middag</button>
+                    <form method = "POST" >
+                         {% csrf_token %}
+                         <input type="submit" name = "cancel_dinner" class="btn btn-primary" id="in_dinner" value="Avlys"></input>
+                    </form>
 
+
+                {% endif %}
             </div>
         </div>
 

@@ -12,5 +12,6 @@ path('nyMiddag/', views.newMeal, name = 'newMeal'),
 path('oversikt/', views.mealOverview, name = 'mealOverview'),
 path('profil/', views.profile, name='profile'),
 path('profil/rediger/', views.editUser, name='editUser'),
-path('oversikt/middag/<int:arrangementid>', views.chooseMeal, name='chooseMeal')
+path('oversikt/middag/<int:arrangementid>', views.chooseMeal, name='chooseMeal'),
+path('oversikt/middag/<int:arrangementid>/rediger/', views.editMeal, name='editMeal'),
 ]
