@@ -1,0 +1,32 @@
+
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block head %}
+		{{block.super}}
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Legg til allergi</h1>
+<form method="POST" id="add-allergoes" class="add-allergoes-form">
+    {% csrf_token %}
+    {% for i in object_list %}
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name = {{ i.innholdid }}>
+          <label class="form-check-label" for="flexCheckDefault">
+           {{ i.navn }}
+          </label>
+        </div>
+
+    {% endfor %}
+    <input type="submit" value="Legg til">
+</form>
+
+
+
+{% endblock %}
+
+
