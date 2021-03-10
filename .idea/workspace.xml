@@ -19,11 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til">
-      <change afterPath="$PROJECT_DIR$/MatBit/templates/addallergies.html" afterDir="false" />
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="mulig å legge til allergier. Bug: funker ikke å redigere allergier (allergiknappen blir borte når den trykkes på)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/templates/addallergies.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/addallergies.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -212,7 +211,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614205769491</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="mulig å legge til allergier. Bug: funker ikke å redigere allergier (allergiknappen blir borte når den trykkes på)">
+      <created>1615374212827</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1615374212827</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -255,6 +261,7 @@
     <MESSAGE value="(#3) Noen små CSS justeringer" />
     <MESSAGE value="(#3) CSS endringer i navbar og forsiden" />
     <MESSAGE value="(#3) CSS for middagsoversikt" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#3) CSS for middagsoversikt" />
+    <MESSAGE value="mulig å legge til allergier. Bug: funker ikke å redigere allergier (allergiknappen blir borte når den trykkes på)" />
+    <option name="LAST_COMMIT_MESSAGE" value="mulig å legge til allergier. Bug: funker ikke å redigere allergier (allergiknappen blir borte når den trykkes på)" />
   </component>
 </project>
