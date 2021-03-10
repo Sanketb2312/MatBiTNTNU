@@ -2,13 +2,24 @@
 {% load static %}
 {% block head %}
 	{{block.super}}
-
+<link rel="stylesheet" href="{% static 'CSSDocs/frontpage.css' %}">
 {% endblock %}
 {% block content %}
 
+<h1 name = "headline">Velkommen  til  MatBit</h1>
 
+        <div class="post-container">
+            
+			
+			<p id="p1" class="tekst"> En digital plattform for bærekraftig middagsplanlegging.
+			</p>
+
+			<img class="post-thumb" src="https://previews.123rf.com/images/dolgachov/dolgachov1802/dolgachov180201157/95428252-group-of-people-eating-at-table-with-food.jpg" /> 
+			<p id="p2" class="tekst">Noen syns det er gøy å lage middag. Andre syns det er kjedelig. Mange syns det er hyggelig å spise med andre. Det er både mer økonomisk og mer bærekraftig om flere går sammen om et måltid. Her har du muligheten
+
+				</p>
+		</div>
+		
+		
 
 {% endblock %}
-
-
-

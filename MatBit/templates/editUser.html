@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block head %}
+	{{block.super}}
+<link rel="stylesheet" href="{% static 'CSSDocs/editUser.css' %}">
+{% endblock %}
+{% block content %}
+<h1 id="title" >Rediger profil</h1>
+
+<div class="container">
+    <div class="signup-content">
+        <form method="POST" id="edit-user-form" class="signup-form" name="editUser">
+            {% csrf_token %}
+<!--                <div class="form-group">
+                    <label for="first_name">Brukernavn</label>
+                    <input type="text" class="form-input" name="username" id="username" />
+                </div>-->
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="first_name">Fornavn</label>
+                    <input type="text" class="form-input" name="first_name" id="first_name" value = "{{user.fornavn}}"/>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Etternavn</label>
+                    <input type="text" class="form-input" name="last_name" id="last_name" value = "{{user.etternavn}}" />
+                </div>
+            </div>
+
+
+
+            <!--<div class="form-group">
+                <label for="phone_number">Phone number</label>
+                <input type="number" class="form-input" name="phone_number" id="phone_number" />
+            </div> -->
+
+            <div class="form-text">
+
+                <div>
+                    <div class="form-group">
+                        <label for="address">Adresse</label>
+                        <input type="text" class="form-input" name="address" id="address" value = "{{user.adresse}}"/>
+
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="post_code">Postnummer</label>
+                            <input type="text" class="form-input" name="post_code" id="post_code" value = "{{user.postnummer}}"/>
+
+
+                        </div>
+                        <div class="form-group">
+                            <label for="place">Sted</label>
+                            <input type="text" class="form-input" name="place" id="place" value = "{{user.sted}}"/>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" name="submit" id="submit" class="form-submit" value="Submit" />
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

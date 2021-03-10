@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block head %}
+
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'CSSDocs/chooseMeal.css' %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="meal-meta-card">
+            <div class="meal-img">
+                <!-- Add django code for loading actual image -->
+                <!-- <img src="{{ meal_img }}" alt=""> -->
+            </div>
+            <div class="meal-meta-info">
+                <h1 id="meal-title">
+                    {{ dinner.arrangementnavn }}
+                </h1>
+                <p id="meal-date">
+                    {{ dinner.tidspunkt }}
+                </p>
+                <h3 id="meal-address">
+                     {{ dinner.lokasjon }}
+                </h3>
+                <p id="meal-capacity">
+                    Totale plasser: {{ dinner.antallplasser }}, ledige: {{ available }}
+                </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                {% if is_in_dinner %}
+                    <input type="submit" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
+
+                {% else %}
+                    {% if available > 0 %}
+                        <input type="submit" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
+                    {% else %}
+                        <p>Middagen er full</p>
+                    {% endif %}
+                {% endif %}
+            </form>
+
+            </div>
+        </div>
+
+        <div class="meal-description-card">
+            <p id="meal-description">
+                {{ meal_description }}
+            </p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,78 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	background: #f5f5f5 !important;
+}
+
+.navbar {
+	background-color: #9fbf97;
+}
+
+ul {
+	background: 0 0;
+	position: relative;
+	z-index: 9;
+}
+
+.glyphicon {
+	color: #000000;
+	font-size: 1em;
+}
+
+.navbar-brand {
+	color: #000000 !important;
+	font-size: 2.2em;
+	font-family: fantasy;
+	margin-top: 8px;
+}
+
+.link {
+	color: black !important;
+	font-size: 1.3em;
+}
+
+.glyphicon:hover,
+a:hover {
+	color: #ffffff !important;
+}
+
+ul li {
+	padding: 5px 0;
+	z-index: 2;
+	color: #000000;
+	font-size: 14px;
+	font-weight: 900;
+	font-color: #000000;
+}
+ul li:not(.init):hover,
+ul li.selected:not(.init) {
+	color: #000000;
+}
+li.init {
+	cursor: pointer;
+	position: relative;
+	border: 1px solid #ebebeb;
+	padding: 12px 20px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+}
+li.init:after {
+	position: absolute;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	font-size: 18px;
+	color: #999;
+	font-family: material-design-iconic-font;
+	content: '\f2f9';
+	font-weight: 400;
+}

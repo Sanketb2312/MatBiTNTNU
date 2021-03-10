@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block head %}
+
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'CSSDocs/mealOverview.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+
+        <h1 class="meal-overview-header">
+            Middagsoversikt
+        </h1>
+
+
+<div class="flex-container">
+        {% for instance in object_list %}
+        <div class="url" onclick="location.href= '{% url 'chooseMeal' arrangementid=instance.arrangementid %}' ">
+
+                <div class="flex-child">
+                    <h3>{{instance.arrangementnavn}}</h3>
+                    {% for key, item in available_dict.items %}
+                        {% if key == instance.arrangementid %}
+                            <h5>Ledige plasser: {{ item }}/{{instance.antallplasser}}</h5>
+                        {% endif %}
+                    {% endfor %}
+                    <h5>Tidspunkt: {{instance.tidspunkt}}</h5>
+                    <h5>Pris: {{instance.pris}}</h5>
+                    <br>
+                </div>
+            </div>
+
+        {% endfor %}
+</div>
+{% endblock %}
