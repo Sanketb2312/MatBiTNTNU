@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from .mymodels import Bruker, Harallergi, Arrangement, Arrangementinnhold, Innhold, Pamelding, Vertskap
+from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host
 from django.utils import timezone
 
 
@@ -36,23 +36,23 @@ def register(request: HttpRequest) -> HttpResponse:
         password = request.POST.get('password')
         address = request.POST.get('address')
         post_code = request.POST.get('post_code')
-        place = request.POST.get('place')
+        location = request.POST.get('location')
 
         try:
-            Bruker.users.get(epost=email)
+            User.users.get(email=email)
             email_used = True
 
         except ObjectDoesNotExist:
-            user = Bruker(
-                fornavn=first_name,
-                etternavn=last_name,
-                fodselsdato=birth_date,
-                adresse=address,
-                postnummer=post_code,
-                sted=place,
-                eradministrator="0",
-                epost=email,
-                passord=password
+            user = User(
+                first_name=first_name,
+                last_name=last_name,
+                birth_date=birth_date,
+                address=address,
+                post_code=post_code,
+                location=location,
+                is_admin="0",
+                email=email,
+                password=password
             )
             user.save()
 
@@ -81,11 +81,11 @@ def login(request: HttpRequest) -> HttpResponse:
         password = request.POST.get('password')
 
         try:
-            user = Bruker.users.get(epost=email, passord=password)
+            user = User.users.get(email=email, password=password)
         except ObjectDoesNotExist:
             error_login = True
         else:
-            request.session['user_id_logged_in'] = user.brukerid
+            request.session['user_id_logged_in'] = user.user_id
 
             return redirect('/')
 
@@ -111,43 +111,41 @@ def profile(request: HttpRequest) -> HttpResponse:
     hosting_dict = {}
     event_dict = {}
 
-    user = Bruker.users.get(brukerid=request.session['user_id_logged_in'])
+    user = User.users.get(user_id=request.session['user_id_logged_in'])
 
-    allergy = Harallergi.objects.filter(brukerid=request.session['user_id_logged_in'])
-    # allergy = {'allergi' : allergy}
+    # Linking all the allergies in the database that the user has.
+    allergies = UserAllergy.users_allergies.filter(user_id=request.session['user_id_logged_in']).all()
 
-    for allergies in allergy:
-        allergies = allergies.__dict__  # FIXME: unnecessary, right?
+    for allergy in allergies:
 
-        content = Innhold.objects.get(innholdid=allergies['innholdid'])
-        allergy_dict.update({content.innholdid: content.navn})
+        ingredient = Ingredient.ingredients.get(ingredient_id=allergy.ingredient_id)
+        allergy_dict[ingredient.ingredient_id] = ingredient.name
 
-    # TODO: rename to "event"/"events" or something.
-    arrangement = Pamelding.objects.filter(brukerid=request.session['user_id_logged_in'])
+    # Collecting all the registrations the user has made.
+    registrations = Registration.registrations.filter(user_id=request.session['user_id_logged_in']).all()
 
-    for arrangements in arrangement:
-        arrangements = arrangements.__dict__  # FIXME: unnecessary, right?
+    for registration in registrations:
 
-        dinner_information = Arrangement.events.get(arrangementid=arrangements['arrangementid'])
+        dinner_information = DinnerEvent.events.get(event_id=registration.event_id)
 
-        event_dict.update({dinner_information.arrangementid: [
-            dinner_information.arrangementnavn,
-            dinner_information.lokasjon,
-            dinner_information.tidspunkt
-        ]})
+        event_dict[dinner_information.event_id] = [
+            dinner_information.name,
+            dinner_information.location,
+            dinner_information.date
+        ]
 
-    hosting = Vertskap.objects.filter(brukerid=request.session['user_id_logged_in'])
+    # Collecting all the events the user is hosting.
+    hosting = Host.hosts.filter(user_id=request.session['user_id_logged_in']).all()
 
     for hosting_event in hosting:
-        hosting_event = hosting_event.__dict__  # FIXME: unnecessary, right?
 
-        hosting_information = Arrangement.events.get(arrangementid=hosting_event['arrangementid'])
+        hosting_information = DinnerEvent.events.get(event_id=hosting_event.event_id)
 
-        hosting_dict.update({hosting_information.arrangementid: [
-            hosting_information.arrangementnavn,
-            hosting_information.tidspunkt,
-            hosting_information.antallplasser
-        ]})
+        hosting_dict[hosting_information.event_id] = [
+            hosting_information.name,
+            hosting_information.date,
+            hosting_information.capacity
+        ]
 
     return render(request, 'profile.html', {
         'user': user,
@@ -162,22 +160,22 @@ def edit_user(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
         return redirect('/')
 
-    user = Bruker.users.get(brukerid=request.session['user_id_logged_in'])
+    user = User.users.get(user_id=request.session['user_id_logged_in'])
 
     if request.POST:
         # FIXME: Why are these queried like this, instead of just using: user.<> = request.POST.get('<>')?
-        #  In case one of them throws an error?
+        #  In case one of them throws an error, nothing is updated?
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         address = request.POST.get('address')
         post_code = request.POST.get('post_code')
-        place = request.POST.get('place')
+        place = request.POST.get('location')
 
-        user.fornavn = first_name
-        user.etternavn = last_name
-        user.adresse = address
-        user.postnummer = post_code
-        user.sted = place
+        user.first_name = first_name
+        user.last_name = last_name
+        user.address = address
+        user.post_code = post_code
+        user.location = place
         user.save()
 
         # noinspection SpellCheckingInspection
@@ -195,30 +193,30 @@ def new_meal(request: HttpRequest) -> HttpResponse:
 
     if request.POST:
         # FIXME: see fixme in edit_user(_:)
-        arrangement_name = request.POST.get('arrangement_name')
+        event_name = request.POST.get('dinner_name')
         description = request.POST.get('description')
-        seats = request.POST.get('seats')
+        capacity = request.POST.get('seats')
         location = request.POST.get('location')
         date = request.POST.get('date')
         time = request.POST.get('time')
-        prize = request.POST.get('prize')
+        cost = request.POST.get('cost')
 
         datetime = date + " " + time + ":00"
 
-        meal = Arrangement(
-            arrangementnavn=arrangement_name,
-            beskrivelse=description,
-            antallplasser=seats,
-            lokasjon=location,
-            tidspunkt=datetime,
-            opprettet=timezone.now(),
-            pris=prize,
-            avlyst=0
+        meal = DinnerEvent(
+            name=event_name,
+            description=description,
+            capacity=capacity,
+            location=location,
+            date=datetime,
+            creation_date=timezone.now(),
+            cost=cost,
+            is_cancelled=0
         )
 
         meal.save()
 
-        host = Vertskap(brukerid=request.session['user_id_logged_in'], arrangementid=meal.arrangementid)
+        host = Host(user_id=request.session['user_id_logged_in'], event_id=meal.event_id)
         host.save()
 
         # noinspection SpellCheckingInspection
@@ -234,15 +232,16 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    queryset = Arrangement.events.all()
+    queryset = DinnerEvent.events.all()
 
     # Gives the number of guests already booked for this dinner
-    # FIXME: "arrangements"???
-    for arrangements in queryset:
-        arrangements = arrangements.__dict__  # FIXME: unnecessary, right?
-        guests = Pamelding.objects.filter(arrangementid=arrangements['arrangementid'])
-        available = arrangements['antallplasser'] - len(guests)
-        available_dict.update({arrangements['arrangementid']: available})
+    for event in queryset:
+
+        event_id = event.event_id
+
+        guests = Registration.registrations.filter(event_id=event_id)
+        available = event.capacity - len(guests)
+        available_dict[event_id] = available
 
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
@@ -251,17 +250,15 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
     })
 
 
-def get_in_dinner(request: HttpRequest, event_id: int) -> Pamelding or None:
+def get_in_dinner(request: HttpRequest, event_id: int) -> Registration or None:
     try:
-        return Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid=event_id)
-    except ObjectDoesNotExist:  # Could've used Pamelding.DoesNotExist, but this saves us a warning suppression.
+        return Registration.registrations.get(user_id=request.session['user_id_logged_in'], event_id=event_id)
+    except ObjectDoesNotExist:  # Could've used Registration.DoesNotExist, but this saves us a warning suppression.
         return None
 
 
-# TODO: rename the second argument. Also renaming the argument in urls.py fixes signing up,
-#  but retracting the signup still crashes.
-def choose_meal(request: HttpRequest, arrangementid: int) -> HttpResponse:
-    event_id = arrangementid
+def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
+    event_id = event_id
 
     if not is_logged_in(request):
         return redirect("/")
@@ -273,21 +270,21 @@ def choose_meal(request: HttpRequest, arrangementid: int) -> HttpResponse:
         if signed_up:
             in_dinner.delete()
         else:
-            in_dinner = Pamelding(
-                brukerid=request.session['user_id_logged_in'],
-                arrangementid=event_id,
-                tidspunkt=timezone.now()
+            in_dinner = Registration(
+                user_id=request.session['user_id_logged_in'],
+                event_id=event_id,
+                date=timezone.now()
             )
             in_dinner.save()
 
         # noinspection SpellCheckingInspection
         return redirect("../../oversikt/")
 
-    dinner = Arrangement.events.get(arrangementid=event_id)
-    guests = Pamelding.objects.filter(arrangementid=event_id)
+    dinner = DinnerEvent.events.get(event_id=event_id)
+    guests = Registration.registrations.filter(event_id=event_id)
 
     guest_count = len(guests)
-    available = dinner.antallplasser - guest_count
+    available = dinner.capacity - guest_count
 
     return render(request, 'chooseMeal.html', {
         'dinner': dinner,
