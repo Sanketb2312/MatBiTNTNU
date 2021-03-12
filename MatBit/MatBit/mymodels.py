@@ -9,6 +9,8 @@ from django.db import models
 
 
 class Arrangement(models.Model):
+    events = models.Manager()
+
     arrangementid = models.AutoField(db_column='ArrangementID', primary_key=True)  # Field name made lowercase.
     arrangementnavn = models.CharField(db_column='ArrangementNavn', max_length=256)  # Field name made lowercase.
     beskrivelse = models.TextField(db_column='Beskrivelse', blank=True, null=True)  # Field name made lowercase.
@@ -101,6 +103,8 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Bruker(models.Model):
+    users = people = models.Manager()
+
     brukerid = models.AutoField(db_column='BrukerID', primary_key=True)  # Field name made lowercase.
     fornavn = models.CharField(db_column='Fornavn', max_length=128)  # Field name made lowercase.
     etternavn = models.CharField(db_column='Etternavn', max_length=128)  # Field name made lowercase.

@@ -1,18 +1,23 @@
-from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from .mymodels import Bruker, Harallergi, Arrangement, Arrangementinnhold, Innhold, Pamelding, Vertskap
 from django.utils import timezone
 
 
-def is_logged_in(request) -> bool:
+# Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
+# commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
+# HttpRequest.session is set by the session middleware; also an anti-pattern.
+
+def is_logged_in(request: HttpRequest) -> bool:
     return 'user_id_logged_in' in request.session
 
 
-def frontpage(request) -> HttpResponse:
+def frontpage(request: HttpRequest) -> HttpResponse:
     return render(request, 'frontpage.html', {'site_logged_in': is_logged_in(request)})
 
 
-def register(request) -> HttpResponse:
+def register(request: HttpRequest) -> HttpResponse:
     # FIXME: shouldn't there be a check for logged in?
 
     email_used = False
@@ -34,10 +39,10 @@ def register(request) -> HttpResponse:
         place = request.POST.get('place')
 
         try:
-            Bruker.objects.get(epost=email)
+            Bruker.users.get(epost=email)
             email_used = True
 
-        except Exception:
+        except ObjectDoesNotExist:
             user = Bruker(
                 fornavn=first_name,
                 etternavn=last_name,
@@ -47,8 +52,8 @@ def register(request) -> HttpResponse:
                 sted=place,
                 eradministrator="0",
                 epost=email,
-                passord=password)
-
+                passord=password
+            )
             user.save()
 
             return redirect('/')
@@ -65,7 +70,7 @@ def register(request) -> HttpResponse:
     })
 
 
-def login(request) -> HttpResponse:
+def login(request: HttpRequest) -> HttpResponse:
     if is_logged_in(request):
         return redirect('/')
 
@@ -76,8 +81,8 @@ def login(request) -> HttpResponse:
         password = request.POST.get('password')
 
         try:
-            user = Bruker.objects.get(epost=email, passord=password)
-        except:  # FIXME: constrain
+            user = Bruker.users.get(epost=email, passord=password)
+        except ObjectDoesNotExist:
             error_login = True
         else:
             request.session['user_id_logged_in'] = user.brukerid
@@ -90,14 +95,15 @@ def login(request) -> HttpResponse:
     })
 
 
-def logout(request) -> HttpResponse:
+def logout(request: HttpRequest) -> HttpResponse:
     if is_logged_in(request):
         del request.session['user_id_logged_in']
 
     return redirect('/')
 
 
-def profile(request) -> HttpResponse:
+# noinspection SpellCheckingInspection
+def profile(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
         return redirect('/')
 
@@ -105,7 +111,7 @@ def profile(request) -> HttpResponse:
     hosting_dict = {}
     event_dict = {}
 
-    user = Bruker.objects.get(brukerid=request.session['user_id_logged_in'])
+    user = Bruker.users.get(brukerid=request.session['user_id_logged_in'])
 
     allergy = Harallergi.objects.filter(brukerid=request.session['user_id_logged_in'])
     # allergy = {'allergi' : allergy}
@@ -122,7 +128,7 @@ def profile(request) -> HttpResponse:
     for arrangements in arrangement:
         arrangements = arrangements.__dict__  # FIXME: unnecessary, right?
 
-        dinner_information = Arrangement.objects.get(arrangementid=arrangements['arrangementid'])
+        dinner_information = Arrangement.events.get(arrangementid=arrangements['arrangementid'])
 
         event_dict.update({dinner_information.arrangementid: [
             dinner_information.arrangementnavn,
@@ -135,7 +141,7 @@ def profile(request) -> HttpResponse:
     for hosting_event in hosting:
         hosting_event = hosting_event.__dict__  # FIXME: unnecessary, right?
 
-        hosting_information = Arrangement.objects.get(arrangementid=hosting_event['arrangementid'])
+        hosting_information = Arrangement.events.get(arrangementid=hosting_event['arrangementid'])
 
         hosting_dict.update({hosting_information.arrangementid: [
             hosting_information.arrangementnavn,
@@ -152,11 +158,11 @@ def profile(request) -> HttpResponse:
     })
 
 
-def edit_user(request) -> HttpResponse:
+def edit_user(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
         return redirect('/')
 
-    user = Bruker.objects.get(brukerid=request.session['user_id_logged_in'])
+    user = Bruker.users.get(brukerid=request.session['user_id_logged_in'])
 
     if request.POST:
         # FIXME: Why are these queried like this, instead of just using: user.<> = request.POST.get('<>')?
@@ -174,6 +180,7 @@ def edit_user(request) -> HttpResponse:
         user.sted = place
         user.save()
 
+        # noinspection SpellCheckingInspection
         return redirect('../../profil/')
 
     return render(request, 'editUser.html', {
@@ -182,7 +189,7 @@ def edit_user(request) -> HttpResponse:
     })
 
 
-def new_meal(request) -> HttpResponse:
+def new_meal(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
         return redirect("/")
 
@@ -214,18 +221,20 @@ def new_meal(request) -> HttpResponse:
         host = Vertskap(brukerid=request.session['user_id_logged_in'], arrangementid=meal.arrangementid)
         host.save()
 
+        # noinspection SpellCheckingInspection
         return redirect('../../profil/')
 
     return render(request, 'newMeal.html', {'site_logged_in': is_logged_in(request)})
 
 
-def meal_overview(request) -> HttpResponse:
+# noinspection SpellCheckingInspection
+def meal_overview(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
         return redirect("/")
 
     available_dict = {}
 
-    queryset = Arrangement.objects.all()
+    queryset = Arrangement.events.all()
 
     # Gives the number of guests already booked for this dinner
     # FIXME: "arrangements"???
@@ -242,20 +251,23 @@ def meal_overview(request) -> HttpResponse:
     })
 
 
+def get_in_dinner(request: HttpRequest, event_id: int) -> Pamelding or None:
+    try:
+        return Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid=event_id)
+    except ObjectDoesNotExist:  # Could've used Pamelding.DoesNotExist, but this saves us a warning suppression.
+        return None
+
+
 # TODO: rename the second argument. Also renaming the argument in urls.py fixes signing up,
 #  but retracting the signup still crashes.
-def choose_meal(request, arrangementid: int) -> HttpResponse:
+def choose_meal(request: HttpRequest, arrangementid: int) -> HttpResponse:
     event_id = arrangementid
 
     if not is_logged_in(request):
         return redirect("/")
 
-    try:
-        in_dinner = Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid=event_id)
-
-        signed_up = True
-    except:  # FIXME: constrain
-        signed_up = False
+    in_dinner = get_in_dinner(request, event_id)
+    signed_up = in_dinner is not None
 
     if request.POST:
         if signed_up:
@@ -268,9 +280,10 @@ def choose_meal(request, arrangementid: int) -> HttpResponse:
             )
             in_dinner.save()
 
+        # noinspection SpellCheckingInspection
         return redirect("../../oversikt/")
 
-    dinner = Arrangement.objects.get(arrangementid=event_id)
+    dinner = Arrangement.events.get(arrangementid=event_id)
     guests = Pamelding.objects.filter(arrangementid=event_id)
 
     guest_count = len(guests)
