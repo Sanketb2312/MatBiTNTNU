@@ -19,13 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) CSS for middagsoversikt">
-      <change afterPath="$PROJECT_DIR$/MatBit/templates/editMeal.html" afterDir="false" />
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="">
     <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/chooseMeal.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/chooseMeal.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,7 +213,13 @@
       <option name="project" value="LOCAL" />
       <updated>1614205769491</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL−00020" summary="(#14) Mulighet til å endre middag">
+      <created>1615313478978</created>
+      <option name="number" value="LOCAL−00020" />
+      <option name="presentableId" value="LOCAL−00020" />
+      <updated>1615313478978</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -263,13 +265,22 @@
     <MESSAGE value="(#3) Noen små CSS justeringer" />
     <MESSAGE value="(#3) CSS endringer i navbar og forsiden" />
     <MESSAGE value="(#3) CSS for middagsoversikt" />
-    <option name="LAST_COMMIT_MESSAGE" value="(#3) CSS for middagsoversikt" />
+    <MESSAGE value="(#14) Mulighet til å endre middag" />
+    <option name="LAST_COMMIT_MESSAGE" value="(#14) Mulighet til å endre middag" />
   </component>
   <component name="WindowStateProjectService">
     <state x="2637" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1615308631975">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2637" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1615308631975" />
+    <state x="2534" y="107" key="CommitChangelistDialog2" timestamp="1615313478303">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2534" y="107" key="CommitChangelistDialog2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1615313478303" />
+    <state x="2472" y="240" key="Vcs.Push.Dialog.v2" timestamp="1615313484830">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2472" y="240" key="Vcs.Push.Dialog.v2/0.0.1280.680/1920.0.1920.1040@1920.0.1920.1040" timestamp="1615313484830" />
     <state x="2595" y="390" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1615308467662">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

@@ -258,10 +258,16 @@ def get_in_dinner(request: HttpRequest, event_id: int) -> Registration or None:
 
 
 def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
+
     event_id = event_id
 
     if not is_logged_in(request):
         return redirect("/")
+
+    dinner = DinnerEvent.events.get(event_id=event_id)
+    guests = Registration.registrations.filter(event_id=event_id)
+    guest_count = len(guests)
+    available = dinner.capacity - guest_count
 
     in_dinner = get_in_dinner(request, event_id)
     signed_up = in_dinner is not None
@@ -288,17 +294,12 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         # noinspection SpellCheckingInspection
         return redirect("../../oversikt/")
 
-    dinner = DinnerEvent.events.get(event_id=event_id)
-    guests = Registration.registrations.filter(event_id=event_id)
-
-    guest_count = len(guests)
-    available = dinner.capacity - guest_count
 
     return render(request, 'chooseMeal.html', {
         'dinner': dinner,
-        'is_in_dinner': is_in_dinner,
+        'in_dinner': in_dinner,
         'is_owner':is_owner,
-        'number_guests': number_guests,
+        'guest_count': guest_count,
         'available': available ,
         'site_logged_in': is_logged_in(request)})
 
@@ -322,7 +323,7 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         prize = request.POST.get('prize')
         day = request.POST.get('date')
 
-        datetime = date + " " + time
+        datetime = day + " " + time
 
 
         dinner.name = arrangement_name
