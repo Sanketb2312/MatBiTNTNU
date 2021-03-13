@@ -213,10 +213,11 @@ def chooseMeal(request, arrangementid):
                     in_dinner = Pamelding(brukerid = request.session['user_id_logged_in'], arrangementid = arrangementid, tidspunkt = timezone.now())
                     in_dinner.save()
                     return redirect("../../oversikt/")
-            #elif ('edit_dinner' in request.POST):
 
             elif ('cancel_dinner' in request.POST):
-                print("cancel")
+                dinner.avlyst = 1
+                dinner.save()
+                return redirect("../../oversikt/")
 
 
     else:
