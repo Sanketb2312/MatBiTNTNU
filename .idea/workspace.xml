@@ -21,6 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#3) CSS for middagsoversikt">
       <change afterPath="$PROJECT_DIR$/MatBit/templates/editMeal.html" afterDir="false" />
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="(#1) Navigasjonsbar implementert, STATICFILES_DIRS lagt til, og static mappe for CSS kode er lagt til">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
@@ -61,6 +62,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/MatBit/static/CSSDocs" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;GitIgnore" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">

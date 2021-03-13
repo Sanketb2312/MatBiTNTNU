@@ -1,23 +1,26 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout
-from .mymodels import Bruker, Harallergi, Arrangement, Arrangementinnhold, Innhold, Pamelding, Vertskap
+from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host
 from django.utils import timezone
 
 
-def is_logged_in(request):
-    if 'user_id_logged_in' in request.session:
-        site_logged_in = True
-    else:
-        site_logged_in = False
-    return site_logged_in
+# Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
+# commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
+# HttpRequest.session is set by the session middleware; also an anti-pattern.
 
-# Create your views here.
+def is_logged_in(request: HttpRequest) -> bool:
+    return 'user_id_logged_in' in request.session
 
-def frontpage(request):
-    return render(request, 'frontpage.html', {'site_logged_in' : is_logged_in(request)})
 
-def register(request):
-    emailUsed = False
+def frontpage(request: HttpRequest) -> HttpResponse:
+    return render(request, 'frontpage.html', {'site_logged_in': is_logged_in(request)})
+
+
+def register(request: HttpRequest) -> HttpResponse:
+    # FIXME: shouldn't there be a check for logged in?
+
+    email_used = False
     first_name = None
     last_name = None
     birth_date = None
@@ -33,231 +36,308 @@ def register(request):
         password = request.POST.get('password')
         address = request.POST.get('address')
         post_code = request.POST.get('post_code')
-        place = request.POST.get('place')
-        try:
-            Bruker.objects.get(epost=email)
-            emailUsed = True
+        location = request.POST.get('location')
 
-        except Exception:
-            user = Bruker(fornavn=first_name, etternavn = last_name, fodselsdato = birth_date, adresse = address, postnummer = post_code,
-                          sted = place, eradministrator = "0", epost = email, passord = password)
+        try:
+            User.users.get(email=email)
+            email_used = True
+
+        except ObjectDoesNotExist:
+            user = User(
+                first_name=first_name,
+                last_name=last_name,
+                birth_date=birth_date,
+                address=address,
+                post_code=post_code,
+                location=location,
+                is_admin="0",
+                email=email,
+                password=password
+            )
             user.save()
+
             return redirect('/')
 
-    return render(request, "registerUser.html", {'emailUsed' : emailUsed, 'first_name':first_name, 'last_name':last_name,
-                                                 'birth_date':birth_date, 'address':address, 'post_code':post_code, 'place':place, 'site_logged_in' : is_logged_in(request)})
+    return render(request, "registerUser.html", {
+        'emailUsed': email_used,
+        'first_name': first_name,
+        'last_name': last_name,
+        'birth_date': birth_date,
+        'address': address,
+        'post_code': post_code,
+        'place': place,
+        'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
+    })
 
-def login(request):
-    if is_logged_in(request) == False:
-        logged_in = False
-        error_login = False
-        user_id = 0
-        if request.POST:
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            try:
-                user = Bruker.objects.get(epost=email, passord=password)
-                logged_in = True
-            except:
-                error_login = True
-            if logged_in:
-                user_id = user.brukerid
-                request.session['user_id_logged_in'] = user_id
-                return redirect('/')
 
-    else:
+def login(request: HttpRequest) -> HttpResponse:
+    if is_logged_in(request):
         return redirect('/')
-    return render(request, 'login.html', {'error_login' : error_login, 'site_logged_in' : is_logged_in(request)})
 
-def logout(request):
+    error_login = False
+
+    if request.POST:
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            user = User.users.get(email=email, password=password)
+        except ObjectDoesNotExist:
+            error_login = True
+        else:
+            request.session['user_id_logged_in'] = user.user_id
+
+            return redirect('/')
+
+    return render(request, 'login.html', {
+        'error_login': error_login,
+        'site_logged_in': is_logged_in(request)
+    })
+
+
+def logout(request: HttpRequest) -> HttpResponse:
     if is_logged_in(request):
         del request.session['user_id_logged_in']
-    else:
-        return redirect('/')
+
     return redirect('/')
 
-def profile(request):
-    if is_logged_in(request):
-        allergiDict = {}
-        hostingDict = {}
-        arrangementDict = {}
 
-        user = Bruker.objects.get(brukerid = request.session['user_id_logged_in'])
-
-        allergi = Harallergi.objects.filter(brukerid = request.session['user_id_logged_in'])
-        #allergi = {'allergi' : allergi}
-        for allergies in allergi:
-            allergies = allergies.__dict__
-
-            innhold = Innhold.objects.get(innholdid = allergies['innholdid'])
-            allergiDict.update({innhold.innholdid : innhold.navn })
-
-        arrangement = Pamelding.objects.filter(brukerid=request.session['user_id_logged_in'])
-        for arrangements in arrangement:
-            arrangements = arrangements.__dict__
-
-            dinnerInformation = Arrangement.objects.get(arrangementid=arrangements['arrangementid'])
-            arrangementDict.update({dinnerInformation.arrangementid: [dinnerInformation.arrangementnavn,
-                                                                      dinnerInformation.lokasjon,
-                                                                      dinnerInformation.tidspunkt]})
-
-        hosting = Vertskap.objects.filter(brukerid=request.session['user_id_logged_in'])
-        for hostingArrengement in hosting:
-            hostingArrengement = hostingArrengement.__dict__
-
-            hostingInformation = Arrangement.objects.get(arrangementid=hostingArrengement['arrangementid'])
-            hostingDict.update({hostingInformation.arrangementid: [hostingInformation.arrangementnavn,
-                                                                   hostingInformation.tidspunkt,
-                                                                   hostingInformation.antallplasser]})
-    else:
+# noinspection SpellCheckingInspection
+def profile(request: HttpRequest) -> HttpResponse:
+    if not is_logged_in(request):
         return redirect('/')
-    return render(request, 'profile.html', {'user':user,'userAllergies' : allergiDict, 'arrangement' : arrangementDict, 'hosting' : hostingDict, 'site_logged_in' : is_logged_in(request)})
+
+    allergy_dict = {}
+    hosting_dict = {}
+    event_dict = {}
+
+    user = User.users.get(user_id=request.session['user_id_logged_in'])
+
+    # Linking all the allergies in the database that the user has.
+    allergies = UserAllergy.users_allergies.filter(user_id=request.session['user_id_logged_in']).all()
+
+    for allergy in allergies:
+
+        ingredient = Ingredient.ingredients.get(ingredient_id=allergy.ingredient_id)
+        allergy_dict[ingredient.ingredient_id] = ingredient.name
+
+    # Collecting all the registrations the user has made.
+    registrations = Registration.registrations.filter(user_id=request.session['user_id_logged_in']).all()
+
+    for registration in registrations:
+
+        dinner_information = DinnerEvent.events.get(event_id=registration.event_id)
+
+        event_dict[dinner_information.event_id] = [
+            dinner_information.name,
+            dinner_information.location,
+            dinner_information.date
+        ]
+
+    # Collecting all the events the user is hosting.
+    hosting = Host.hosts.filter(user_id=request.session['user_id_logged_in']).all()
+
+    for hosting_event in hosting:
+
+        hosting_information = DinnerEvent.events.get(event_id=hosting_event.event_id)
+
+        hosting_dict[hosting_information.event_id] = [
+            hosting_information.name,
+            hosting_information.date,
+            hosting_information.capacity
+        ]
+
+    return render(request, 'profile.html', {
+        'user': user,
+        'userAllergies': allergy_dict,
+        'arrangement': event_dict,
+        'hosting': hosting_dict,
+        'site_logged_in': is_logged_in(request)
+    })
 
 
-def editUser(request):
-    if is_logged_in(request):
-        user = Bruker.objects.get(brukerid = request.session['user_id_logged_in'])
-
-        if request.POST:
-            first_name = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
-            address = request.POST.get('address')
-            post_code = request.POST.get('post_code')
-            place = request.POST.get('place')
-
-            user.fornavn = first_name
-            user.etternavn = last_name
-            user.adresse = address
-            user.postnummer = post_code
-            user.sted = place
-            user.save()
-            return redirect('../../profil/')
-
-    else:
+def edit_user(request: HttpRequest) -> HttpResponse:
+    if not is_logged_in(request):
         return redirect('/')
-    return render(request, 'editUser.html', {'user':user,'site_logged_in': is_logged_in(request)})
+
+    user = User.users.get(user_id=request.session['user_id_logged_in'])
+
+    if request.POST:
+        # FIXME: Why are these queried like this, instead of just using: user.<> = request.POST.get('<>')?
+        #  In case one of them throws an error, nothing is updated?
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        address = request.POST.get('address')
+        post_code = request.POST.get('post_code')
+        place = request.POST.get('location')
+
+        user.first_name = first_name
+        user.last_name = last_name
+        user.address = address
+        user.post_code = post_code
+        user.location = place
+        user.save()
+
+        # noinspection SpellCheckingInspection
+        return redirect('../../profil/')
+
+    return render(request, 'editUser.html', {
+        'user': user,
+        'site_logged_in': is_logged_in(request)
+    })
 
 
-def newMeal(request):
-    if is_logged_in(request):
-        if request.POST:
-            arrangement_name = request.POST.get('arrangement_name')
-            description = request.POST.get('description')
-            seats = request.POST.get('seats')
-            location = request.POST.get('location')
-            date = request.POST.get('date')
-            time = request.POST.get('time')
-            prize = request.POST.get('prize')
-
-            datetime = date+" "+time+":00"
-
-            newMeal = Arrangement(arrangementnavn = arrangement_name, beskrivelse = description, antallplasser =seats, lokasjon = location,
-                                  tidspunkt = datetime, opprettet = timezone.now(), pris = prize, avlyst = 0)
-            newMeal.save()
-
-            new_arrangemntid = newMeal.arrangementid
-
-            host = Vertskap(brukerid = request.session['user_id_logged_in'], arrangementid = new_arrangemntid)
-            host.save()
-
-            return redirect('../../profil/')
-    else:
+def new_meal(request: HttpRequest) -> HttpResponse:
+    if not is_logged_in(request):
         return redirect("/")
 
-    return render(request, 'newMeal.html', {'site_logged_in' : is_logged_in(request)})
+    if request.POST:
+        # FIXME: see fixme in edit_user(_:)
+        event_name = request.POST.get('dinner_name')
+        description = request.POST.get('description')
+        capacity = request.POST.get('seats')
+        location = request.POST.get('location')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+        cost = request.POST.get('cost')
 
-def mealOverview(request):
-    if is_logged_in(request):
-        available_dict = {}
+        datetime = date + " " + time + ":00"
 
-        queryset = Arrangement.objects.all()
+        meal = DinnerEvent(
+            name=event_name,
+            description=description,
+            capacity=capacity,
+            location=location,
+            date=datetime,
+            creation_date=timezone.now(),
+            cost=cost,
+            is_cancelled=0
+        )
 
-        #Gives the number of guests allready booked for this dinner
-        for arrangements in queryset:
-            arrangements = arrangements.__dict__
-            guests = Pamelding.objects.filter(arrangementid = arrangements['arrangementid'])
-            available = arrangements['antallplasser'] - len(guests)
-            available_dict.update({arrangements['arrangementid']: available})
+        meal.save()
 
-    else:
+        host = Host(user_id=request.session['user_id_logged_in'], event_id=meal.event_id)
+        host.save()
+
+        # noinspection SpellCheckingInspection
+        return redirect('../../profil/')
+
+    return render(request, 'newMeal.html', {'site_logged_in': is_logged_in(request)})
+
+
+# noinspection SpellCheckingInspection
+def meal_overview(request: HttpRequest) -> HttpResponse:
+    if not is_logged_in(request):
         return redirect("/")
 
-    return render(request, 'mealOverview.html', {"object_list" : queryset, 'available_dict': available_dict, 'site_logged_in' : is_logged_in(request)})
+    available_dict = {}
 
-def chooseMeal(request, arrangementid):
-    if is_logged_in(request):
-        dinner = Arrangement.objects.get(arrangementid = arrangementid)
-        guests = Pamelding.objects.filter(arrangementid = arrangementid)
-        number_guests = len(guests)
-        available = dinner.antallplasser - number_guests
+    queryset = DinnerEvent.events.all()
 
-        try:
-            in_dinner = Pamelding.objects.get(brukerid=request.session['user_id_logged_in'], arrangementid = arrangementid)
-            is_in_dinner = True
-        except:
-            is_in_dinner = False
-        try:
-            owner = Vertskap.objects.get(brukerid = request.session['user_id_logged_in'], arrangementid = arrangementid)
-            is_owner = True
+    # Gives the number of guests already booked for this dinner
+    for event in queryset:
 
-        except:
-            is_owner = False
+        event_id = event.event_id
 
-        if request.POST:
+        guests = Registration.registrations.filter(event_id=event_id)
+        available = event.capacity - len(guests)
+        available_dict[event_id] = available
 
-            if ('book_dinner' in request.POST):
-                if(is_in_dinner):
-                    in_dinner.delete()
-                    return redirect("../../oversikt/")
-                else:
-                    in_dinner = Pamelding(brukerid = request.session['user_id_logged_in'], arrangementid = arrangementid, tidspunkt = timezone.now())
-                    in_dinner.save()
-                    return redirect("../../oversikt/")
-
-            elif ('cancel_dinner' in request.POST):
-                dinner.avlyst = 1
-                dinner.save()
-                return redirect("../../oversikt/")
+    return render(request, 'mealOverview.html', {
+        "object_list": queryset,
+        'available_dict': available_dict,
+        'site_logged_in': is_logged_in(request)
+    })
 
 
-    else:
+def get_in_dinner(request: HttpRequest, event_id: int) -> Registration or None:
+    try:
+        return Registration.registrations.get(user_id=request.session['user_id_logged_in'], event_id=event_id)
+    except ObjectDoesNotExist:  # Could've used Registration.DoesNotExist, but this saves us a warning suppression.
+        return None
+
+
+def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
+    event_id = event_id
+
+    if not is_logged_in(request):
         return redirect("/")
 
-    return render(request, 'chooseMeal.html', {'dinner': dinner, 'is_in_dinner': is_in_dinner, 'is_owner':is_owner, 'number_guests': number_guests, 'available': available ,'site_logged_in': is_logged_in(request)})
+    in_dinner = get_in_dinner(request, event_id)
+    signed_up = in_dinner is not None
+    try:
+        owner = Host.hosts.get(user_id=request.session['user_id_logged_in'], event_id=event_id)
+        is_owner = True
 
-def editMeal(request, arrangementid):
-    if is_logged_in(request):
-        dinner = Arrangement.objects.get(arrangementid = arrangementid)
-        time_stamp = str(dinner.tidspunkt)
-        time_stamp  = time_stamp.split(" ")
-
-        date = time_stamp[0]
-        time = time_stamp[1]
-
-
-        if request.POST:
-            arrangement_name = request.POST.get('arrangement_name')
-            description = request.POST.get('description')
-            seats = request.POST.get('seats')
-            location = request.POST.get('location')
-            time = request.POST.get('time')
-            prize = request.POST.get('prize')
-            date = request.POST.get('date')
-
-            datetime = date + " " + time
-
-
-            dinner.arrangementnavn = arrangement_name
-            dinner.beskrivelse = description
-            dinner.antallplasser = seats
-            dinner.lokasjon = location
-            dinner.tidspunkt = datetime
-            dinner.pris = prize
-
-
+    except:
+        is_owner = False
+    if request.POST:
+        if ('book_dinner' in request.POST):
+            if signed_up:
+                in_dinner.delete()
+            else:
+                in_dinner = Registration(
+                    user_id=request.session['user_id_logged_in'],
+                    event_id=event_id,
+                    date=timezone.now()
+                )
+                in_dinner.save()
+        elif ('cancel_dinner' in request.POST):
+            dinner.is_cancelled = 1
             dinner.save()
-            return redirect('../../../')
+        # noinspection SpellCheckingInspection
+        return redirect("../../oversikt/")
 
-    else:
+    dinner = DinnerEvent.events.get(event_id=event_id)
+    guests = Registration.registrations.filter(event_id=event_id)
+
+    guest_count = len(guests)
+    available = dinner.capacity - guest_count
+
+    return render(request, 'chooseMeal.html', {
+        'dinner': dinner,
+        'is_in_dinner': is_in_dinner,
+        'is_owner':is_owner,
+        'number_guests': number_guests,
+        'available': available ,
+        'site_logged_in': is_logged_in(request)})
+
+def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
+    if not is_logged_in(request):
         return redirect('/')
-    return render(request, 'editMeal.html', {'dinner':dinner, 'date':date, 'time':time, 'site_logged_in': is_logged_in(request)})
+    dinner = DinnerEvent.events.get(event_id = event_id)
+    time_stamp = str(dinner.date)
+    time_stamp  = time_stamp.split(" ")
+
+    day = time_stamp[0]
+    time = time_stamp[1]
+
+
+    if request.POST:
+        arrangement_name = request.POST.get('arrangement_name')
+        description = request.POST.get('description')
+        seats = request.POST.get('seats')
+        location = request.POST.get('location')
+        time = request.POST.get('time')
+        prize = request.POST.get('prize')
+        day = request.POST.get('date')
+
+        datetime = date + " " + time
+
+
+        dinner.name = arrangement_name
+        dinner.description = description
+        dinner.capacity = seats
+        dinner.location = location
+        dinner.date = datetime
+        dinner.cost = prize
+
+
+        dinner.save()
+        return redirect('../../../')
+
+    return render(request, 'editMeal.html', {
+        'dinner':dinner,
+        'date':day,
+        'time':time,
+        'site_logged_in': is_logged_in(request)})

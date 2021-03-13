@@ -31,19 +31,19 @@
             </div>
             <div class="meal-meta-info">
                 <h1 id="meal-title">
-                    {{ dinner.arrangementnavn }}
+                    {{ dinner.name }}
                 </h1>
                 <p id="meal-description">
                     {{ dinner.beskrivelse }}
                 </p>
                 <p id="meal-date">
-                    {{ dinner.tidspunkt }}
+                    {{ dinner.date }}
                 </p>
                 <h3 id="meal-address">
-                     {{ dinner.lokasjon }}
+                     {{ dinner.location }}
                 </h3>
                 <p id="meal-capacity">
-                    Totale plasser: {{ dinner.antallplasser }}, ledige: {{ available }}
+                    Totale plasser: {{ dinner.capacity }}, ledige: {{ available }}
                 </p>
 
                 {% if dinner.avlyst == 0 %}
