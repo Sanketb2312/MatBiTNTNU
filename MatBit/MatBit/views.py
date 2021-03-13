@@ -266,6 +266,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 
     dinner = DinnerEvent.events.get(event_id=event_id)
     guests = Registration.registrations.filter(event_id=event_id)
+    admin_user = User.users.get(user_id = request.session['user_id_logged_in'])
     guest_count = len(guests)
     available = dinner.capacity - guest_count
 
@@ -301,6 +302,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'is_owner':is_owner,
         'guest_count': guest_count,
         'available': available ,
+        'admin_user': admin_user,
         'site_logged_in': is_logged_in(request)})
 
 def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:

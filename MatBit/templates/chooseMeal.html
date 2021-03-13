@@ -51,7 +51,7 @@
                     <form method="POST" >
 
                         {% csrf_token %}
-                            {% if is_in_dinner %}
+                            {% if in_dinner %}
                                 <input type="submit" name = "book_dinner" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
 
                             {% else %}
@@ -64,8 +64,8 @@
 
 
                     </form>
-
-                    {% else %}
+                    {% endif %}
+                    {% if is_owner == True or admin_user.is_admin == 1 %}
                         <button onclick="location.href= '{% url 'editMeal' event_id=dinner.event_id %}' ", name = "edit_dinner" class="btn btn-primary" id="in_dinner" >Rediger middag</button>
 
                         <form method = "POST" onsubmit="return validateCancel()">
