@@ -54,11 +54,10 @@
 
 		<div class="parent">
 			{% if arrangement %}
-			<h3> Du har meldt seg på følgende middag: </h3>
+			<h3> Du har meldt deg på følgende middag: </h3>
 
 				{% for key, name in arrangement.items %}
-				<li><div class="flex-child">
-					{{ name.event_id }}
+				<li><div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
 					{% for dinner in name %}
 						 {{ dinner }}
 					{% endfor %}
@@ -76,7 +75,7 @@
 
 				{% for key, name in hosting.items %}
 				<li>
-					<div class="flex-child">
+					<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
 					{% for dinner in name %}
 						<td> {{ dinner }} </td>
 					{% endfor %}
