@@ -19,9 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="mulig å legge til allergier. Bug: funker ikke å redigere allergier (allergiknappen blir borte når den trykkes på)">
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="Allergier som brukeren har blir husket/er husket av hvis man ønsker å legge til flere, men ikke mulig å fjerne allergier">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/profile.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/addallergies.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/addallergies.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/profile.html" afterDir="false" />
     </list>
@@ -218,7 +219,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615374212827</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Allergier som brukeren har blir husket/er husket av hvis man ønsker å legge til flere, men ikke mulig å fjerne allergier">
+      <created>1615419251392</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1615419251392</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -262,6 +270,7 @@
     <MESSAGE value="(#3) CSS endringer i navbar og forsiden" />
     <MESSAGE value="(#3) CSS for middagsoversikt" />
     <MESSAGE value="mulig å legge til allergier. Bug: funker ikke å redigere allergier (allergiknappen blir borte når den trykkes på)" />
-    <option name="LAST_COMMIT_MESSAGE" value="mulig å legge til allergier. Bug: funker ikke å redigere allergier (allergiknappen blir borte når den trykkes på)" />
+    <MESSAGE value="Allergier som brukeren har blir husket/er husket av hvis man ønsker å legge til flere, men ikke mulig å fjerne allergier" />
+    <option name="LAST_COMMIT_MESSAGE" value="Allergier som brukeren har blir husket/er husket av hvis man ønsker å legge til flere, men ikke mulig å fjerne allergier" />
   </component>
 </project>

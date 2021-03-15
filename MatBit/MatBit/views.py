@@ -217,20 +217,31 @@ def chooseMeal(request, arrangementid):
 
 def addAllergies(request):
     if is_logged_in(request):
-        allergiesList = []
+        allergiesListWithID = []
+        allergiesList=[]
         for i in Harallergi.objects.all():
             if i.brukerid == request.session['user_id_logged_in']:
-                allergiesList.append(i.innholdid)
+                allergiesListWithID.append(i.innholdid)
 
-        for x in range(0, len(allergiesList)):
-            allergiesList[x] = Innhold.objects.get(innholdid = allergiesList[x]).navn
-
+        for x in range(0, len(allergiesListWithID)):
+            allergiesList.append(Innhold.objects.get(innholdid = allergiesListWithID[x]).navn)
+        print(allergiesListWithID)
         allergener = Innhold.objects.all()
         maxAllergiID = allergener.last().innholdid
+
         if request.POST:
-            for x in range (0,maxAllergiID):
+            for x in range (0,maxAllergiID+1):
                 if str(x) in request.POST:
-                    allergi = Harallergi(brukerid = request.session['user_id_logged_in'], innholdid = x)
-                    allergi.save()
+                    if x not in allergiesListWithID:
+                        allergi = Harallergi(brukerid = request.session['user_id_logged_in'], innholdid = x)
+                        allergi.save()
+                else:
+                    print(allergiesListWithID, "heieiei")
+                    if x in allergiesListWithID:
+                        allergi = Harallergi.objects.get(brukerid = request.session['user_id_logged_in'], innholdid = x)
+                        allergi.delete()
+
+
+
             return redirect("../../profil")
     return render(request, 'addallergies.html', {'object_list':allergener, 'site_logged_in' : is_logged_in(request), 'allergiesList': allergiesList})

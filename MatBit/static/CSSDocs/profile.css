@@ -1,6 +1,7 @@
 
 .allstuff {
  margin-left: 10%;
+ margin-right: 10%;
 }
 
 .topstuff{
@@ -61,6 +62,7 @@
   margin: 4px 2px;
   cursor: pointer;
   text-color : black;
+  margin-top: 2%;
 }
 
 
@@ -103,7 +105,18 @@ text-align: center;
 text-align: center;
 }
 
-li {
+.dinners {
 
 list-style-type: none;
+}
+
+.allergyList {
+font-size: 20px;
+
+}
+
+hr {
+ border-top: 2px solid #000;
+
+
 }

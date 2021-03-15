@@ -26,26 +26,25 @@
 
 	</div>
 	<a onclick="location.href= '{% url 'editUser' %}'"><button type="button">  Endre Bruker </button></a>
-
+<hr>
 	<div class="allergies">
 
 		{% if userAllergies %}
-			<h3> Du har allergier </h3>
-			<div>
+			<h3> Dine allergier </h3>
+			<div class="allergyList">
 				{% for key, value in userAllergies.items %}
-				<tr>
-					<td> {{ value }} </td>
-				</tr>
+					 {{ value }},
 			{% endfor %}
 			</div>
+		<a onclick="location.href = '{% url 'addAllergies' %}' "> <button type="button">Rediger allergier</button></a>
 		{% else %}
 			<h3> Du har ingen allergier:</h3>
-		{% endif %}
 		<a onclick="location.href = '{% url 'addAllergies' %}' "> <button type="button">Legg til allergier</button></a>
+		{% endif %}
 
 
 	</div>
-
+<hr>
 	<div class="isindinner">
 
 
@@ -58,7 +57,7 @@
 			<h3> Du har meldt seg på følgende middag: </h3>
 
 				{% for key, name in arrangement.items %}
-				<li><div class="flex-child">
+				<li class="dinners"><div class="flex-child">
 					{{ name.arrangementnavn }}
 					{% for dinner in name %}
 						 {{ dinner }}
@@ -70,13 +69,12 @@
 			<h3> Du er ikke påmeldt noen middager</h3>
 		{% endif %}
 
-
 			<div class="parent">
 			{% if hosting %}
 			<h3> Du arrangerer disse middagene:  </h3>
 
 				{% for key, name in hosting.items %}
-				<li>
+				<li class="dinners">
 					<div class="flex-child">
 					{% for dinner in name %}
 						<td> {{ dinner }} </td>
