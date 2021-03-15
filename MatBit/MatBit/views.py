@@ -78,6 +78,7 @@ def logout(request):
 
 def profile(request):
     if is_logged_in(request):
+
         allergiDict = {}
         hostingDict = {}
         arrangementDict = {}
@@ -109,6 +110,8 @@ def profile(request):
             hostingDict.update({hostingInformation.arrangementid: [hostingInformation.arrangementnavn,
                                                                    hostingInformation.tidspunkt,
                                                                    hostingInformation.antallplasser]})
+
+
     else:
         return redirect('/')
     return render(request, 'profile.html', {'user':user,'userAllergies' : allergiDict, 'arrangement' : arrangementDict, 'hosting' : hostingDict, 'site_logged_in' : is_logged_in(request)})
@@ -211,3 +214,34 @@ def chooseMeal(request, arrangementid):
         return redirect("/")
 
     return render(request, 'chooseMeal.html', {'dinner': dinner, 'is_in_dinner': is_in_dinner, 'number_guests': number_guests, 'available': available ,'site_logged_in': is_logged_in(request)})
+
+def addAllergies(request):
+    if is_logged_in(request):
+        allergiesListWithID = []
+        allergiesList=[]
+        for i in Harallergi.objects.all():
+            if i.brukerid == request.session['user_id_logged_in']:
+                allergiesListWithID.append(i.innholdid)
+
+        for x in range(0, len(allergiesListWithID)):
+            allergiesList.append(Innhold.objects.get(innholdid = allergiesListWithID[x]).navn)
+        print(allergiesListWithID)
+        allergener = Innhold.objects.all()
+        maxAllergiID = allergener.last().innholdid
+
+        if request.POST:
+            for x in range (0,maxAllergiID+1):
+                if str(x) in request.POST:
+                    if x not in allergiesListWithID:
+                        allergi = Harallergi(brukerid = request.session['user_id_logged_in'], innholdid = x)
+                        allergi.save()
+                else:
+                    print(allergiesListWithID, "heieiei")
+                    if x in allergiesListWithID:
+                        allergi = Harallergi.objects.get(brukerid = request.session['user_id_logged_in'], innholdid = x)
+                        allergi.delete()
+
+
+
+            return redirect("../../profil")
+    return render(request, 'addallergies.html', {'object_list':allergener, 'site_logged_in' : is_logged_in(request), 'allergiesList': allergiesList})
