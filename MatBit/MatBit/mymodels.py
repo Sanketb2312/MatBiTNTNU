@@ -1,37 +1,103 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
 
-class Arrangement(models.Model):
-    arrangementid = models.AutoField(db_column='ArrangementID', primary_key=True)  # Field name made lowercase.
-    arrangementnavn = models.CharField(db_column='ArrangementNavn', max_length=256)  # Field name made lowercase.
-    beskrivelse = models.TextField(db_column='Beskrivelse', blank=True, null=True)  # Field name made lowercase.
-    antallplasser = models.IntegerField(db_column='AntallPlasser', blank=True, null=True)  # Field name made lowercase.
-    lokasjon = models.CharField(db_column='Lokasjon', max_length=128, blank=True, null=True)  # Field name made lowercase.
-    tidspunkt = models.DateTimeField(db_column='Tidspunkt', blank=True, null=True)  # Field name made lowercase.
-    opprettet = models.DateTimeField(db_column='Opprettet')  # Field name made lowercase.
-    pris = models.IntegerField(db_column='Pris', blank=True, null=True)  # Field name made lowercase.
-    avlyst = models.IntegerField(db_column='Avlyst')  # Field name made lowercase.
+class DinnerEvent(models.Model):
+    events = models.Manager()
+
+    event_id = models.AutoField(db_column='ArrangementID', primary_key=True)
+    name = models.CharField(db_column='ArrangementNavn', max_length=256)
+    description = models.TextField(db_column='Beskrivelse', blank=True, null=True)
+    capacity = models.IntegerField(db_column='AntallPlasser', blank=True, null=True)
+    location = models.CharField(db_column='Lokasjon', max_length=128, blank=True, null=True)
+    date = models.DateTimeField(db_column='Tidspunkt', blank=True, null=True)
+    creation_date = models.DateTimeField(db_column='Opprettet')
+    cost = models.IntegerField(db_column='Pris', blank=True, null=True)
+    is_cancelled = models.IntegerField(db_column='Avlyst')
 
     class Meta:
         managed = False
         db_table = 'arrangement'
 
 
-class Arrangementinnhold(models.Model):
-    arrangementinnholdid = models.AutoField(db_column='ArrangementinnholdID', primary_key=True)  # Field name made lowercase.
-    arrangementid = models.IntegerField(db_column='ArrangementID')  # Field name made lowercase.
-    innholdid = models.IntegerField(db_column='InnholdID')  # Field name made lowercase.
+class User(models.Model):
+    users = models.Manager()
+
+    user_id = models.AutoField(db_column='BrukerID', primary_key=True)
+    first_name = models.CharField(db_column='Fornavn', max_length=128)
+    last_name = models.CharField(db_column='Etternavn', max_length=128)
+    birth_date = models.DateTimeField(db_column='Fodselsdato', blank=True, null=True)
+    address = models.CharField(db_column='Adresse', max_length=128, blank=True, null=True)
+    post_code = models.IntegerField(db_column='Postnummer', blank=True, null=True)
+    location = models.CharField(db_column='Sted', max_length=128, blank=True, null=True)
+    is_admin = models.IntegerField(db_column='ErAdministrator')
+    email = models.CharField(db_column='Epost', max_length=128)
+    password = models.CharField(db_column='Passord', max_length=256)
+    password_hash = models.CharField(db_column='PassordHash', max_length=256)
+
+    class Meta:
+        managed = False
+        db_table = 'bruker'
+
+
+class UserAllergy(models.Model):
+    users_allergies = models.Manager()
+
+    has_allergy_id = models.AutoField(db_column='HarallergiID', primary_key=True)
+    user_id = models.IntegerField(db_column='BrukerID')
+    ingredient_id = models.IntegerField(db_column='InnholdID')
+
+    class Meta:
+        managed = False
+        db_table = 'harallergi'
+
+
+class EventIngredient(models.Model):
+    event_ingredients = models.Manager()
+
+    event_ingredient_id = models.AutoField(db_column='ArrangementinnholdID', primary_key=True)
+    event_id = models.IntegerField(db_column='ArrangementID')
+    ingredient_id = models.IntegerField(db_column='InnholdID')
 
     class Meta:
         managed = False
         db_table = 'arrangementinnhold'
+
+
+class Ingredient(models.Model):
+    ingredients = models.Manager()
+
+    ingredient_id = models.AutoField(db_column='InnholdID', primary_key=True)
+    name = models.CharField(db_column='Navn', max_length=128)
+
+    class Meta:
+        managed = False
+        db_table = 'innhold'
+
+
+class Registration(models.Model):
+    registrations = models.Manager()
+
+    registration_id = models.AutoField(db_column='PaameldingID', primary_key=True)
+    user_id = models.IntegerField(db_column='BrukerID')
+    event_id = models.IntegerField(db_column='ArrangementID')
+    # TODO: why does this have a date field? The date is available in the DinnerEvent model anyway.
+    date = models.DateTimeField(db_column='Tidspunkt')
+
+    class Meta:
+        managed = False
+        db_table = 'pamelding'
+
+
+class Host(models.Model):
+    hosts = models.Manager()
+
+    host_id = models.AutoField(db_column='VertskapID', primary_key=True)
+    user_id = models.IntegerField(db_column='BrukerID')
+    event_id = models.IntegerField(db_column='ArrangementID')
+
+    class Meta:
+        managed = False
+        db_table = 'vertskap'
 
 
 class AuthGroup(models.Model):
@@ -100,24 +166,6 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
-class Bruker(models.Model):
-    brukerid = models.AutoField(db_column='BrukerID', primary_key=True)  # Field name made lowercase.
-    fornavn = models.CharField(db_column='Fornavn', max_length=128)  # Field name made lowercase.
-    etternavn = models.CharField(db_column='Etternavn', max_length=128)  # Field name made lowercase.
-    fodselsdato = models.DateTimeField(db_column='Fodselsdato', blank=True, null=True)  # Field name made lowercase.
-    adresse = models.CharField(db_column='Adresse', max_length=128, blank=True, null=True)  # Field name made lowercase.
-    postnummer = models.IntegerField(db_column='Postnummer', blank=True, null=True)  # Field name made lowercase.
-    sted = models.CharField(db_column='Sted', max_length=128, blank=True, null=True)  # Field name made lowercase.
-    eradministrator = models.IntegerField(db_column='ErAdministrator')  # Field name made lowercase.
-    epost = models.CharField(db_column='Epost', max_length=128)  # Field name made lowercase.
-    passord = models.CharField(db_column='Passord', max_length=256)  # Field name made lowercase.
-    passordhash = models.CharField(db_column='PassordHash', max_length=256)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'bruker'
-
-
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
@@ -160,43 +208,3 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
-
-
-class Harallergi(models.Model):
-    harallergiid = models.AutoField(db_column='HarallergiID', primary_key=True)  # Field name made lowercase.
-    brukerid = models.IntegerField(db_column='BrukerID')  # Field name made lowercase.
-    innholdid = models.IntegerField(db_column='InnholdID')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'harallergi'
-
-
-class Innhold(models.Model):
-    innholdid = models.AutoField(db_column='InnholdID', primary_key=True)  # Field name made lowercase.
-    navn = models.CharField(db_column='Navn', max_length=128)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'innhold'
-
-
-class Pamelding(models.Model):
-    paameldingid = models.AutoField(db_column='PaameldingID', primary_key=True)  # Field name made lowercase.
-    brukerid = models.IntegerField(db_column='BrukerID')  # Field name made lowercase.
-    arrangementid = models.IntegerField(db_column='ArrangementID')  # Field name made lowercase.
-    tidspunkt = models.DateTimeField(db_column='Tidspunkt')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'pamelding'
-
-
-class Vertskap(models.Model):
-    vertskapid = models.AutoField(db_column='VertskapID', primary_key=True)  # Field name made lowercase.
-    brukerid = models.IntegerField(db_column='BrukerID')  # Field name made lowercase.
-    arrangementid = models.IntegerField(db_column='ArrangementID')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'vertskap'

@@ -16,10 +16,10 @@
 
 		<div class="userinfo">
 
-			<h2>{{user.fornavn }} {{user.etternavn }} </h2>
-			<h3> {{user.epost}}</h3>
-			<h3> {{user.adresse }}</h3>
-			<h3> {{user.postnummer }} {{user.sted }}</h3>
+			<h2>{{user.first_name }} {{user.last_name }} </h2>
+			<h3> {{user.email}}</h3>
+			<h3> {{user.address }}</h3>
+			<h3> {{user.post_code }} {{user.location }}</h3>
 
 		</div>
 
@@ -30,8 +30,8 @@
 	<div class="allergies">
 
 		{% if userAllergies %}
-			<h3> Dine allergier </h3>
-			<div class="allergyList">
+			<h3> Du har allergier </h3>
+			<div>
 				{% for key, value in userAllergies.items %}
 					 {{ value }},
 			{% endfor %}
@@ -57,8 +57,10 @@
 			<h3> Du har meldt seg på følgende middag: </h3>
 
 				{% for key, name in arrangement.items %}
+				<li><div class="flex-child">
+					{{ name.event_id }}
 				<li class="dinners"><div class="flex-child">
-					{{ name.arrangementnavn }}
+					{{ name.event_id }}
 					{% for dinner in name %}
 						 {{ dinner }}
 					{% endfor %}

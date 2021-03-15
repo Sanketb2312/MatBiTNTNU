@@ -20,17 +20,17 @@
 
 <div class="flex-container">
         {% for instance in object_list %}
-        <div class="url" onclick="location.href= '{% url 'chooseMeal' arrangementid=instance.arrangementid %}' ">
+        <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' ">
 
                 <div class="flex-child">
-                    <h3>{{instance.arrangementnavn}}</h3>
+                    <h3>{{instance.name}}</h3>
                     {% for key, item in available_dict.items %}
-                        {% if key == instance.arrangementid %}
-                            <h5>Ledige plasser: {{ item }}/{{instance.antallplasser}}</h5>
+                        {% if key == instance.event_id %}
+                            <h5>Ledige plasser: {{ item }}/{{instance.capacity}}</h5>
                         {% endif %}
                     {% endfor %}
-                    <h5>Tidspunkt: {{instance.tidspunkt}}</h5>
-                    <h5>Pris: {{instance.pris}}</h5>
+                    <h5>Tidspunkt: {{instance.date}}</h5>
+                    <h5>Pris: {{instance.cost}}</h5>
                     <br>
                 </div>
             </div>
