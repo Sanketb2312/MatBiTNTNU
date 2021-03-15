@@ -29,6 +29,10 @@
                             <h5>Ledige plasser: {{ item }}/{{instance.capacity}}</h5>
                         {% endif %}
                     {% endfor %}
+
+                    {% for x in mealAllergies %}
+                    {{x.ingredient_id}}
+                    {% endfor %}
                     <h5>Tidspunkt: {{instance.date}}</h5>
                     <h5>Pris: {{instance.cost}}</h5>
                     <br>

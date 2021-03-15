@@ -189,6 +189,7 @@ def edit_user(request: HttpRequest) -> HttpResponse:
 
 
 def new_meal(request: HttpRequest) -> HttpResponse:
+
     if not is_logged_in(request):
         return redirect("/")
 
@@ -220,10 +221,23 @@ def new_meal(request: HttpRequest) -> HttpResponse:
         host = Host(user_id=request.session['user_id_logged_in'], event_id=meal.event_id)
         host.save()
 
+        maxAllergiID = Ingredient.ingredients.all().last().ingredient_id
+        for x in range(0, maxAllergiID+1):
+            print(request.POST)
+            if str(x) in request.POST:
+                print(11111)
+                event_ingredient = EventIngredient(event_id = meal.event_id, ingredient_id = x)
+                event_ingredient.save()
+
+
+
         # noinspection SpellCheckingInspection
         return redirect('../../profil/')
 
-    return render(request, 'newMeal.html', {'site_logged_in': is_logged_in(request)})
+    allergener = Ingredient.ingredients.all()
+
+
+    return render(request, 'newMeal.html', {'allergener':allergener,'site_logged_in': is_logged_in(request)})
 
 
 # noinspection SpellCheckingInspection
@@ -234,6 +248,14 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
     available_dict = {}
 
     queryset = DinnerEvent.events.all()
+
+    mealAllergies = EventIngredient.event_ingredients.all()
+    mealAllergiesNames = []
+
+
+    for allergies in Ingredient.ingredients.all():
+        for
+
 
     # Gives the number of guests already booked for this dinner
     for event in queryset:
@@ -247,7 +269,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
-        'site_logged_in': is_logged_in(request)
+        'site_logged_in': is_logged_in(request),
+        'mealAllergies': mealAllergies
     })
 
 
