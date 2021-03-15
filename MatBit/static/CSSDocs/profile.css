@@ -96,7 +96,9 @@ font-size: 20px;
 
 
 
-
+li {
+list-style-type: none;
+}
 .meal-overview-header {
 text-align: center;
 }

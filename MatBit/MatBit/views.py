@@ -81,6 +81,7 @@ def login(request: HttpRequest) -> HttpResponse:
         password = request.POST.get('password')
 
         try:
+
             user = User.users.get(email=email, password=password)
         except ObjectDoesNotExist:
             error_login = True
@@ -298,29 +299,29 @@ def addAllergies(request):
     if is_logged_in(request):
         allergiesListWithID = []
         allergiesList=[]
-        for i in Harallergi.objects.all():
-            if i.brukerid == request.session['user_id_logged_in']:
-                allergiesListWithID.append(i.innholdid)
+
+
+        for i in UserAllergy.users_allergies.all():
+            if i.user_id == request.session['user_id_logged_in']:
+                allergiesListWithID.append(i.ingredient_id)
 
         for x in range(0, len(allergiesListWithID)):
-            allergiesList.append(Innhold.objects.get(innholdid = allergiesListWithID[x]).navn)
+            allergiesList.append(Ingredient.ingredients.get(ingredient_id = allergiesListWithID[x]).name)
         print(allergiesListWithID)
-        allergener = Innhold.objects.all()
-        maxAllergiID = allergener.last().innholdid
+        allergener = Ingredient.ingredients.all()
+        maxAllergiID = allergener.last().ingredient_id
 
         if request.POST:
             for x in range (0,maxAllergiID+1):
                 if str(x) in request.POST:
                     if x not in allergiesListWithID:
-                        allergi = Harallergi(brukerid = request.session['user_id_logged_in'], innholdid = x)
+                        allergi = UserAllergy(user_id = request.session['user_id_logged_in'], ingredient_id = x)
                         allergi.save()
                 else:
                     print(allergiesListWithID, "heieiei")
                     if x in allergiesListWithID:
-                        allergi = Harallergi.objects.get(brukerid = request.session['user_id_logged_in'], innholdid = x)
+                        allergi = UserAllergy.users_allergies.get(user_id = request.session['user_id_logged_in'], ingredient_id = x)
                         allergi.delete()
-
-
 
             return redirect("../../profil")
     return render(request, 'addallergies.html', {'object_list':allergener, 'site_logged_in' : is_logged_in(request), 'allergiesList': allergiesList})

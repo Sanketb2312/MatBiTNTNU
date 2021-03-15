@@ -13,6 +13,6 @@ urlpatterns = [
     path('oversikt/', views.meal_overview, name='mealOverview'),
     path('profil/', views.profile, name='profile'),
     path('profil/rediger/', views.edit_user, name='editUser'),
-    path('oversikt/middag/<int:event_id>', views.choose_meal, name='chooseMeal')
+    path('oversikt/middag/<int:event_id>', views.choose_meal, name='chooseMeal'),
     path('profil/addallergies/', views.addAllergies, name='addAllergies')
 ]
