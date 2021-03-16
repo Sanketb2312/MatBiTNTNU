@@ -8,6 +8,17 @@
 
     <link rel="stylesheet" href="{% static 'CSSDocs/chooseMeal.css' %}">
 
+    <script type="text/javascript">
+        function validateCancel() {
+            if(confirm("Er du sikker på at du vil avlyse middagen?")) {
+              return true;
+            } else {
+              return false;
+            }
+
+        }
+    </script>
+
 {% endblock %}
 
 {% block content %}
@@ -20,42 +31,55 @@
             </div>
             <div class="meal-meta-info">
                 <h1 id="meal-title">
-                    {{ dinner.arrangementnavn }}
+                    {{ dinner.name }}
                 </h1>
+                <p id="meal-description">
+                    {{ dinner.description }}
+                </p>
                 <p id="meal-date">
-                    {{ dinner.tidspunkt }}
+                    {{ dinner.date }}
                 </p>
                 <h3 id="meal-address">
-                     {{ dinner.lokasjon }}
+                     {{ dinner.location }}
                 </h3>
                 <p id="meal-capacity">
-                    Totale plasser: {{ dinner.antallplasser }}, ledige: {{ available }}
+                    Totale plasser: {{ dinner.capacity }}, ledige: {{ available }}
                 </p>
 
-            <form method="POST">
-                {% csrf_token %}
-                {% if is_in_dinner %}
-                    <input type="submit" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
+                {% if dinner.is_cancelled == 0 %}
+                    {% if is_owner == False %}
+                    <form method="POST" >
 
-                {% else %}
-                    {% if available > 0 %}
-                        <input type="submit" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
-                    {% else %}
-                        <p>Middagen er full</p>
+                        {% csrf_token %}
+                            {% if in_dinner %}
+                                <input type="submit" name = "book_dinner" class="btn btn-primary" id="off_dinner" value="Meld meg av"></input>
+
+                            {% else %}
+                                {% if available > 0 %}
+                                    <input type="submit" name = "book_dinner" class="btn btn-primary" id="in_dinner" value="Meld meg på"></input>
+                                {% else %}
+                                    <p>Middagen er full</p>
+                                {% endif %}
+                            {% endif %}
+
+
+                    </form>
                     {% endif %}
-                {% endif %}
-            </form>
+                    {% if is_owner == True or admin_user.is_admin == 1 %}
+                        <button onclick="location.href= '{% url 'editMeal' event_id=dinner.event_id %}' ", name = "edit_dinner" class="btn btn-primary" id="in_dinner" >Rediger middag</button>
 
+                        <form method = "POST" onsubmit="return validateCancel()">
+                             {% csrf_token %}
+                             <input type="submit" name = "cancel_dinner" class="btn btn-primary" id="in_dinner" value="Avlys"></input>
+                        </form>
+
+                    {% endif %}
+                {% elif dinner.is_cancelled == 1 %}
+                    <h3>Middagen er avlyst!</h3>
+                {% endif %}
             </div>
         </div>
-
-        <div class="meal-description-card">
-            <p id="meal-description">
-                {{ meal_description }}
-            </p>
-        </div>
     </div>
-
 </div>
 
 {% endblock %}

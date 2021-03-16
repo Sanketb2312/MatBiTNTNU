@@ -36,13 +36,13 @@
     {% for i in object_list %}
 
         <div class="form-check">
-            {% if i.navn in allergiesList %}
+            {% if i.name in allergiesList %}
         <table id = 'checBox'>
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name = {{ i.innholdid }} checked>
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name = {{ i.ingredient_id }} checked>
              {% else %}
-              <input class="form-check-input" type="checkbox" value="" id="flex" name = {{ i.innholdid }}>
+              <input class="form-check-input" type="checkbox" value="" id="flex" name = {{ i.ingredient_id }}>
             {% endif %}
-            {{ i.navn }}
+            {{ i.name }}
         </table>
         </div>
 
