@@ -102,6 +102,7 @@ def logout(request: HttpRequest) -> HttpResponse:
     return redirect('/')
 
 
+
 # noinspection SpellCheckingInspection
 def profile(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
@@ -219,10 +220,24 @@ def new_meal(request: HttpRequest) -> HttpResponse:
         host = Host(user_id=request.session['user_id_logged_in'], event_id=meal.event_id)
         host.save()
 
+        maxAllergiID = Ingredient.ingredients.all().last().ingredient_id
+        for x in range(0, maxAllergiID+1):
+            print(request.POST)
+            print(meal.event_id)
+            if str(x) in request.POST:
+                print(11111)
+                event_ingredient = EventIngredient(event_id = meal.event_id, ingredient_id = x)
+                event_ingredient.save()
+
+
+
         # noinspection SpellCheckingInspection
         return redirect('../../profil/')
 
-    return render(request, 'newMeal.html', {'site_logged_in': is_logged_in(request)})
+    allergener = Ingredient.ingredients.all()
+
+
+    return render(request, 'newMeal.html', {'allergener':allergener,'site_logged_in': is_logged_in(request)})
 
 
 # noinspection SpellCheckingInspection
@@ -296,6 +311,22 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         return redirect("../../oversikt/")
 
 
+    allergiesInDinner = []
+    for allergy in EventIngredient.event_ingredients.all():
+        if allergy.event_id == event_id:
+            allergiesInDinner.append(allergy.ingredient_id)
+
+    counter = 0
+    if not len(allergiesInDinner) == 0:
+        for x in Ingredient.ingredients.all():
+            if allergiesInDinner[counter] == x.ingredient_id:
+                allergiesInDinner[counter] = x.name
+                if counter == len(allergiesInDinner)-1:
+                    break
+                counter+=1
+
+
+
     return render(request, 'chooseMeal.html', {
         'dinner': dinner,
         'in_dinner': in_dinner,
@@ -303,7 +334,10 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'guest_count': guest_count,
         'available': available ,
         'admin_user': admin_user,
-        'site_logged_in': is_logged_in(request)})
+        'allergiesInDinner': allergiesInDinner,
+        'checkLen': len(allergiesInDinner) == 0,
+        'site_logged_in': is_logged_in(request)
+    })
 
 
 def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:

@@ -46,6 +46,24 @@
                     Totale plasser: {{ dinner.capacity }}, ledige: {{ available }}
                 </p>
 
+
+                {% if checkLen %}
+
+                    <p>Denne middagen har ingen allergier som du må passe på</p>
+
+                {% else %}
+                    <p>Hvis du har følgende allergier bør du ikke melde deg på middagen:</p>
+                {% endif %}
+
+                {% for allergy in allergiesInDinner %}
+                    <p>{{allergy}}</p>
+                {% endfor %}
+
+
+
+
+
+
                 {% if dinner.is_cancelled == 0 %}
                     {% if is_owner == False %}
                     <form method="POST" >
