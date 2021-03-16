@@ -224,6 +224,7 @@ def new_meal(request: HttpRequest) -> HttpResponse:
         maxAllergiID = Ingredient.ingredients.all().last().ingredient_id
         for x in range(0, maxAllergiID+1):
             print(request.POST)
+            print(meal.event_id)
             if str(x) in request.POST:
                 print(11111)
                 event_ingredient = EventIngredient(event_id = meal.event_id, ingredient_id = x)
@@ -249,12 +250,6 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     queryset = DinnerEvent.events.all()
 
-    mealAllergies = EventIngredient.event_ingredients.all()
-    mealAllergiesNames = []
-
-
-    for allergies in Ingredient.ingredients.all():
-        for
 
 
     # Gives the number of guests already booked for this dinner
@@ -270,7 +265,6 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         "object_list": queryset,
         'available_dict': available_dict,
         'site_logged_in': is_logged_in(request),
-        'mealAllergies': mealAllergies
     })
 
 
@@ -310,12 +304,30 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     guest_count = len(guests)
     available = dinner.capacity - guest_count
 
+    allergiesInDinner = []
+    for allergy in EventIngredient.event_ingredients.all():
+        if allergy.event_id == event_id:
+            allergiesInDinner.append(allergy.ingredient_id)
+
+    counter = 0
+    if not len(allergiesInDinner) == 0:
+        for x in Ingredient.ingredients.all():
+            if allergiesInDinner[counter] == x.ingredient_id:
+                allergiesInDinner[counter] = x.name
+                if counter == len(allergiesInDinner)-1:
+                    break
+                counter+=1
+
+
+
     return render(request, 'chooseMeal.html', {
         'dinner': dinner,
         'is_in_dinner': signed_up,
         'number_guests': guest_count,
         'available': available,
-        'site_logged_in': is_logged_in(request)
+        'site_logged_in': is_logged_in(request),
+        'allergiesInDinner' : allergiesInDinner,
+        'checkLen': len(allergiesInDinner)==0
     })
 
 def addAllergies(request):
