@@ -20,6 +20,8 @@
 
 <div class="flex-container">
         {% for instance in object_list %}
+        {% for key, item in future_events_dict.items %} 
+            {% if key == instance.event_id %}
         <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' ">
 
                 <div class="flex-child">
@@ -38,7 +40,8 @@
                     <br>
                 </div>
             </div>
-
+            {% endif %}
+            {% endfor %}
         {% endfor %}
 </div>
 {% endblock %}
