@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="{% static 'CSSDocs/mealOverview.css' %}">
 
+
 {% endblock %}
 
 {% block content %}
@@ -16,12 +17,26 @@
         <h1 class="meal-overview-header">
             Middagsoversikt
         </h1>
+<div class="dropdown">
+<form method="POST">
+    {% csrf_token %}
+  <button class="dropbtn"> filtrerAllergier</button>
+  <div class="dropdown-content">
+      {% for allergy in allergies %}
 
+        <input type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.name}}>
+        <label for={{allergy.ingredient_id}}> {{allergy.name}}</label><br>
+
+      {% endfor %}
+       <input type="submit" name="submit" id="submit" class="form-submit" value="Submit" />
+    </form>
+</div>
 
 <div class="flex-container">
         {% for instance in object_list %}
         {% for key, item in future_events_dict.items %} 
             {% if key == instance.event_id %}
+
         <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' ">
 
                 <div class="flex-child">
@@ -40,8 +55,9 @@
                     <br>
                 </div>
             </div>
-            {% endif %}
-            {% endfor %}
+
+    {% endif %}
+    {% endfor %}
         {% endfor %}
 </div>
 {% endblock %}
