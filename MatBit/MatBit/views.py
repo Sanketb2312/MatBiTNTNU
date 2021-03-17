@@ -13,6 +13,11 @@ from datetime import datetime
 def is_logged_in(request: HttpRequest) -> bool:
     return 'user_id_logged_in' in request.session
 
+def is_admininistrator(request: HttpRequest) -> bool:
+    if request.session['admin_token'] == 1:
+        return True
+    elif request.session['admin_token'] == 0:
+        return False
 
 def frontpage(request: HttpRequest) -> HttpResponse:
     return render(request, 'frontpage.html', {'site_logged_in': is_logged_in(request)})
@@ -87,6 +92,7 @@ def login(request: HttpRequest) -> HttpResponse:
             error_login = True
         else:
             request.session['user_id_logged_in'] = user.user_id
+            request.session['admin_token'] = user.is_admin
 
             return redirect('/')
 
@@ -99,6 +105,7 @@ def login(request: HttpRequest) -> HttpResponse:
 def logout(request: HttpRequest) -> HttpResponse:
     if is_logged_in(request):
         del request.session['user_id_logged_in']
+        del request.session['admin_token']
 
     return redirect('/')
 
@@ -154,6 +161,7 @@ def profile(request: HttpRequest) -> HttpResponse:
         'userAllergies': allergy_dict,
         'arrangement': event_dict,
         'hosting': hosting_dict,
+        'admin_user': is_admininistrator(request),
         'site_logged_in': is_logged_in(request)
     })
 
@@ -260,7 +268,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         guests = Registration.registrations.filter(event_id=event_id)
         available = event.capacity - len(guests)
         available_dict[event_id] = available
-    
+
     # Checks if the event is in the future, or has passed.
         if event.date > datetime.today():
             future_events_dict[event_id] = event
@@ -289,7 +297,6 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 
     dinner = DinnerEvent.events.get(event_id=event_id)
     guests = Registration.registrations.filter(event_id=event_id)
-    admin_user = User.users.get(user_id = request.session['user_id_logged_in'])
     guest_count = len(guests)
     available = dinner.capacity - guest_count
 
@@ -341,9 +348,9 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'is_owner':is_owner,
         'guest_count': guest_count,
         'available': available ,
-        'admin_user': admin_user,
         'allergiesInDinner': allergiesInDinner,
         'checkLen': len(allergiesInDinner) == 0,
+        'admin_user': is_admininistrator(request),
         'site_logged_in': is_logged_in(request)
     })
 
