@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host
 from django.utils import timezone
+from datetime import datetime
 
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
@@ -249,6 +250,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     queryset = DinnerEvent.events.all()
 
+    future_events_dict = {}
+
     # Gives the number of guests already booked for this dinner
     for event in queryset:
 
@@ -257,11 +260,16 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         guests = Registration.registrations.filter(event_id=event_id)
         available = event.capacity - len(guests)
         available_dict[event_id] = available
+    
+    # Checks if the event is in the future, or has passed.
+        if event.date > datetime.today():
+            future_events_dict[event_id] = event
 
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
-        'site_logged_in': is_logged_in(request)
+        'site_logged_in': is_logged_in(request),
+        'future_events_dict': future_events_dict
     })
 
 
