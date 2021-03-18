@@ -3,14 +3,15 @@
 {% block head %}
 	{{block.super}}
     <link rel="stylesheet" href="{% static 'CSSDocs/registerUser.css' %}">
+    <script type="text/javascript" src="{% static 'javascript/register.js' %}"></script>
 {% endblock %}
 {% block content %}
 
-<h1 id="title" >Regsitrere din bruker hos MatBit her: </h1>
+<h1 id="title" >Registrer din bruker hos MatBit her: </h1>
 
 <div class="container">
     <div class="signup-content">
-        <form method="POST" id="signup-form" class="signup-form" name="SignUpForm">
+        <form method="POST" id="signup-form" class="signup-form" name="SignUpForm" onsubmit="return validate();">
             {% csrf_token %}
 <!--                <div class="form-group">
                     <label for="first_name">Brukernavn</label>
@@ -21,23 +22,12 @@
                 <div class="form-group">
                     <label for="first_name">Fornavn</label>
                     <input type="text" class="form-input" name="first_name" id="first_name" />
-                    {% if emailUsed == True %}
-                        <script>
-                            document.getElementById("first_name").value = "{{first_name}}";
-                        </script>
-                    {% endif %}
                 </div>
                 <div class="form-group">
                     <label for="last_name">Etternavn</label>
                     <input type="text" class="form-input" name="last_name" id="last_name" />
-                    {% if emailUsed == True %}
-                        <script>
-                            document.getElementById("last_name").value = "{{last_name}}";
-                        </script>
-                    {% endif %}
                 </div>
             </div>
-
 
             <div>
                 <div class="form-group">
@@ -66,11 +56,6 @@
                 <div class="form-group form-icon">
                     <label for="birth_date">Fødselsdato</label>
                     <input type="date" class="form-input" name="birth_date" id="birth_date" placeholder="DD-MM-YYYY" min="1930-01-01" max="2021-02-25">
-                    {% if emailUsed == True %}
-                        <script>
-                            document.getElementById("birth_date").value = "{{birth_date}}";
-                        </script>
-                    {% endif %}
                 </div>
             </div>
             <!--<div class="form-group">
@@ -84,35 +69,17 @@
                     <div class="form-group">
                         <label for="address">Adresse</label>
                         <input type="text" class="form-input" name="address" id="address" />
-
-                    {% if emailUsed == True %}
-                        <script>
-                            document.getElementById("address").value = "{{address}}";
-                        </script>
-                    {% endif %}
                     </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="post_code">Postnummer</label>
                             <input type="text" class="form-input" name="post_code" id="post_code" />
-                        {% if emailUsed == True %}
-                            <script>
-                                document.getElementById("post_code").value = "{{post_code}}";
-                            </script>
-                        {% endif %}
-
-
                         </div>
+
                         <div class="form-group">
                             <label for="location">Sted</label>
                             <input type="text" class="form-input" name="location" id="location" />
-
-                        {% if emailUsed == True %}
-                            <script>
-                                document.getElementById("place").value = "{{place}}";
-                            </script>
-                        {% endif %}
-
                         </div>
                     </div>
                 </div>

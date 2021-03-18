@@ -28,10 +28,6 @@ SECRET_KEY = 'j8va-$6(&1_&jn*o9tliou5hlx2t9&!hqu(-at)!$f=8k8jl=w'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-STATICFILES_DIRS = [
-    "../../Middagsarrangement/MatBit/static"
-]
-
 
 # Application definition
 
@@ -128,3 +124,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    "../../Middagsarrangement/MatBit/static"
+]

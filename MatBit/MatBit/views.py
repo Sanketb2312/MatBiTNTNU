@@ -27,7 +27,7 @@ def register(request: HttpRequest) -> HttpResponse:
     birth_date = None
     address = None
     post_code = None
-    place = None
+    location = None
 
     if request.POST:
         first_name = request.POST.get('first_name')
@@ -66,7 +66,7 @@ def register(request: HttpRequest) -> HttpResponse:
         'birth_date': birth_date,
         'address': address,
         'post_code': post_code,
-        'place': place,
+        'location': location,
         'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
     })
 
