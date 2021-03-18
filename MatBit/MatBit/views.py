@@ -267,6 +267,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     allergies_list_name = []
     event_ids = []
+    checkedLocations=[]
     if is_logged_in(request):
         if request.POST:
             for allergies in Ingredient.ingredients.all():
@@ -276,13 +277,21 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
                 for allergy in allergies_list_name:
                     if allergy[1] == dinner.ingredient_id and allergy[1] not in event_ids:
                         event_ids.append(dinner.event_id)
-            print(set(event_ids))
+            for loc in queryset:
+                if str(loc.location.lower()) in request.POST and str(loc.location.lower()) not in checkedLocations:
+                    checkedLocations.append(loc.location.lower())
+
+
+    locations = []
+    for l in queryset:
+        if l.location.lower() not in locations:
+            locations.append(l.location.lower())
+
     q = []
+
     for x in queryset:
         if x.event_id not in event_ids:
             q.append(x)
-    print(q)
-
 
 
     return render(request, 'mealOverview.html', {
@@ -292,7 +301,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         'future_events_dict': future_events_dict,
         'allergies':Ingredient.ingredients.all(),
         'event_ids': event_id,
-        'allergies_list_name': allergies_list_name
+        'allergies_list_name': allergies_list_name,
+        'locations' : locations
     })
 
 

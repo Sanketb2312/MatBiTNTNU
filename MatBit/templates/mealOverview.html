@@ -7,6 +7,30 @@
     {{ block.super }}
 
     <link rel="stylesheet" href="{% static 'CSSDocs/mealOverview.css' %}">
+<script>
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function myFunction2() {
+  document.getElementById("myDropdown2").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+</script>
 
 
 {% endblock %}
@@ -17,20 +41,37 @@
         <h1 class="meal-overview-header">
             Middagsoversikt
         </h1>
+
+
 <div class="dropdown">
-<form method="POST">
-    {% csrf_token %}
-  <button class="dropbtn"> filtrerAllergier</button>
-  <div class="dropdown-content">
-      {% for allergy in allergies %}
-
-        <input type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.name}}>
-        <label for={{allergy.ingredient_id}}> {{allergy.name}}</label><br>
-
-      {% endfor %}
-       <input type="submit" name="submit" id="submit" class="form-submit" value="Submit" />
-    </form>
+  <button onclick="myFunction()" class="dropbtn">Filtrer allergi</button>
+  <div id="myDropdown" class="dropdown-content">
+      <form method="POST">
+          {% csrf_token %}
+          {% for allergy in allergies %}
+           <input type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.name}}>
+            <label for={{allergy.ingredient_id}}> {{allergy.name}}</label><br>
+           {% endfor %}
+        <input type="submit" name="submit" id="submit" class="form-submit" value="Submit"/>
+      </form>
+  </div>
 </div>
+
+
+<div class="dropdown">
+  <button class="dropbtn" onclick="myFunction2()">Filtrer sted</button>
+  <div class="dropdown-content" id="myDropdown2">
+      <form method="POST">
+          {% csrf_token %}
+          {% for loc in locations %}
+           <input type="checkbox" id="{{loc}}" name={{loc}} value={{loc}}>
+            <label for={{loc}}> {{loc}}</label><br>
+           {% endfor %}
+        <input type="submit" name="submit" class="form-submit" id="sub" value="Submit"/>
+      </form>
+  </div>
+</div>
+
 
 <div class="flex-container">
         {% for instance in object_list %}
@@ -60,4 +101,7 @@
     {% endfor %}
         {% endfor %}
 </div>
+
+
+
 {% endblock %}
