@@ -1,9 +1,10 @@
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host
 from django.utils import timezone
 from datetime import datetime
+import re
 
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
@@ -18,10 +19,77 @@ def frontpage(request: HttpRequest) -> HttpResponse:
     return render(request, 'frontpage.html', {'site_logged_in': is_logged_in(request)})
 
 
+# TODO: move to another file
+# TODO: should send e-mail with validation token
+def add_user(
+        first_name: str,
+        last_name: str,
+        birth_date: str,
+        address: str,
+        post_code: str,
+        location: str,
+        is_admin: bool,
+        email: str,
+        password: str
+):
+
+    if len(email) < 3:
+        raise ValidationError("Invalid e-mail")
+
+    for i in range(1, len(email) - 2):
+        if email[i] == "@":
+            break
+    else:
+        raise ValidationError("Invalid e-mail")
+
+    birth_date_components = birth_date.split("-")
+
+    if len(birth_date_components) != 3 \
+            or len(birth_date_components[0]) != 4 \
+            or len(birth_date_components[1]) != 2 \
+            or len(birth_date_components[2]) != 2:
+        raise ValidationError("Invalid birth date format")
+
+    try:
+        birth_date_components = tuple(map(int, birth_date_components))
+    except ValueError:
+        raise ValidationError("Invalid birth date format")
+
+    today = datetime.today()
+    max_date_components = (today.year - 15, today.month, today.day)
+
+    if birth_date_components[0] > max_date_components[0] or (birth_date_components[0] == max_date_components[0] and
+       (birth_date_components[1] > max_date_components[1] or (birth_date_components[1] == max_date_components[1] and
+        (birth_date_components[2] > max_date_components[2])))
+    ):
+        raise ValidationError(
+            "This person is too young to use this service; birth date: " + str(birth_date_components) +
+            "; latest allowed birth date: " + str(max_date_components)
+        )
+
+    try:
+        user = User(
+            first_name=first_name,
+            last_name=last_name,
+            birth_date=birth_date,
+            address=address,
+            post_code=post_code,
+            location=location,
+            is_admin="1" if is_admin else "0",
+            email=email,
+            password=password
+        )
+    except ValueError:
+        # Thrown if post_code is not a number
+        raise ValidationError("post_code is not a number")
+    else:
+        user.save()
+
+
 def register(request: HttpRequest) -> HttpResponse:
     # FIXME: shouldn't there be a check for logged in?
 
-    # TODO: validate.
+    invalid_form_data = False
 
     email_used = False
     first_name = None
@@ -46,23 +114,26 @@ def register(request: HttpRequest) -> HttpResponse:
             email_used = True
 
         except ObjectDoesNotExist:
-            user = User(
-                first_name=first_name,
-                last_name=last_name,
-                birth_date=birth_date,
-                address=address,
-                post_code=post_code,
-                location=location,
-                is_admin="0",
-                email=email,
-                password=password
-            )
-            user.save()
-
-            return redirect('/')
+            try:
+                add_user(
+                    first_name=first_name,
+                    last_name=last_name,
+                    birth_date=birth_date,
+                    address=address,
+                    post_code=post_code,
+                    location=location,
+                    is_admin=False,
+                    email=email,
+                    password=password
+                )
+            except ValidationError:
+                invalid_form_data = True
+            else:
+                return redirect('/')
 
     return render(request, "registerUser.html", {
         "properties": {
+            'invalidFormData': invalid_form_data,
             'emailUsed': email_used,
             'first_name': first_name,
             'last_name': last_name,
@@ -264,7 +335,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         guests = Registration.registrations.filter(event_id=event_id)
         available = event.capacity - len(guests)
         available_dict[event_id] = available
-    
+
     # Checks if the event is in the future, or has passed.
         if event.date > datetime.today():
             future_events_dict[event_id] = event
