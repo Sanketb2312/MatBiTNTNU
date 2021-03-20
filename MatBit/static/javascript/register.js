@@ -1,30 +1,43 @@
 
-/*
-const firstName = "";
-const lastName = "";
-const birthDate = "";
-const address = "";
-const post_code = "";
-const location = "";
-*/
-
 function field(name) {
     const object = document.querySelector("#" + name);
 
     if (object === null) {
-        throw "No such field";
+        throw "No such field: \"" + name + "\"";
     }
 
     return object;
 }
 
 function setField(name, value) {
-    field(name).value = value;
+    field(name).value = value || "";
 }
 
-/// Adds a subtitle under the input field of name `fieldName`
+/// Overwrites or adds a subtitle under the input field of name `fieldName`
 function setSubtitleForField(fieldName, text) {
+    const inputField = field(fieldName);
 
+    const className = "form-field-subtitle";
+
+    for (const paragraphEntry of inputField.parentNode.querySelectorAll("p").entries()) {
+        const paragraph = paragraphEntry[1];
+
+        if (paragraph.classList.contains(className)) {
+            paragraph.textContent = text;
+            return;
+        }
+    }
+
+    const paragraph = document.createElement("p");
+    paragraph.classList.add(className);
+    paragraph.textContent = text;
+
+    inputField.parentNode.insertBefore(paragraph, inputField.nextSibling);
+}
+
+function warnProblemForField(fieldName, problemMessage) {
+    console.log(problemMessage);
+    setSubtitleForField(fieldName, problemMessage);
 }
 
 function validatePassword() {
@@ -39,32 +52,40 @@ function validate() {
     console.log("Validating");
 
     if (!validatePostCode()) {
-        console.log("Postcode has incorrect format");
-        alert("Postcode has incorrect format");
+        warnProblemForField("post_code", "Feil format på postnummeret");
         return false;
     }
 
     if (!validatePassword()) {
-        console.log("Passwords not equal");
-        alert("Passwords not equal");
+        warnProblemForField("password", "Passordene må være like");
         return false;
     }
 
     return true;
 }
 
-// TODO: set max date value. Today - 15 years.
+function init() {
 
-if (emailUsed) {
-    console.log("E-mail already in use");
+    // Sets a requirement of 15 years or older.
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 15);
 
-    setField("first_name", first_name);
-    setField("last_name", last_name);
-    setField("birth_date", birth_date);
-    setField("address", address);
-    setField("post_code", post_code);
-    setField("location", location);
+    field("birth_date").max = maxDate.toISOString().split("T")[0];
 
-    // Set <p> in div form-group for e-mail used.
-    setSubtitleForField("email", "Denne e-posten er allerede i bruk")
+    const properties = JSON.parse(document.getElementById("properties").textContent);
+
+    if (properties.emailUsed) {
+        console.log("E-mail already in use");
+
+        setField("first_name", properties.firstName);
+        setField("last_name", properties.lastName);
+        setField("birth_date", properties.birthDate);
+        setField("address", properties.address);
+        setField("post_code", properties.postCode);
+        setField("location", properties.location);
+
+        setSubtitleForField("email", "Denne e-posten er allerede i bruk");
+    }
 }
+
+document.addEventListener("DOMContentLoaded", init);

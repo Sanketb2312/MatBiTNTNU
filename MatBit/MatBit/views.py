@@ -21,6 +21,8 @@ def frontpage(request: HttpRequest) -> HttpResponse:
 def register(request: HttpRequest) -> HttpResponse:
     # FIXME: shouldn't there be a check for logged in?
 
+    # TODO: validate.
+
     email_used = False
     first_name = None
     last_name = None
@@ -60,14 +62,16 @@ def register(request: HttpRequest) -> HttpResponse:
             return redirect('/')
 
     return render(request, "registerUser.html", {
-        'emailUsed': email_used,
-        'first_name': first_name,
-        'last_name': last_name,
-        'birth_date': birth_date,
-        'address': address,
-        'post_code': post_code,
-        'location': location,
-        'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
+        "properties": {
+            'emailUsed': email_used,
+            'first_name': first_name,
+            'last_name': last_name,
+            'birth_date': birth_date,
+            'address': address,
+            'post_code': post_code,
+            'location': location,
+            'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
+        }
     })
 
 
