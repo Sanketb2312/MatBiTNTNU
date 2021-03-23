@@ -248,7 +248,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    queryset = DinnerEvent.events.all()
+    queryset = DinnerEvent.events.filter(date__lte = datetime.today())
 
     future_events_dict = {}
 
@@ -260,26 +260,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         guests = Registration.registrations.filter(event_id=event_id)
         available = event.capacity - len(guests)
         available_dict[event_id] = available
-    
-    # Checks if the event is in the future, or has passed.
-        if event.date > datetime.today():
-            future_events_dict[event_id] = event
 
-    allergies_list_name = []
-    event_ids = []
-    checkedLocations=[]
-    if is_logged_in(request):
-        if request.POST:
-            for allergies in Ingredient.ingredients.all():
-                if str(allergies.name) in request.POST:
-                    allergies_list_name.append((allergies.name, allergies.ingredient_id))
-            for dinner in EventIngredient.event_ingredients.all():
-                for allergy in allergies_list_name:
-                    if allergy[1] == dinner.ingredient_id and allergy[1] not in event_ids:
-                        event_ids.append(dinner.event_id)
-            for loc in queryset:
-                if str(loc.location.lower()) in request.POST and str(loc.location.lower()) not in checkedLocations:
-                    checkedLocations.append(loc.location.lower())
 
 
     locations = []
@@ -287,22 +268,28 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         if l.location.lower() not in locations:
             locations.append(l.location.lower())
 
-    q = []
 
-    for x in queryset:
-        if x.event_id not in event_ids:
-            q.append(x)
+    events = {}
 
+    for event in queryset:
+        query = EventIngredient.event_ingredients.filter(event_id=event.event_id)
+        for x in query:
+            if x.event_id not in events:
+                events[x.event_id] = [x.ingredient_id]
+            else:
+                events[x.event_id].append(x.ingredient_id)
+    print(events)
 
     return render(request, 'mealOverview.html', {
-        "object_list": q,
+        "object_list": queryset,
         'available_dict': available_dict,
-        'site_logged_in': is_logged_in(request),
         'future_events_dict': future_events_dict,
         'allergies':Ingredient.ingredients.all(),
-        'event_ids': event_id,
-        'allergies_list_name': allergies_list_name,
-        'locations' : locations
+
+        #'allergies_list_name': allergies_list_name,
+        'locations' : locations,
+        'events' : events,
+        'site_logged_in': is_logged_in(request)
     })
 
 

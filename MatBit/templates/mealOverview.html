@@ -16,6 +16,39 @@ function myFunction2() {
   document.getElementById("myDropdown2").classList.toggle("show");
 }
 
+function filter() {
+  events = {{events}}
+
+
+  if (document.querySelector('.allergyCheck:checked')) {
+    var checkedValue = document.querySelectorAll('.allergyCheck:checked');
+
+    for (var key in events) {
+      for(var i = 0; i < checkedValue.length; i++){
+
+        var dinner = document.getElementById("allergy-"+key)
+          if(events[key].includes(parseInt(checkedValue[i].value))) {
+            console.log(key);
+
+
+            dinner.style.display = "none";
+            break;
+          }
+          else {
+            dinner.style.display ="initial";
+          }
+      }
+
+    }
+  } else {
+
+    var dinners =  document.getElementsByClassName("url");
+    for (var key in events) {
+      document.getElementById("allergy-"+key).style.display ="initial";
+    }
+  }
+}
+
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
@@ -32,7 +65,6 @@ window.onclick = function(event) {
 
 </script>
 
-
 {% endblock %}
 
 {% block content %}
@@ -42,17 +74,15 @@ window.onclick = function(event) {
             Middagsoversikt
         </h1>
 
-
 <div class="dropdown">
   <button onclick="myFunction()" class="dropbtn">Filtrer allergi</button>
   <div id="myDropdown" class="dropdown-content">
-      <form method="POST">
-          {% csrf_token %}
+      <form>
+
           {% for allergy in allergies %}
-           <input type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.name}}>
-            <label for={{allergy.ingredient_id}}> {{allergy.name}}</label><br>
+           <input class="allergyCheck" type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.ingredient_id}} onclick="filter()">
+            <label for={{allergy.ingredient_id}} id="allergi"> {{allergy.name}}</label><br>
            {% endfor %}
-        <input type="submit" name="submit" id="submit" class="form-submit" value="Submit"/>
       </form>
   </div>
 </div>
@@ -61,24 +91,21 @@ window.onclick = function(event) {
 <div class="dropdown">
   <button class="dropbtn" onclick="myFunction2()">Filtrer sted</button>
   <div class="dropdown-content" id="myDropdown2">
-      <form method="POST">
-          {% csrf_token %}
+      <form>
           {% for loc in locations %}
            <input type="checkbox" id="{{loc}}" name={{loc}} value={{loc}}>
             <label for={{loc}}> {{loc}}</label><br>
            {% endfor %}
-        <input type="submit" name="submit" class="form-submit" id="sub" value="Submit"/>
       </form>
   </div>
 </div>
 
-
 <div class="flex-container">
         {% for instance in object_list %}
-        {% for key, item in future_events_dict.items %} 
-            {% if key == instance.event_id %}
 
-        <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' ">
+
+
+        <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' " id="allergy-{{instance.event_id}}">
 
                 <div class="flex-child">
                     <h3>{{instance.name}}</h3>
@@ -97,11 +124,9 @@ window.onclick = function(event) {
                 </div>
             </div>
 
-    {% endif %}
-    {% endfor %}
+
+
         {% endfor %}
 </div>
-
-
 
 {% endblock %}
