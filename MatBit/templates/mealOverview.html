@@ -28,9 +28,6 @@ function filter() {
 
         var dinner = document.getElementById("allergy-"+key)
           if(events[key].includes(parseInt(checkedValue[i].value))) {
-            console.log(key);
-
-
             dinner.style.display = "none";
             break;
           }
@@ -38,7 +35,6 @@ function filter() {
             dinner.style.display ="initial";
           }
       }
-
     }
   } else {
 
@@ -48,6 +44,38 @@ function filter() {
     }
   }
 }
+
+
+function filter_location() {
+
+  event_location = {{event_location|safe}}
+
+
+  if (document.querySelector('.locationCheck:checked')) {
+    var checkedValue = document.querySelectorAll('.locationCheck:checked');
+
+    for (var key in event_location) {
+      for(var i = 0; i < checkedValue.length; i++){
+
+        var dinner = document.getElementById("allergy-"+key)
+          if(event_location[key].includes((checkedValue[i].value))) {
+            dinner.style.display = "initial";
+            break;
+          }
+          else {
+            dinner.style.display ="none";
+          }
+      }
+    }
+  } else {
+
+    var dinners =  document.getElementsByClassName("url");
+    for (var key in event_location) {
+      document.getElementById("allergy-"+key).style.display ="initial";
+    }
+  }
+}
+
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {
@@ -93,7 +121,7 @@ window.onclick = function(event) {
   <div class="dropdown-content" id="myDropdown2">
       <form>
           {% for loc in locations %}
-           <input type="checkbox" id="{{loc}}" name={{loc}} value={{loc}}>
+           <input class="locationCheck" type="checkbox" id="{{loc}}" name={{loc}} value={{loc}} onclick="filter_location()">
             <label for={{loc}}> {{loc}}</label><br>
            {% endfor %}
       </form>

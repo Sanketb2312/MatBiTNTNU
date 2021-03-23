@@ -264,10 +264,14 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
 
     locations = []
-    for l in queryset:
-        if l.location.lower() not in locations:
-            locations.append(l.location.lower())
-
+    event_location = {}
+    for dinner_place in queryset:
+        if dinner_place.event_id not in event_location:
+            print(type(dinner_place.location))
+            event_location[dinner_place.event_id] = dinner_place.location.lower()
+        if dinner_place.location.lower() not in locations:
+            locations.append(dinner_place.location.lower())
+    print(event_location)
 
     events = {}
 
@@ -285,9 +289,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         'available_dict': available_dict,
         'future_events_dict': future_events_dict,
         'allergies':Ingredient.ingredients.all(),
-
-        #'allergies_list_name': allergies_list_name,
         'locations' : locations,
+        'event_location' : event_location,
         'events' : events,
         'site_logged_in': is_logged_in(request)
     })
