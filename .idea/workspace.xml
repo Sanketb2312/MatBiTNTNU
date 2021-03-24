@@ -22,7 +22,6 @@
     <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="Mulig å filtrere vekk middager med de allergiene man her. BUG: allergier som er husket av algres ikke, alle blir borte om man skal filtrere på nytt">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/static/CSSDocs/mealOverview.css" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/static/CSSDocs/mealOverview.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/templates/mealOverview.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/mealOverview.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +74,7 @@
       <recent name="$PROJECT_DIR$/MatBit/static" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="false" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>

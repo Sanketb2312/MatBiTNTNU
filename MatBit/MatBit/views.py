@@ -247,7 +247,13 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    queryset = DinnerEvent.events.filter(date__lte = datetime.today())
+    #queryset = DinnerEvent.events.filter(date__lte = datetime.today())
+    queryset = DinnerEvent.events.all()
+    print(queryset)
+    event_ids = []
+    for id in queryset:
+        event_ids.append(id.event_id)
+    print(event_ids, "wfbw")
 
     future_events_dict = {}
 
@@ -278,9 +284,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         query = EventIngredient.event_ingredients.filter(event_id=event.event_id)
         for x in query:
             if x.event_id not in events:
-                events[x.event_id] = [x.ingredient_id]
-            else:
-                events[x.event_id].append(x.ingredient_id)
+                events[x.event_id] = []
+            events[x.event_id].append(x.ingredient_id)
     print(events)
 
     #for x in event_location:
@@ -298,7 +303,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         'locations' : locations,
         'event_location' : event_location,
         'events' : events,
-        'site_logged_in': is_logged_in(request)
+        'site_logged_in': is_logged_in(request),
+        'event_ids':event_ids
     })
 
 

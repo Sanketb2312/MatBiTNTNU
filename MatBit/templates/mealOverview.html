@@ -18,39 +18,58 @@ function myFunction2() {
 
 
 function filter() {
-  events = {{events|safe}}
+  events_allergy = {{events|safe}}
+  events_location = {{event_location|safe}}
 
-  if (document.querySelector('.allergyCheck:checked')) {
-    console.log(events, "e");
-    var checkedValue = document.querySelectorAll('.allergyCheck:checked');
-    console.log(checkedValue, "jvwjfbiw");
+    console.log("her", events_allergy)
 
-    for (var key in events) {
-      for(var i = 0; i < checkedValue.length; i++){
+  var checkedValueAllergy = document.querySelectorAll('.allergyCheck:checked');
+  var checkedValueLocation = document.querySelectorAll('.locationCheck:checked');
 
-        var dinner = document.getElementById("allergy-"+key)
-          if(events[key].includes(parseInt(checkedValue[i].value))) {
+  notInclude = [];
+  for (var key in events_allergy) {
 
-            dinner.style.display = "none";
-            break;
-          }
-          else {
-            //dinner.style.display ="initial";
-          }
+    for(var i = 0; i < checkedValueAllergy.length; i++){
+      if (events_allergy[key].includes(parseInt(checkedValueAllergy[i].value))) {
+
+        notInclude.push(parseInt(key))
       }
     }
-  } else {
+  }
 
-    var dinners =  document.getElementsByClassName("url");
-    for (var key in events) {
-      document.getElementById("allergy-"+key).style.display ="initial";
+    if (checkedValueLocation.length !== 0) {
+      for (var key in events_location) {
+        var includeBool = false
+        for(var i = 0; i < checkedValueLocation.length; i++){
+            console.log("brr")
+          if (events_location[key].includes(checkedValueLocation[i].value)) {
+            includeBool = true
+          }
+
+        }
+        if (!includeBool) notInclude.push(parseInt(key))
+      }
+  }
+
+  allEvents = {{event_ids}}
+
+  for (var i = 0; i < allEvents.length; i++) {
+    key = allEvents[i]
+    var dinner = document.getElementById("allergy-"+key)
+    if (notInclude.includes(key)) {
+      dinner.style.display ="none";
+    } else {
+      dinner.style.display ="initial";
     }
   }
+
 }
 
 
 function filter_location() {
+    filter()
 
+  /*
   event_location = {{event_location|safe}}
 
 
@@ -77,6 +96,7 @@ function filter_location() {
       document.getElementById("allergy-"+key).style.display ="initial";
     }
   }
+  */
 }
 
 // Close the dropdown menu if the user clicks outside of it
