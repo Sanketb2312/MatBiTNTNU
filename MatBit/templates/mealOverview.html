@@ -16,23 +16,26 @@ function myFunction2() {
   document.getElementById("myDropdown2").classList.toggle("show");
 }
 
-function filter() {
-  events = {{events}}
 
+function filter() {
+  events = {{events|safe}}
 
   if (document.querySelector('.allergyCheck:checked')) {
+    console.log(events, "e");
     var checkedValue = document.querySelectorAll('.allergyCheck:checked');
+    console.log(checkedValue, "jvwjfbiw");
 
     for (var key in events) {
       for(var i = 0; i < checkedValue.length; i++){
 
         var dinner = document.getElementById("allergy-"+key)
           if(events[key].includes(parseInt(checkedValue[i].value))) {
+
             dinner.style.display = "none";
             break;
           }
           else {
-            dinner.style.display ="initial";
+            //dinner.style.display ="initial";
           }
       }
     }
@@ -59,7 +62,7 @@ function filter_location() {
 
         var dinner = document.getElementById("allergy-"+key)
           if(event_location[key].includes((checkedValue[i].value))) {
-            dinner.style.display = "initial";
+            //dinner.style.display = "initial";
             break;
           }
           else {
@@ -75,7 +78,6 @@ function filter_location() {
     }
   }
 }
-
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = function(event) {

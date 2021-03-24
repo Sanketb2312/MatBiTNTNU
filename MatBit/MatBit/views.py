@@ -127,7 +127,6 @@ def profile(request: HttpRequest) -> HttpResponse:
     registrations = Registration.registrations.filter(user_id=request.session['user_id_logged_in']).all()
 
     for registration in registrations:
-
         dinner_information = DinnerEvent.events.get(event_id=registration.event_id)
 
         event_dict[dinner_information.event_id] = [
@@ -283,6 +282,13 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
             else:
                 events[x.event_id].append(x.ingredient_id)
     print(events)
+
+    #for x in event_location:
+    #    if x in events:
+    #        events[x].append(event_location[x])
+    #    else:
+    #        events[x]=[x]
+    #print(events)
 
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
