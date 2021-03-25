@@ -63,7 +63,7 @@
             </div>
             <div class="allergies">
 
-                {% for allergy in allergener %}
+                {% for allergy in allergens %}
                 <input type="checkbox" id="allergies" name={{allergy.ingredient_id}} value={{allergy.ingredient_id}}>
                 <label for="allergies"> {{allergy.name}} </label><br>
 
