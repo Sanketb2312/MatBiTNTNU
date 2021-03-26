@@ -7,6 +7,76 @@
     {{ block.super }}
 
     <link rel="stylesheet" href="{% static 'CSSDocs/mealOverview.css' %}">
+<script>
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function myFunction2() {
+  document.getElementById("myDropdown2").classList.toggle("show");
+}
+
+
+function filter() {
+  events_allergy = {{events|safe}}
+  events_location = {{event_location|safe}}
+
+  var checkedValueAllergy = document.querySelectorAll('.allergyCheck:checked');
+  var checkedValueLocation = document.querySelectorAll('.locationCheck:checked');
+
+  notInclude = [];
+  for (var key in events_allergy) {
+
+    for(var i = 0; i < checkedValueAllergy.length; i++){
+      if (events_allergy[key].includes(parseInt(checkedValueAllergy[i].value))) {
+
+        notInclude.push(parseInt(key))
+      }
+    }
+  }
+
+    if (checkedValueLocation.length !== 0) {
+      for (var key in events_location) {
+        var includeBool = false
+        for(var i = 0; i < checkedValueLocation.length; i++){
+          if (events_location[key].includes(checkedValueLocation[i].value)) {
+            includeBool = true
+          }
+
+        }
+        if (!includeBool) notInclude.push(parseInt(key))
+      }
+  }
+
+  allEvents = {{event_ids}};
+
+  for (var i = 0; i < allEvents.length; i++) {
+    key = allEvents[i]
+    var dinner = document.getElementById("allergy-"+key)
+    if (notInclude.includes(key)) {
+      dinner.style.display ="none";
+    } else {
+      dinner.style.display ="initial";
+    }
+  }
+
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
+</script>
 
 {% endblock %}
 
@@ -17,12 +87,38 @@
             Middagsoversikt
         </h1>
 
+<div class="dropdown">
+  <button onclick="myFunction()" class="dropbtn">Filtrer allergi</button>
+  <div id="myDropdown" class="dropdown-content">
+      <form>
+
+          {% for allergy in allergies %}
+           <input class="allergyCheck" type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.ingredient_id}} onclick="filter()">
+            <label for={{allergy.ingredient_id}} id="allergi"> {{allergy.name}}</label><br>
+           {% endfor %}
+      </form>
+  </div>
+</div>
+
+
+<div class="dropdown">
+  <button class="dropbtn" onclick="myFunction2()">Filtrer sted</button>
+  <div class="dropdown-content" id="myDropdown2">
+      <form>
+          {% for loc in locations %}
+           <input class="locationCheck" type="checkbox" id="{{loc}}" name={{loc}} value={{loc}} onclick="filter()">
+            <label for={{loc}}> {{loc}}</label><br>
+           {% endfor %}
+      </form>
+  </div>
+</div>
 
 <div class="flex-container">
         {% for instance in object_list %}
-        {% for key, item in future_events_dict.items %} 
-            {% if key == instance.event_id %}
-        <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' ">
+
+
+
+        <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' " id="allergy-{{instance.event_id}}">
 
                 <div class="flex-child">
                     <h3>{{instance.name}}</h3>
@@ -40,8 +136,10 @@
                     <br>
                 </div>
             </div>
-            {% endif %}
-            {% endfor %}
+
+
+
         {% endfor %}
 </div>
+
 {% endblock %}

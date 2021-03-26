@@ -225,7 +225,6 @@ def new_meal(request: HttpRequest) -> HttpResponse:
             print(meal.event_id)
 
             if str(allergy_id) in request.POST:
-                print(11111)
 
                 EventIngredient(event_id=meal.event_id, ingredient_id=allergy_id).save()
 
@@ -244,7 +243,10 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    queryset = DinnerEvent.events.all()
+    queryset = DinnerEvent.events.filter(date__gte = datetime.today())
+    event_ids = []
+    for id in queryset:
+        event_ids.append(id.event_id)
 
     future_events_dict = {}
 
@@ -257,15 +259,45 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         available = event.capacity - guests.count()
         available_dict[event_id] = available
 
-        # Checks if the event is in the future, or has passed.
-        if event.date > datetime.today():
-            future_events_dict[event_id] = event
+
+
+    locations = []
+    event_location = {}
+    for dinner_place in queryset:
+        if dinner_place.event_id not in event_location:
+            print(type(dinner_place.location))
+            event_location[dinner_place.event_id] = dinner_place.location.lower()
+        if dinner_place.location.lower() not in locations:
+            locations.append(dinner_place.location.lower())
+    print(event_location)
+
+    events = {}
+
+    for event in queryset:
+        query = EventIngredient.event_ingredients.filter(event_id=event.event_id)
+        for x in query:
+            if x.event_id not in events:
+                events[x.event_id] = []
+            events[x.event_id].append(x.ingredient_id)
+    print(events)
+
+    #for x in event_location:
+    #    if x in events:
+    #        events[x].append(event_location[x])
+    #    else:
+    #        events[x]=[x]
+    #print(events)
 
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
+        'future_events_dict': future_events_dict,
+        'allergies':Ingredient.ingredients.all(),
+        'locations' : locations,
+        'event_location' : event_location,
+        'events' : events,
         'site_logged_in': is_logged_in(request),
-        'future_events_dict': future_events_dict
+        'event_ids':event_ids
     })
 
 
