@@ -3,7 +3,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpRequest
 from django.utils import timezone
-from passlib.handlers.pbkdf2 import pbkdf2_sha256
+from django.contrib.auth.hashers import make_password
 
 from .mymodels import User, Registration, DinnerEvent
 
@@ -105,7 +105,7 @@ def add_user(
         )
 
     try:
-        passwordHashed = pbkdf2_sha256.encrypt(password)
+        passwordHashed = make_password(password)
         user = User(
             first_name=first_name,
             last_name=last_name,

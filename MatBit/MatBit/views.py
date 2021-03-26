@@ -7,7 +7,8 @@ from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredien
 from django.utils import timezone
 from datetime import datetime
 
-from passlib.hash import pbkdf2_sha256
+from django.contrib.auth.hashers import check_password, make_password
+
 
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
@@ -92,7 +93,9 @@ def login(request: HttpRequest) -> HttpResponse:
         try:
             print(password)
             user = User.users.get(email=email)
-            if not pbkdf2_sha256.verify(password, user.password):
+            #Used this to create a new hashed password
+            print(make_password(password))
+            if not check_password(password, user.password):
                 raise ObjectDoesNotExist
 
         except ObjectDoesNotExist:
