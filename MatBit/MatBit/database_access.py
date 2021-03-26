@@ -3,6 +3,7 @@ from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpRequest
 from django.utils import timezone
+from django.contrib.auth.hashers import make_password
 
 from .mymodels import User, Registration, DinnerEvent, Host, EventIngredient, UserAllergy
 
@@ -65,7 +66,7 @@ def add_user(
         location: str,
         is_admin: bool,
         email: str,
-        password: str
+        password: str,
 ):
     # TODO: should send e-mail with validation token
 
@@ -104,6 +105,7 @@ def add_user(
         )
 
     try:
+        passwordHashed = make_password(password)
         user = User(
             first_name=first_name,
             last_name=last_name,
@@ -113,7 +115,7 @@ def add_user(
             location=location,
             is_admin="1" if is_admin else "0",
             email=email,
-            password=password
+            password = passwordHashed
         )
     except ValueError:
         # Thrown if post_code is not a number

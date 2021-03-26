@@ -8,6 +8,9 @@ from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredien
 from django.utils import timezone
 from datetime import datetime
 
+from django.contrib.auth.hashers import check_password, make_password
+
+
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
 # commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
@@ -72,9 +75,9 @@ def register(request: HttpRequest) -> HttpResponse:
             'birth_date': birth_date,
             'address': address,
             'post_code': post_code,
-            'location': location,
-            'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
-        }
+            'location': location
+        },
+        'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
     })
 
 
@@ -89,7 +92,13 @@ def login(request: HttpRequest) -> HttpResponse:
         password = request.POST.get('password')
 
         try:
-            user = User.users.get(email=email, password=password)
+            print(password)
+            user = User.users.get(email=email)
+            #Used this to create a new hashed password
+            print(make_password(password))
+            if not check_password(password, user.password):
+                raise ObjectDoesNotExist
+
         except ObjectDoesNotExist:
             error_login = True
         else:
@@ -256,6 +265,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     future_events_dict = {}
 
+
     # Gives the number of guests already booked for this dinner
     for event in queryset:
 
@@ -294,6 +304,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
     #        events[x]=[x]
     #print(events)
 
+
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
@@ -318,6 +329,12 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     guests = Registration.registrations.filter(event_id=event_id)
     guest_count = guests.count()
     available = dinner.capacity - guest_count
+
+
+    if guest_count == 0:
+        guest_price = dinner.cost
+    else:
+        guest_price = round(dinner.cost / guest_count)
 
     in_dinner = get_in_dinner(request, event_id)
     signed_up = in_dinner is not None
@@ -363,6 +380,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'in_dinner': in_dinner,
         'is_owner': is_owner,
         'guest_count': guest_count,
+        'guest_price': guest_price,
         'available': available,
         'allergiesInDinner': allergies_in_dinner,
         'checkLen': len(allergies_in_dinner) == 0,
