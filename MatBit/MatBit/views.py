@@ -71,9 +71,9 @@ def register(request: HttpRequest) -> HttpResponse:
             'birth_date': birth_date,
             'address': address,
             'post_code': post_code,
-            'location': location,
-            'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
-        }
+            'location': location
+        },
+        'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
     })
 
 
