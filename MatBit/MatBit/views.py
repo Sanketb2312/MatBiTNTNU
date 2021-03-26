@@ -125,11 +125,12 @@ def profile(request: HttpRequest) -> HttpResponse:
 
     # Collecting all the registrations the user has made.
     registrations = Registration.registrations.filter(user_id=request.session['user_id_logged_in']).all()
-    
 
     for registration in registrations:
         print(registration.event_id)
+        
         dinner_information = DinnerEvent.events.get(event_id=registration.event_id)
+
 
         event_dict[dinner_information.event_id] = [
             dinner_information.name,
@@ -141,7 +142,7 @@ def profile(request: HttpRequest) -> HttpResponse:
     hosting = Host.hosts.filter(user_id=request.session['user_id_logged_in']).all()
 
     for hosting_event in hosting:
-        print(hosting_event.event_id)
+
         hosting_information = DinnerEvent.events.get(event_id=hosting_event.event_id)
 
         hosting_dict[hosting_information.event_id] = [
@@ -157,6 +158,7 @@ def profile(request: HttpRequest) -> HttpResponse:
         'hosting': hosting_dict,
         'site_logged_in': is_logged_in(request)
     })
+
 
 
 def edit_user(request: HttpRequest) -> HttpResponse:
@@ -249,8 +251,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    #queryset = DinnerEvent.events.filter(date__lte = datetime.today())
-    queryset = DinnerEvent.events.all()
+    queryset = DinnerEvent.events.filter(date__gte = datetime.today())
     print(queryset)
     event_ids = []
     for id in queryset:
