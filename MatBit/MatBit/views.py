@@ -259,6 +259,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     future_events_dict = {}
 
+
     # Gives the number of guests already booked for this dinner
     for event in queryset:
 
@@ -297,6 +298,7 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
     #        events[x]=[x]
     #print(events)
 
+
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
@@ -321,6 +323,12 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     guests = Registration.registrations.filter(event_id=event_id)
     guest_count = guests.count()
     available = dinner.capacity - guest_count
+    price = dinner.cost
+
+    if guest_count == 0:
+        guest_price = price
+    else:
+        guest_price = round(price / guest_count)
 
     in_dinner = get_in_dinner(request, event_id)
     signed_up = in_dinner is not None
@@ -365,6 +373,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'in_dinner': in_dinner,
         'is_owner': is_owner,
         'guest_count': guest_count,
+        'guest_price': guest_price,
         'available': available,
         'allergiesInDinner': allergies_in_dinner,
         'checkLen': len(allergies_in_dinner) == 0,
