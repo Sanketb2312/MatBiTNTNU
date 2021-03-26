@@ -2,7 +2,7 @@ import MySQLdb
 import django
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from MatBit.MatBit.views import add_user as _add_user
+from MatBit.database_access import add_user as _add_user
 
 
 class UserTestCase(TestCase):

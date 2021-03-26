@@ -1,94 +1,20 @@
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
+
+from .database_access import is_logged_in, has_admin_privileges, add_user, get_in_dinner, create_dinner
 from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host
 from django.utils import timezone
 from datetime import datetime
-import re
 
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
 # commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
 # HttpRequest.session is set by the session middleware; also an anti-pattern.
 
-def is_logged_in(request: HttpRequest) -> bool:
-    return 'user_id_logged_in' in request.session
-
-def is_admininistrator(request: HttpRequest) -> bool:
-    if request.session['admin_token'] == 1:
-        return True
-    elif request.session['admin_token'] == 0:
-        return False
 
 def frontpage(request: HttpRequest) -> HttpResponse:
     return render(request, 'frontpage.html', {'site_logged_in': is_logged_in(request)})
-
-
-# TODO: move to another file
-# TODO: should send e-mail with validation token
-def add_user(
-        first_name: str,
-        last_name: str,
-        birth_date: str,
-        address: str,
-        post_code: str,
-        location: str,
-        is_admin: bool,
-        email: str,
-        password: str
-):
-
-    if len(email) < 3:
-        raise ValidationError("Invalid e-mail")
-
-    for i in range(1, len(email) - 2):
-        if email[i] == "@":
-            break
-    else:
-        raise ValidationError("Invalid e-mail")
-
-    birth_date_components = birth_date.split("-")
-
-    if len(birth_date_components) != 3 \
-            or len(birth_date_components[0]) != 4 \
-            or len(birth_date_components[1]) != 2 \
-            or len(birth_date_components[2]) != 2:
-        raise ValidationError("Invalid birth date format")
-
-    try:
-        birth_date_components = tuple(map(int, birth_date_components))
-    except ValueError:
-        raise ValidationError("Invalid birth date format")
-
-    today = datetime.today()
-    max_date_components = (today.year - 15, today.month, today.day)
-
-    if birth_date_components[0] > max_date_components[0] or (birth_date_components[0] == max_date_components[0] and
-       (birth_date_components[1] > max_date_components[1] or (birth_date_components[1] == max_date_components[1] and
-        (birth_date_components[2] > max_date_components[2])))
-    ):
-        raise ValidationError(
-            "This person is too young to use this service; birth date: " + str(birth_date_components) +
-            "; latest allowed birth date: " + str(max_date_components)
-        )
-
-    try:
-        user = User(
-            first_name=first_name,
-            last_name=last_name,
-            birth_date=birth_date,
-            address=address,
-            post_code=post_code,
-            location=location,
-            is_admin="1" if is_admin else "0",
-            email=email,
-            password=password
-        )
-    except ValueError:
-        # Thrown if post_code is not a number
-        raise ValidationError("post_code is not a number")
-    else:
-        user.save()
 
 
 def register(request: HttpRequest) -> HttpResponse:
@@ -185,7 +111,6 @@ def logout(request: HttpRequest) -> HttpResponse:
     return redirect('/')
 
 
-
 # noinspection SpellCheckingInspection
 def profile(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
@@ -195,10 +120,12 @@ def profile(request: HttpRequest) -> HttpResponse:
     hosting_dict = {}
     event_dict = {}
 
-    user = User.users.get(user_id=request.session['user_id_logged_in'])
+    user_id = request.session['user_id_logged_in']
+
+    user = User.users.get(user_id=user_id)
 
     # Linking all the allergies in the database that the user has.
-    allergies = UserAllergy.users_allergies.filter(user_id=request.session['user_id_logged_in']).all()
+    allergies = UserAllergy.users_allergies.filter(user_id=user_id).all()
 
     for allergy in allergies:
 
@@ -206,7 +133,7 @@ def profile(request: HttpRequest) -> HttpResponse:
         allergy_dict[ingredient.ingredient_id] = ingredient.name
 
     # Collecting all the registrations the user has made.
-    registrations = Registration.registrations.filter(user_id=request.session['user_id_logged_in']).all()
+    registrations = Registration.registrations.filter(user_id=user_id).all()
 
     for registration in registrations:
 
@@ -219,7 +146,7 @@ def profile(request: HttpRequest) -> HttpResponse:
         ]
 
     # Collecting all the events the user is hosting.
-    hosting = Host.hosts.filter(user_id=request.session['user_id_logged_in']).all()
+    hosting = Host.hosts.filter(user_id=user_id).all()
 
     for hosting_event in hosting:
 
@@ -236,7 +163,7 @@ def profile(request: HttpRequest) -> HttpResponse:
         'userAllergies': allergy_dict,
         'arrangement': event_dict,
         'hosting': hosting_dict,
-        'admin_user': is_admininistrator(request),
+        'admin_user': has_admin_privileges(request),
         'site_logged_in': is_logged_in(request)
     })
 
@@ -278,50 +205,36 @@ def new_meal(request: HttpRequest) -> HttpResponse:
 
     if request.POST:
         # FIXME: see fixme in edit_user(_:)
-        event_name = request.POST.get('dinner_name')
-        description = request.POST.get('description')
-        capacity = request.POST.get('seats')
-        location = request.POST.get('location')
-        date = request.POST.get('date')
-        time = request.POST.get('time')
-        cost = request.POST.get('cost')
-
-        datetime = date + " " + time + ":00"
-
-        meal = DinnerEvent(
-            name=event_name,
-            description=description,
-            capacity=capacity,
-            location=location,
-            date=datetime,
-            creation_date=timezone.now(),
-            cost=cost,
-            is_cancelled=0
+        meal = create_dinner(
+            request.POST.get('dinner_name'),
+            request.POST.get('description'),
+            request.POST.get('seats'),
+            request.POST.get('location'),
+            request.POST.get('date'),
+            request.POST.get('time'),
+            request.POST.get('cost')
         )
-
-        meal.save()
 
         host = Host(user_id=request.session['user_id_logged_in'], event_id=meal.event_id)
         host.save()
 
-        maxAllergiID = Ingredient.ingredients.all().last().ingredient_id
-        for x in range(0, maxAllergiID+1):
+        max_allergy_id = Ingredient.ingredients.all().last().ingredient_id
+
+        for allergy_id in range(max_allergy_id + 1):
             print(request.POST)
             print(meal.event_id)
-            if str(x) in request.POST:
+
+            if str(allergy_id) in request.POST:
                 print(11111)
-                event_ingredient = EventIngredient(event_id = meal.event_id, ingredient_id = x)
-                event_ingredient.save()
 
-
+                EventIngredient(event_id=meal.event_id, ingredient_id=allergy_id).save()
 
         # noinspection SpellCheckingInspection
         return redirect('../../profil/')
 
-    allergener = Ingredient.ingredients.all()
+    allergens = Ingredient.ingredients.all()
 
-
-    return render(request, 'newMeal.html', {'allergener':allergener,'site_logged_in': is_logged_in(request)})
+    return render(request, 'newMeal.html', {'allergens': allergens, 'site_logged_in': is_logged_in(request)})
 
 
 # noinspection SpellCheckingInspection
@@ -341,10 +254,10 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
         event_id = event.event_id
 
         guests = Registration.registrations.filter(event_id=event_id)
-        available = event.capacity - len(guests)
+        available = event.capacity - guests.count()
         available_dict[event_id] = available
 
-    # Checks if the event is in the future, or has passed.
+        # Checks if the event is in the future, or has passed.
         if event.date > datetime.today():
             future_events_dict[event_id] = event
 
@@ -356,13 +269,6 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
     })
 
 
-def get_in_dinner(request: HttpRequest, event_id: int) -> Registration or None:
-    try:
-        return Registration.registrations.get(user_id=request.session['user_id_logged_in'], event_id=event_id)
-    except ObjectDoesNotExist:  # Could've used Registration.DoesNotExist, but this saves us a warning suppression.
-        return None
-
-
 def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 
     event_id = event_id
@@ -372,19 +278,15 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 
     dinner = DinnerEvent.events.get(event_id=event_id)
     guests = Registration.registrations.filter(event_id=event_id)
-    guest_count = len(guests)
+    guest_count = guests.count()
     available = dinner.capacity - guest_count
 
     in_dinner = get_in_dinner(request, event_id)
     signed_up = in_dinner is not None
-    try:
-        owner = Host.hosts.get(user_id=request.session['user_id_logged_in'], event_id=event_id)
-        is_owner = True
+    is_owner = Host.hosts.filter(user_id=request.session['user_id_logged_in'], event_id=event_id).exists()
 
-    except:
-        is_owner = False
     if request.POST:
-        if ('book_dinner' in request.POST):
+        if 'book_dinner' in request.POST:
             if signed_up:
                 in_dinner.delete()
             else:
@@ -394,38 +296,38 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
                     date=timezone.now()
                 )
                 in_dinner.save()
-        elif ('cancel_dinner' in request.POST):
+        elif 'cancel_dinner' in request.POST:
             dinner.is_cancelled = 1
             dinner.save()
+
         # noinspection SpellCheckingInspection
         return redirect("../../oversikt/")
 
-
-    allergiesInDinner = []
+    allergies_in_dinner = []
     for allergy in EventIngredient.event_ingredients.all():
         if allergy.event_id == event_id:
-            allergiesInDinner.append(allergy.ingredient_id)
+            allergies_in_dinner.append(allergy.ingredient_id)
 
     counter = 0
-    if not len(allergiesInDinner) == 0:
-        for x in Ingredient.ingredients.all():
-            if allergiesInDinner[counter] == x.ingredient_id:
-                allergiesInDinner[counter] = x.name
-                if counter == len(allergiesInDinner)-1:
+    if not len(allergies_in_dinner) == 0:
+        for ingredient in Ingredient.ingredients.all():
+            if allergies_in_dinner[counter] == ingredient.ingredient_id:
+                allergies_in_dinner[counter] = ingredient.name
+
+                if counter == len(allergies_in_dinner) - 1:
                     break
-                counter+=1
 
-
+                counter += 1
 
     return render(request, 'chooseMeal.html', {
         'dinner': dinner,
         'in_dinner': in_dinner,
-        'is_owner':is_owner,
+        'is_owner': is_owner,
         'guest_count': guest_count,
-        'available': available ,
-        'allergiesInDinner': allergiesInDinner,
-        'checkLen': len(allergiesInDinner) == 0,
-        'admin_user': is_admininistrator(request),
+        'available': available,
+        'allergiesInDinner': allergies_in_dinner,
+        'checkLen': len(allergies_in_dinner) == 0,
+        'admin_user': has_admin_privileges(request),
         'site_logged_in': is_logged_in(request)
     })
 
@@ -433,13 +335,12 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     if not is_logged_in(request):
         return redirect('/')
-    dinner = DinnerEvent.events.get(event_id = event_id)
+    dinner = DinnerEvent.events.get(event_id=event_id)
     time_stamp = str(dinner.date)
-    time_stamp  = time_stamp.split(" ")
+    time_stamp = time_stamp.split(" ")
 
     day = time_stamp[0]
     time = time_stamp[1]
-
 
     if request.POST:
         arrangement_name = request.POST.get('arrangement_name')
@@ -450,24 +351,23 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         prize = request.POST.get('prize')
         day = request.POST.get('date')
 
-        datetime = day + " " + time
-
+        date_and_time = day + " " + time
 
         dinner.name = arrangement_name
         dinner.description = description
         dinner.capacity = seats
         dinner.location = location
-        dinner.date = datetime
+        dinner.date = date_and_time
         dinner.cost = prize
 
-
         dinner.save()
+
         return redirect('../../../')
 
     return render(request, 'editMeal.html', {
-        'dinner':dinner,
-        'date':day,
-        'time':time,
+        'dinner': dinner,
+        'date': day,
+        'time': time,
         'site_logged_in': is_logged_in(request)})
 
 
@@ -475,36 +375,39 @@ def add_allergies(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
         return redirect('/')
 
-    allergiesListWithID = []
-    allergiesList=[]
-    for i in UserAllergy.users_allergies.all(): #Change to .filter() to get immediate all with user_id
-        if i.user_id == request.session['user_id_logged_in']:
-            allergiesListWithID.append(i.ingredient_id)
+    allergies_list_with_id = []
+    allergies_list = []
 
-    for x in range(0, len(allergiesListWithID)):
-        allergiesList.append(Ingredient.ingredients.get(ingredient_id = allergiesListWithID[x]).name)
-    print(allergiesListWithID)
+    for i in UserAllergy.users_allergies.all():  # Change to .filter() to get immediate all with user_id
+        if i.user_id == request.session['user_id_logged_in']:
+            allergies_list_with_id.append(i.ingredient_id)
+
+    for x in range(0, len(allergies_list_with_id)):
+        allergies_list.append(Ingredient.ingredients.get(ingredient_id=allergies_list_with_id[x]).name)
+    print(allergies_list_with_id)
     allergens = Ingredient.ingredients.all()
-    maxAllergyID = allergens.last().ingredient_id
+    max_allergy_id = allergens.last().ingredient_id
 
     if request.POST:
-        for x in range (0,maxAllergyID+1):
+        for x in range(0, max_allergy_id + 1):
             if str(x) in request.POST:
-                if x not in allergiesListWithID:
-                    allergy = UserAllergy(user_id = request.session['user_id_logged_in'], ingredient_id = x)
+                if x not in allergies_list_with_id:
+                    allergy = UserAllergy(user_id=request.session['user_id_logged_in'], ingredient_id=x)
                     allergy.save()
             else:
-                #print(allergiesListWithID, "heieiei")
-                if x in allergiesListWithID:
-                    allergy = UserAllergy.users_allergies.get(user_id = request.session['user_id_logged_in'], ingredient_id = x)
+                # print(allergies_list_with_id, "heieiei")
+                if x in allergies_list_with_id:
+                    allergy = UserAllergy.users_allergies.get(
+                        user_id=request.session['user_id_logged_in'],
+                        ingredient_id=x
+                    )
                     allergy.delete()
 
-
-
+        # noinspection SpellCheckingInspection
         return redirect("../../profil")
-
 
     return render(request, 'addAllergies.html', {
         'object_list': allergens,
-        'allergiesList': allergiesList,
-        'site_logged_in' : is_logged_in(request)})
+        'allergiesList': allergies_list,
+        'site_logged_in': is_logged_in(request)
+    })
