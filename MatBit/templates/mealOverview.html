@@ -5,25 +5,50 @@
 {% block head %}
 
     {{ block.super }}
-
+    <script type="text/javascript">
+        //This has to be here and not in the .js file, because python code can't be in .js files
+        events_allergy = {{events|safe}}
+        events_location = {{event_location|safe}}
+        allEvents = {{event_ids}}
+    </script>
     <link rel="stylesheet" href="{% static 'CSSDocs/mealOverview.css' %}">
+    <script type="text/javascript" src="{% static 'javascript/mealOverview.js' %}"></script>
 
 {% endblock %}
 
 {% block content %}
+    <h1 class="meal-overview-header">
+        Middagsoversikt
+    </h1>
+
+    <div class="dropdown">
+        <button class="dropbtn" onclick="dropdown_allergies()">Filtrer allergi</button>
+        <div id="dropdownAllergies" class="dropdown-content">
+            <form>
+                {% for allergy in allergies %}
+                    <input class="allergyCheck" type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.ingredient_id}} onclick="filter()">
+                    <label for={{allergy.ingredient_id}} id="allergi"> {{allergy.name}}</label><br>
+                 {% endfor %}
+            </form>
+        </div>
+    </div>
 
 
-        <h1 class="meal-overview-header">
-            Middagsoversikt
-        </h1>
+    <div class="dropdown">
+        <button class="dropbtn" onclick="dropdown_locations()">Filtrer sted</button>
+        <div id="dropdownLocations" class="dropdown-content">
+            <form>
+                {% for loc in locations %}
+                    <input class="locationCheck" type="checkbox" id="{{loc}}" name={{loc}} value={{loc}} onclick="filter()">
+                    <label for={{loc}}> {{loc}}</label><br>
+                 {% endfor %}
+            </form>
+        </div>
+    </div>
 
-
-<div class="flex-container">
+    <div class="flex-container">
         {% for instance in object_list %}
-        {% for key, item in future_events_dict.items %} 
-            {% if key == instance.event_id %}
-        <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' ">
-
+            <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' " id="allergy-{{instance.event_id}}">
                 <div class="flex-child">
                     <h3>{{instance.name}}</h3>
                     {% for key, item in available_dict.items %}
@@ -40,8 +65,7 @@
                     <br>
                 </div>
             </div>
-            {% endif %}
-            {% endfor %}
         {% endfor %}
-</div>
+    </div>
+
 {% endblock %}
