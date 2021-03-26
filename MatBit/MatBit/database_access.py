@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpRequest
 from django.utils import timezone
 
-from .mymodels import User, Registration, DinnerEvent
+from .mymodels import User, Registration, DinnerEvent, Host, EventIngredient, UserAllergy
 
 
 def is_logged_in(request: HttpRequest) -> bool:
@@ -120,3 +120,69 @@ def add_user(
         raise ValidationError("post_code is not a number")
     else:
         user.save()
+
+
+def cancel_dinner(dinner: int or DinnerEvent):
+    if isinstance(dinner, int):
+        dinner = DinnerEvent.events.get(event_id=dinner)
+
+    dinner.is_cancelled = 1
+    dinner.save()
+
+
+def delete_user(user: int or User):
+    if isinstance(user, int):
+        user = User.users.get(event_id=user)
+
+    # ====> Hosted dinners
+    hosting = Host.hosts.filter(user_id=user.user_id).all()
+
+    for host_link in hosting:
+        dinner = DinnerEvent.events.get(event_id=host_link.event_id)
+
+        # delete_dinner(dinner, host_link)
+        cancel_dinner(dinner)
+        host_link.delete()
+
+    # ====> Registrations for others' dinners
+    registrations = Registration.registrations.filter(user_id=user.user_id).all()
+
+    for registration in registrations:
+        registration.delete()
+
+    # ====> Registrations for others' dinners
+    allergies = UserAllergy.users_allergies.filter(user_id=user.user_id).all()
+
+    for allergy in allergies:
+        allergy.delete()
+
+    # ====> Deleting the user itself
+    user.delete()
+
+    # Assumes the caller logs out the user.
+
+
+def delete_dinner(dinner: int or DinnerEvent, host: Host or None = None):
+    if isinstance(dinner, int):
+        dinner = DinnerEvent.events.get(event_id=dinner)
+
+    # ====> Allergies
+    ingredients = EventIngredient.event_ingredients.filter(event_id=dinner.event_id).all()
+
+    for ingredient in ingredients:
+        ingredient.delete()
+
+    # ====> Host
+    if host is None:
+        host = Host.hosts.get(event_id=dinner.event_id)
+
+    host.delete()
+
+    # ====> Registrations
+    registrations = Registration.registrations.filter(event_id=dinner.event_id).all()
+
+    for registration in registrations:
+        registration.delete()
+
+    # ====> Event itself
+    dinner.delete()

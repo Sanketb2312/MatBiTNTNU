@@ -2,7 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 
-from .database_access import is_logged_in, has_admin_privileges, add_user, get_in_dinner, create_dinner
+from .database_access import is_logged_in, has_admin_privileges, add_user, get_in_dinner, create_dinner, delete_user, \
+    cancel_dinner
 from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host
 from django.utils import timezone
 from datetime import datetime
@@ -175,23 +176,28 @@ def edit_user(request: HttpRequest) -> HttpResponse:
     user = User.users.get(user_id=request.session['user_id_logged_in'])
 
     if request.POST:
-        # FIXME: Why are these queried like this, instead of just using: user.<> = request.POST.get('<>')?
-        #  In case one of them throws an error, nothing is updated?
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        address = request.POST.get('address')
-        post_code = request.POST.get('post_code')
-        place = request.POST.get('location')
+        if "edit" in request.POST:
+            # FIXME: Why are these queried like this, instead of just using: user.<> = request.POST.get('<>')?
+            #  In case one of them throws an error, nothing is updated?
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            address = request.POST.get('address')
+            post_code = request.POST.get('post_code')
+            place = request.POST.get('location')
 
-        user.first_name = first_name
-        user.last_name = last_name
-        user.address = address
-        user.post_code = post_code
-        user.location = place
-        user.save()
+            user.first_name = first_name
+            user.last_name = last_name
+            user.address = address
+            user.post_code = post_code
+            user.location = place
+            user.save()
 
-        # noinspection SpellCheckingInspection
-        return redirect('../../profil/')
+            # noinspection SpellCheckingInspection
+            return redirect('../../profil/')
+        elif "delete" in request.POST:
+            delete_user(user)
+
+            return logout(request)
 
     return render(request, 'editUser.html', {
         'user': user,
@@ -316,6 +322,8 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     in_dinner = get_in_dinner(request, event_id)
     signed_up = in_dinner is not None
     is_owner = Host.hosts.filter(user_id=request.session['user_id_logged_in'], event_id=event_id).exists()
+    # TODO: legg til navn på verten i brukergrensesnittet. Hvis verten ikke eksisterer, er den kontoen slettet.
+    #  I så fall skal middagen være avlyst. Hvis den ikke er det, har vi en intern feil.
 
     if request.POST:
         if 'book_dinner' in request.POST:
@@ -329,8 +337,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
                 )
                 in_dinner.save()
         elif 'cancel_dinner' in request.POST:
-            dinner.is_cancelled = 1
-            dinner.save()
+            cancel_dinner(dinner)
 
         # noinspection SpellCheckingInspection
         return redirect("../../oversikt/")
