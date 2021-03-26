@@ -378,7 +378,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     available = dinner.capacity - guest_count
     price = dinner.cost
 
-    if guest_count ==  0:
+    if guest_count == 0:
         guest_price = price
     else:
         guest_price = round(price / guest_count)
