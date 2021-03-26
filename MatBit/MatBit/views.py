@@ -7,6 +7,9 @@ from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredien
 from django.utils import timezone
 from datetime import datetime
 
+from django.contrib.auth.hashers import check_password, make_password
+
+
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
 # commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
@@ -71,9 +74,9 @@ def register(request: HttpRequest) -> HttpResponse:
             'birth_date': birth_date,
             'address': address,
             'post_code': post_code,
-            'location': location,
-            'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
-        }
+            'location': location
+        },
+        'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
     })
 
 
@@ -88,7 +91,13 @@ def login(request: HttpRequest) -> HttpResponse:
         password = request.POST.get('password')
 
         try:
-            user = User.users.get(email=email, password=password)
+            print(password)
+            user = User.users.get(email=email)
+            #Used this to create a new hashed password
+            print(make_password(password))
+            if not check_password(password, user.password):
+                raise ObjectDoesNotExist
+
         except ObjectDoesNotExist:
             error_login = True
         else:
