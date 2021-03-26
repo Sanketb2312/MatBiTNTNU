@@ -125,8 +125,10 @@ def profile(request: HttpRequest) -> HttpResponse:
 
     # Collecting all the registrations the user has made.
     registrations = Registration.registrations.filter(user_id=request.session['user_id_logged_in']).all()
+    
 
     for registration in registrations:
+        print(registration.event_id)
         dinner_information = DinnerEvent.events.get(event_id=registration.event_id)
 
         event_dict[dinner_information.event_id] = [
@@ -139,7 +141,7 @@ def profile(request: HttpRequest) -> HttpResponse:
     hosting = Host.hosts.filter(user_id=request.session['user_id_logged_in']).all()
 
     for hosting_event in hosting:
-
+        print(hosting_event.event_id)
         hosting_information = DinnerEvent.events.get(event_id=hosting_event.event_id)
 
         hosting_dict[hosting_information.event_id] = [

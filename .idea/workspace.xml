@@ -19,10 +19,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="Mulig å filtrere vekk middager med de allergiene man her. BUG: allergier som er husket av algres ikke, alle blir borte om man skal filtrere på nytt">
+    <list default="true" id="aa1bbe22-78c1-412f-ae23-77e550dd7dea" name="Default Changelist" comment="filtrering med både sted og allergi fungerer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MatBit/MatBit/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/MatBit/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MatBit/templates/mealOverview.html" beforeDir="false" afterPath="$PROJECT_DIR$/MatBit/templates/mealOverview.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,11 +58,12 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="TEXT&#10;GitIgnore" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../middagsarrangementBackup" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/../middagsarrangementBackup" />
       <recent name="C:\Users\47483\Documents\middagsarrangement\MatBit\static\CSSDocs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -226,7 +226,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615986978610</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="filtrering med både sted og allergi fungerer">
+      <created>1616611121743</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1616611121743</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -275,6 +282,7 @@
     <MESSAGE value="Merge konflikter er fikset for branch (#31-allergier-o-l-pa-middagssiden) og (#22-etterga-kodekvalitet-fra-sprint-1)" />
     <MESSAGE value="Mulig å legge til allergi. Bug: allergi for en middag dukker opp for alle" />
     <MESSAGE value="Mulig å filtrere vekk middager med de allergiene man her. BUG: allergier som er husket av algres ikke, alle blir borte om man skal filtrere på nytt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mulig å filtrere vekk middager med de allergiene man her. BUG: allergier som er husket av algres ikke, alle blir borte om man skal filtrere på nytt" />
+    <MESSAGE value="filtrering med både sted og allergi fungerer" />
+    <option name="LAST_COMMIT_MESSAGE" value="filtrering med både sted og allergi fungerer" />
   </component>
 </project>
