@@ -434,7 +434,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'available': available,
         'allergiesInDinner': allergiesInDinner,
         'checkLen': len(allergiesInDinner) == 0,
-        'admin_user': is_admininistrator(request),
+        'admin_user': has_admin_privileges(request),
         'site_logged_in': is_logged_in(request)
     })
 
