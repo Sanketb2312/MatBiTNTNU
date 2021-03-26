@@ -323,12 +323,12 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     guests = Registration.registrations.filter(event_id=event_id)
     guest_count = guests.count()
     available = dinner.capacity - guest_count
-    price = dinner.cost
+
 
     if guest_count == 0:
-        guest_price = price
+        guest_price = dinner.cost
     else:
-        guest_price = round(price / guest_count)
+        guest_price = round(dinner.cost / guest_count)
 
     in_dinner = get_in_dinner(request, event_id)
     signed_up = in_dinner is not None
