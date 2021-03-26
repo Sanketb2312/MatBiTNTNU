@@ -37,7 +37,7 @@ def create_dinner(
     location: str,
     date: str,
     time: str,
-    cost: int,
+    cost: int
 ) -> DinnerEvent:
     date_and_time = date + " " + time + ":00"
 
@@ -66,7 +66,7 @@ def add_user(
         location: str,
         is_admin: bool,
         email: str,
-        password: str,
+        password: str
 ):
     # TODO: should send e-mail with validation token
 
@@ -105,7 +105,7 @@ def add_user(
         )
 
     try:
-        passwordHashed = make_password(password)
+        hashed_password = make_password(password)
         user = User(
             first_name=first_name,
             last_name=last_name,
@@ -115,7 +115,7 @@ def add_user(
             location=location,
             is_admin="1" if is_admin else "0",
             email=email,
-            password = passwordHashed
+            password=hashed_password
         )
     except ValueError:
         # Thrown if post_code is not a number
