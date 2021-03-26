@@ -45,12 +45,14 @@
                 <p id="meal-capacity">
                     Totale plasser: {{ dinner.capacity }}, ledige: {{ available }}
                 </p>
-                <p id ="price-per-guest">
-                        Pris per gjest : {{guest_price}} KR
+                <p id="meal-price">
+                    Middagskostnad: {{ dinner.cost }} kr
                 </p>
-
-
-
+                {% if in_dinner %}
+                    <p id ="price-per-guest">
+                            Kostnad per gjest : {{guest_price}} kr
+                    </p>
+                {% endif %}
 
                 {% if checkLen %}
 
@@ -63,11 +65,6 @@
                 {% for allergy in allergiesInDinner %}
                     <p>{{allergy}}</p>
                 {% endfor %}
-
-
-
-
-
 
                 {% if dinner.is_cancelled == 0 %}
                     {% if is_owner == False %}
@@ -84,7 +81,6 @@
                                     <p>Middagen er full</p>
                                 {% endif %}
                             {% endif %}
-
 
                     </form>
                     {% endif %}
