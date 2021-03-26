@@ -7,6 +7,8 @@ from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredien
 from django.utils import timezone
 from datetime import datetime
 
+from passlib.hash import pbkdf2_sha256
+
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
 # commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
@@ -88,7 +90,11 @@ def login(request: HttpRequest) -> HttpResponse:
         password = request.POST.get('password')
 
         try:
-            user = User.users.get(email=email, password=password)
+            print(password)
+            user = User.users.get(email=email)
+            if not pbkdf2_sha256.verify(password, user.password):
+                raise ObjectDoesNotExist
+
         except ObjectDoesNotExist:
             error_login = True
         else:
