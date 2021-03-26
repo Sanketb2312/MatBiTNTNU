@@ -430,7 +430,6 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'in_dinner': in_dinner,
         'is_owner': is_owner,
         'guest_count': guest_count,
-        'price': price,
         'guest_price': guest_price,
         'available': available,
         'allergiesInDinner': allergiesInDinner,
