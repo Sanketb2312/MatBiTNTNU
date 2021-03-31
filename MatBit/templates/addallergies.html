@@ -31,24 +31,23 @@
 {% block content %}
 
     <h1>Legg til allergi</h1>
-<form method="POST" id="add-allergoes" class="add-allergoes-form">
+<form method="POST" id="add-allergies" class="add-allergies-form">
     {% csrf_token %}
-    {% for i in object_list %}
-
-        <div class="form-check">
-            {% if i.name in allergiesList %}
-        <table id = 'checBox'>
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" name = {{ i.ingredient_id }} checked>
-             {% else %}
-              <input class="form-check-input" type="checkbox" value="" id="flex" name = {{ i.ingredient_id }}>
-            {% endif %}
-            {{ i.name }}
-        </table>
-        </div>
-
-    {% endfor %}
-
-    <input type="submit" value="Legg til">
+		<div class="form-check">
+				<table id = "checBox">
+    		{% for i in object_list %}
+						<tr>
+		    		{% if i.name in allergiesList %}
+								<td><input type="checkbox" class="form-check-input flexCheckDefault" id="allergy-{{ i.ingredient_id }}"  name = "{{ i.ingredient_id }}" checked></td>
+		        {% else %}
+								<td><input type="checkbox" class="form-check-input flex" id="allergy-{{ i.ingredient_id }}" name = "{{ i.ingredient_id }}"></td>
+		        {% endif %}
+								<td><label for="allergy-{{ i.ingredient_id }}"> {{i.name}} </label></td>
+						</tr>
+				{% endfor %}
+				</table>
+		</div>
+    <input type="submit" name="submit" id="submit" class="form-submit" value="Legg til">
 
 		<b id="displayValues"></b>
 </form>

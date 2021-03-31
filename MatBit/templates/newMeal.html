@@ -64,9 +64,8 @@
             <div class="allergies">
 
                 {% for allergy in allergens %}
-                <input type="checkbox" id="allergies" name={{allergy.ingredient_id}} value={{allergy.ingredient_id}}>
-                <label for="allergies"> {{allergy.name}} </label><br>
-
+                <input type="checkbox" id="allergies-{{allergy.ingredient_id}}" name={{allergy.ingredient_id}} value={{allergy.ingredient_id}}>
+                <label for="allergies-{{allergy.ingredient_id}}"> {{allergy.name}} </label><br>
                 {% endfor %}
 
             </div>
