@@ -349,19 +349,20 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     for allergy in EventIngredient.event_ingredients.all():
         if allergy.event_id == event_id:
             allergies_in_dinner.append(allergy.ingredient_id)
-    
+
 
     counter = 0
     if not len(allergies_in_dinner) == 0:
+        allergies_in_dinner.sort()
         for ingredient in Ingredient.ingredients.all():
             if allergies_in_dinner[counter] == ingredient.ingredient_id:
                 allergies_in_dinner[counter] = ingredient.name
 
-                if counter == len(allergies_in_dinner) - 1:
+                if counter >= len(allergies_in_dinner) - 1:
                     break
 
                 counter += 1
-    print(allergies_in_dinner)
+
     return render(request, 'chooseMeal.html', {
         'dinner': dinner,
         'in_dinner': in_dinner,
@@ -421,7 +422,6 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         for allergy_id in range(max_allergy_id + 1):
             if str(allergy_id) in request.POST:
                 if allergy_id not in event_ingredients_ids:
-                    print("moren din")
                     EventIngredient(event_id=event_id, ingredient_id=allergy_id).save()
             else:
                 if allergy_id in event_ingredients_ids:
@@ -432,12 +432,12 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 
 
 
-        
+
         dinner.save()
 
         return redirect('../../../')
 
-    
+
 
     return render(request, 'editMeal.html', {
         'dinner': dinner,
