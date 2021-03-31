@@ -236,8 +236,8 @@ def new_meal(request: HttpRequest) -> HttpResponse:
         max_allergy_id = Ingredient.ingredients.all().last().ingredient_id
 
         for allergy_id in range(max_allergy_id + 1):
-            print(request.POST)
-            print(meal.event_id)
+            #print(request.POST)
+            #print(meal.event_id)
 
             if str(allergy_id) in request.POST:
 
@@ -258,61 +258,47 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    queryset = DinnerEvent.events.filter(date__gte = datetime.today())
+    queryset = DinnerEvent.events.filter(date__gte = datetime.today())  #Gets the objects from database with datetime after now
+    queryset = queryset.order_by('date')    #Sorts the input by date
+
+    #Adds event ids in a array for use in filtration
     event_ids = []
     for id in queryset:
         event_ids.append(id.event_id)
 
-    future_events_dict = {}
-
-
     # Gives the number of guests already booked for this dinner
     for event in queryset:
-
         event_id = event.event_id
 
         guests = Registration.registrations.filter(event_id=event_id)
         available = event.capacity - guests.count()
         available_dict[event_id] = available
 
-
-
+    #Creates an array for filtration with locations on the webpage
     locations = []
     event_location = {}
     for dinner_place in queryset:
         if dinner_place.event_id not in event_location:
-            print(type(dinner_place.location))
             event_location[dinner_place.event_id] = dinner_place.location.lower()
         if dinner_place.location.lower() not in locations:
             locations.append(dinner_place.location.lower())
-    print(event_location)
 
-    events = {}
-
+    #Creates an array for filtration with allergies on the webpage
+    events_allergy = {}
     for event in queryset:
         query = EventIngredient.event_ingredients.filter(event_id=event.event_id)
         for x in query:
-            if x.event_id not in events:
-                events[x.event_id] = []
-            events[x.event_id].append(x.ingredient_id)
-    print(events)
-
-    #for x in event_location:
-    #    if x in events:
-    #        events[x].append(event_location[x])
-    #    else:
-    #        events[x]=[x]
-    #print(events)
-
+            if x.event_id not in events_allergy:
+                events_allergy[x.event_id] = []
+            events_allergy[x.event_id].append(x.ingredient_id)
 
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
-        'future_events_dict': future_events_dict,
         'allergies':Ingredient.ingredients.all(),
         'locations' : locations,
         'event_location' : event_location,
-        'events' : events,
+        'events_allergy' : events_allergy,
         'site_logged_in': is_logged_in(request),
         'event_ids':event_ids
     })
@@ -441,7 +427,7 @@ def add_allergies(request: HttpRequest) -> HttpResponse:
 
     for x in range(0, len(allergies_list_with_id)):
         allergies_list.append(Ingredient.ingredients.get(ingredient_id=allergies_list_with_id[x]).name)
-    print(allergies_list_with_id)
+    #print(allergies_list_with_id)
     allergens = Ingredient.ingredients.all()
     max_allergy_id = allergens.last().ingredient_id
 
