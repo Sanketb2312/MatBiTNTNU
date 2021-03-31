@@ -4,6 +4,19 @@
 {% block head %}
 		{{block.super}}
         <link rel="stylesheet" href="{% static 'CSSDocs/profile.css' %}">
+<script>
+
+	function showRatingButtion(id) {
+
+		var button = document.getElementById("rating-"+id);
+		if(button.style.display === "none") {
+			button.style.display = "initial";
+		}
+		else {
+			button.style.display = "none";
+		}
+	}
+</script>
 
 {% endblock %}
 {% block content %}
@@ -83,7 +96,40 @@
 				{% else %}
 			<h3> Du arrangerer ingen middager </h3>
 		{% endif %}
+	</div>
 
+	<div class="parent">
+			<h3> Du har deltatt på disse middagene:  </h3>
+
+				{% for event, values in past_event_dict.items %}
+				<li>
+					<div class="flex-child" onclick="showRatingButtion({{event}})">
+					{% for dinner in values %}
+						<td> {{ dinner }} </td>
+					{% endfor %}
+				</li>
+				<button id="rating-{{event}}" class="ratingButton" onclick="location.href= '{% url 'feedback' event_id=event %}' ">Gi tilbakemelding</button>
+			{% endfor %}
+
+	</div>
+
+	<div class="parent">
+			<h3> Tilbakemeldinger på middager du har arrangert:  </h3>
+
+				{% for feed in feedback %}
+				<li>
+					<div class="flex-child" onclick="showRatingButtion({{event}})">
+						Kommentar fra <b>{{user_comment_name}}</b>
+						på middagen <b>{{feedback_event_name}}</b>:
+						<br>
+						{{feed.comment}}
+						<br>
+						<br>
+						Rating på middagen er:
+						{{feed.rating}}
+
+				</li>
+			{% endfor %}
 
 	</div>
 

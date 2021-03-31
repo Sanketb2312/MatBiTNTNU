@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 
 from .database_access import is_logged_in, has_admin_privileges, add_user, get_in_dinner, create_dinner
-from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host
+from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host, Feedback
 from django.utils import timezone
 from datetime import datetime
 
@@ -85,7 +85,7 @@ def login(request: HttpRequest) -> HttpResponse:
         return redirect('/')
 
     error_login = False
-
+    make_password("bestePassord123")
     if request.POST:
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -128,6 +128,8 @@ def profile(request: HttpRequest) -> HttpResponse:
     allergy_dict = {}
     hosting_dict = {}
     event_dict = {}
+    past_event_dict = {}
+    event_ids = []
 
     user_id = request.session['user_id_logged_in']
 
@@ -155,6 +157,15 @@ def profile(request: HttpRequest) -> HttpResponse:
             dinner_information.date
         ]
 
+        if dinner_information.date < datetime.today():
+            event_ids.append(dinner_information.event_id)
+            past_event_dict[dinner_information.event_id] = [
+            dinner_information.name,
+            dinner_information.location,
+            dinner_information.date
+        ]
+    print(past_event_dict)
+
     # Collecting all the events the user is hosting.
     hosting = Host.hosts.filter(user_id=user_id).all()
 
@@ -168,11 +179,33 @@ def profile(request: HttpRequest) -> HttpResponse:
             hosting_information.capacity
         ]
 
+    feedback = Feedback.feedbacks.filter(user_id_host=request.session['user_id_logged_in'])
+    user_comment = None
+    feedback_event = None
+
+    for feed in feedback:
+        user_comment = feed.user_id_comment
+        feedback_event = feed.event_id
+
+    feedback_event_name = DinnerEvent.events.filter(event_id = feedback_event)
+    user_comment_name = User.users.filter(user_id = user_comment)
+    for x in feedback_event_name:
+        feedback_event_name = x.name
+    for x in user_comment_name:
+        user_comment_name = x.first_name + " " + x.last_name
+
+
+
     return render(request, 'profile.html', {
         'user': user,
         'userAllergies': allergy_dict,
         'arrangement': event_dict,
         'hosting': hosting_dict,
+        'past_event_dict': past_event_dict,
+        'event_ids':event_ids,
+        'feedback': feedback,
+        'feedback_event_name' : feedback_event_name,
+        'user_comment_name' : user_comment_name,
         'admin_user': has_admin_privileges(request),
         'site_logged_in': is_logged_in(request)
     })
@@ -253,7 +286,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    queryset = DinnerEvent.events.filter(date__gte = datetime.today())
+    #queryset = DinnerEvent.events.filter(date__gte = datetime.today())
+    queryset = DinnerEvent.events.all()
     event_ids = []
     for id in queryset:
         event_ids.append(id.event_id)
@@ -462,3 +496,23 @@ def add_allergies(request: HttpRequest) -> HttpResponse:
         'allergiesList': allergies_list,
         'site_logged_in': is_logged_in(request)
     })
+
+def feedback(request : HttpRequest, event_id: int) -> HttpResponse:
+    if not is_logged_in(request):
+        return redirect('/')
+
+    event_id = event_id
+    user_host = Host.hosts.filter(event_id=event_id)
+
+
+    for user in user_host:
+        user_host=user.user_id
+
+    if request.POST:
+        comment = request.POST.get("comment")
+        rating = request.POST.get("rating")
+        Feedback(comment = comment, rating = rating, user_id_host = user_host, user_id_comment = request.session['user_id_logged_in'], event_id=event_id).save()
+        return redirect("../../profil")
+
+
+    return render(request, 'feedback.html')

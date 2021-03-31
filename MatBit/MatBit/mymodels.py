@@ -99,6 +99,21 @@ class Host(models.Model):
         managed = False
         db_table = 'vertskap'
 
+class Feedback(models.Model):
+    feedbacks = models.Manager()
+
+    feedbackid = models.AutoField(db_column='TilbakemeldingID', primary_key=True)  # Field name made lowercase.
+    comment = models.CharField(db_column='Kommentar', max_length=500)  # Field name made lowercase.
+    rating = models.IntegerField(db_column='Rating')  # Field name made lowercase.
+    user_id_host = models.IntegerField(db_column='BrukerID_vertskap')  # Field name made lowercase.
+    user_id_comment = models.IntegerField(db_column='BrukerID_kommentar')  # Field name made lowercase.
+    event_id = models.IntegerField(db_column='ArrangementID')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'tilbakemelding'
+
+
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
