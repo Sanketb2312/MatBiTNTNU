@@ -7,7 +7,7 @@
     {{ block.super }}
     <script type="text/javascript">
         //This has to be here and not in the .js file, because python code can't be in .js files
-        events_allergy = {{events|safe}}
+        events_allergy = {{events_allergy|safe}}
         events_location = {{event_location|safe}}
         allEvents = {{event_ids}}
     </script>
@@ -48,8 +48,14 @@
 
     <div class="flex-container">
         {% for instance in object_list %}
+            {% if instance.is_cancelled == 0 %}
             <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' " id="allergy-{{instance.event_id}}">
                 <div class="flex-child">
+            {% elif instance.is_cancelled == 1 %}
+            <div class="url" id="allergy-{{instance.event_id}}">
+                <div class="flex-child" style="background-image: url({% static 'images/cancelled_image.png' %}); background-repeat: no-repeat;">
+                <!-- <img class="cancelled_image" id="cancelled_image" src="{% static 'images/cancelled_image.png' %}" width="100%" height="100%"> -->
+            {% endif %}
                     <h3>{{instance.name}}</h3>
                     {% for key, item in available_dict.items %}
                         {% if key == instance.event_id %}
