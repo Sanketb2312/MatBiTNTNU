@@ -350,13 +350,15 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         if allergy.event_id == event_id:
             allergies_in_dinner.append(allergy.ingredient_id)
 
+
     counter = 0
     if not len(allergies_in_dinner) == 0:
+        allergies_in_dinner.sort()
         for ingredient in Ingredient.ingredients.all():
             if allergies_in_dinner[counter] == ingredient.ingredient_id:
                 allergies_in_dinner[counter] = ingredient.name
 
-                if counter == len(allergies_in_dinner) - 1:
+                if counter >= len(allergies_in_dinner) - 1:
                     break
 
                 counter += 1
@@ -385,6 +387,16 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     day = time_stamp[0]
     time = time_stamp[1]
 
+    event_ingredients = EventIngredient.event_ingredients.filter(event_id = dinner.event_id)
+
+    event_ingredients_name = []
+    event_ingredients_ids = []
+    for ingredients in event_ingredients:
+        for ingredient_id in Ingredient.ingredients.all():
+            if ingredients.ingredient_id == ingredient_id.ingredient_id:
+                event_ingredients_name.append(ingredient_id.name)
+                event_ingredients_ids.append(ingredient_id.ingredient_id)
+
     if request.POST:
         arrangement_name = request.POST.get('arrangement_name')
         description = request.POST.get('description')
@@ -403,14 +415,36 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         dinner.date = date_and_time
         dinner.cost = prize
 
+
+
+        max_allergy_id = Ingredient.ingredients.all().last().ingredient_id
+
+        for allergy_id in range(max_allergy_id + 1):
+            if str(allergy_id) in request.POST:
+                if allergy_id not in event_ingredients_ids:
+                    EventIngredient(event_id=event_id, ingredient_id=allergy_id).save()
+            else:
+                if allergy_id in event_ingredients_ids:
+
+                    allergy = EventIngredient.event_ingredients.get(event_id=dinner.event_id, ingredient_id=allergy_id)
+                    print(allergy)
+                    allergy.delete()
+
+
+
+
         dinner.save()
 
         return redirect('../../../')
+
+
 
     return render(request, 'editMeal.html', {
         'dinner': dinner,
         'date': day,
         'time': time,
+        'allergens':Ingredient.ingredients.all(),
+        'event_ingredients_name' : event_ingredients_name,
         'site_logged_in': is_logged_in(request)})
 
 
