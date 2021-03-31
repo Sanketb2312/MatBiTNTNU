@@ -146,6 +146,7 @@ def profile(request: HttpRequest) -> HttpResponse:
 
     for registration in registrations:
 
+
         dinner_information = DinnerEvent.events.get(event_id=registration.event_id)
 
         event_dict[dinner_information.event_id] = [
