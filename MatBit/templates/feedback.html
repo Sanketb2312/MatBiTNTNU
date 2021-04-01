@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block head %}
+		{{block.super}}
+{% endblock %}
+
+{% block content %}
+
+<div>
+
+	<form method="POST">
+		{% csrf_token %}
+		<input name="comment" id="comment">
+		<label>Skriv din tilbakemelding på middagen</label>
+		<input name="rating" id="rating">
+		<label>Gi rating mellom 1 og 5</label>
+		<input type="submit">
+	</form>
+</div>
+
+{% endblock %}
