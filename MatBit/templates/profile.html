@@ -116,18 +116,17 @@
 	<div class="parent">
 			<h3> Tilbakemeldinger på middager du har arrangert:  </h3>
 
-				{% for feed in feedback %}
+				{% for key, value in feedback_dict.items %}
 				<li>
 					<div class="flex-child" onclick="showRatingButtion({{event}})">
-						Kommentar fra <b>{{user_comment_name}}</b>
-						på middagen <b>{{feedback_event_name}}</b>:
+						Kommentar fra <b>{{value.1}}</b>
+						på middagen <b>{{value.0}}</b>:
 						<br>
-						{{feed.comment}}
+						{{value.2}}
 						<br>
 						<br>
 						Rating på middagen er:
-						{{feed.rating}}
-
+						{{value.3}}
 				</li>
 			{% endfor %}
 

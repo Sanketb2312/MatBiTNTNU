@@ -3,9 +3,33 @@
 
 {% block head %}
 		{{block.super}}
+        <link rel="stylesheet" href="{% static 'CSSDocs/feedback.css' %}">
+
+        <script>
+
+            function hideSubmit() {
+                var check_existing_feedback = {{check_existing_feedback}}
+                var s = document.getElementById("feedback_submit")
+                var errormessage = document.getElementById("errormessage")
+
+                if (check_existing_feedback) {
+                    errormessage.innerHTML= "Du har allerede gitt tilbakemelding på denne middagen";
+                    s.setAttribute('disabled','disabled')
+                }
+            }
+
+            function showSubmit() {
+                var s = document.getElementById("feedback_submit")
+                var errormessage = document.getElementById("errormessage")
+                errormessage.innerHTML= "";
+                s.setAttribute('initial','initial')
+            }
+
+        </script>
 {% endblock %}
 
 {% block content %}
+<button onclick="location.href= '{% url 'profile'  %}' ">Tilbake</button>
 
 <div>
 
@@ -15,8 +39,10 @@
 		<label>Skriv din tilbakemelding på middagen</label>
 		<input name="rating" id="rating">
 		<label>Gi rating mellom 1 og 5</label>
-		<input type="submit">
+		<input type="submit" id="feedback_submit"  onmouseover="hideSubmit()" onmouseout="showSubmit()">
+        <label id="errormessage"></label>
 	</form>
 </div>
+
 
 {% endblock %}

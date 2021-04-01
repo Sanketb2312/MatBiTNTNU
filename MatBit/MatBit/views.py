@@ -11,6 +11,7 @@ from django.contrib.auth.hashers import check_password, make_password
 
 
 
+
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
 # commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
 # HttpRequest.session is set by the session middleware; also an anti-pattern.
@@ -180,19 +181,34 @@ def profile(request: HttpRequest) -> HttpResponse:
         ]
 
     feedback = Feedback.feedbacks.filter(user_id_host=request.session['user_id_logged_in'])
+
+    feedback_dict = {}
     user_comment = None
     feedback_event = None
+
+
+    #for x in feedback_event_name:
+     #   feedback_event_name = x.name
+    #for x in user_comment_name:
+     #   user_comment_name = x.first_name + " " + x.last_name
 
     for feed in feedback:
         user_comment = feed.user_id_comment
         feedback_event = feed.event_id
 
-    feedback_event_name = DinnerEvent.events.filter(event_id = feedback_event)
-    user_comment_name = User.users.filter(user_id = user_comment)
-    for x in feedback_event_name:
-        feedback_event_name = x.name
-    for x in user_comment_name:
-        user_comment_name = x.first_name + " " + x.last_name
+        feedback_event_name = DinnerEvent.events.filter(event_id=feedback_event)
+        user_comment_name = User.users.filter(user_id=user_comment)
+        feedback_dict[feed.feedbackid] = [
+            feedback_event_name, user_comment_name, feed.comment, feed.rating
+        ]
+    print(feedback_dict)
+
+    for key, value in feedback_dict.items():
+        for event in value[0]:
+            value[0] = event.name
+        for user_name in value[1]:
+            value[1] = user_name.first_name + " " + user_name.last_name
+
 
 
 
@@ -204,8 +220,7 @@ def profile(request: HttpRequest) -> HttpResponse:
         'past_event_dict': past_event_dict,
         'event_ids':event_ids,
         'feedback': feedback,
-        'feedback_event_name' : feedback_event_name,
-        'user_comment_name' : user_comment_name,
+        'feedback_dict' : feedback_dict,
         'admin_user': has_admin_privileges(request),
         'site_logged_in': is_logged_in(request)
     })
@@ -504,9 +519,17 @@ def feedback(request : HttpRequest, event_id: int) -> HttpResponse:
     event_id = event_id
     user_host = Host.hosts.filter(event_id=event_id)
 
-
     for user in user_host:
         user_host=user.user_id
+
+    check_existing_feedback = False
+    feedback = Feedback.feedbacks.filter(user_id_comment = request.session['user_id_logged_in'])
+
+    for feed in feedback:
+        if user_host == feed.user_id_host and feed.event_id == event_id:
+            check_existing_feedback = True
+
+
 
     if request.POST:
         comment = request.POST.get("comment")
@@ -515,4 +538,4 @@ def feedback(request : HttpRequest, event_id: int) -> HttpResponse:
         return redirect("../../profil")
 
 
-    return render(request, 'feedback.html')
+    return render(request, 'feedback.html', {'check_existing_feedback': str(check_existing_feedback).lower()})
