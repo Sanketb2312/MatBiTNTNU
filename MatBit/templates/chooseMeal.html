@@ -7,17 +7,7 @@
     {{ block.super }}
 
     <link rel="stylesheet" href="{% static 'CSSDocs/chooseMeal.css' %}">
-
-    <script type="text/javascript">
-        function validateCancel() {
-            if(confirm("Er du sikker på at du vil avlyse middagen?")) {
-              return true;
-            } else {
-              return false;
-            }
-
-        }
-    </script>
+    <script src="{% static 'javascript/chooseMeal.js' %}" charset="utf-8"></script>
 
 {% endblock %}
 
