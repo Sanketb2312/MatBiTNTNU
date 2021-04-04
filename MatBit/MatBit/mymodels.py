@@ -5,22 +5,17 @@ from django.db import models
 # ----- Application models
 # ======================================================================================================================
 
-class DinnerEvent(models.Model):
-    events = models.Manager()
 
-    event_id = models.AutoField(db_column='ArrangementID', primary_key=True)
-    name = models.CharField(db_column='ArrangementNavn', max_length=256)
-    description = models.TextField(db_column='Beskrivelse', blank=True, null=True)
-    capacity = models.IntegerField(db_column='AntallPlasser', blank=True, null=True)
-    location = models.CharField(db_column='Lokasjon', max_length=128, blank=True, null=True)
-    date = models.DateTimeField(db_column='Tidspunkt', blank=True, null=True)
-    creation_date = models.DateTimeField(db_column='Opprettet')
-    cost = models.IntegerField(db_column='Pris', blank=True, null=True)
-    is_cancelled = models.IntegerField(db_column='Avlyst')
+class Host(models.Model):
+    hosts = models.Manager()
+
+    host_id = models.AutoField(db_column='VertskapID', primary_key=True)
+    user_id = models.IntegerField(db_column='BrukerID')
+    event_id = models.IntegerField(db_column='ArrangementID')
 
     class Meta:
         managed = False
-        db_table = 'arrangement'
+        db_table = 'vertskap'
 
 
 class User(models.Model):
@@ -41,6 +36,9 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'bruker'
+
+    def display_name(self) -> str:
+        return self.first_name + " " + self.last_name
 
 
 class UserAllergy(models.Model):
@@ -92,16 +90,25 @@ class Registration(models.Model):
         db_table = 'pamelding'
 
 
-class Host(models.Model):
-    hosts = models.Manager()
+class DinnerEvent(models.Model):
+    events = models.Manager()
 
-    host_id = models.AutoField(db_column='VertskapID', primary_key=True)
-    user_id = models.IntegerField(db_column='BrukerID')
-    event_id = models.IntegerField(db_column='ArrangementID')
+    event_id = models.AutoField(db_column='ArrangementID', primary_key=True)
+    name = models.CharField(db_column='ArrangementNavn', max_length=256)
+    description = models.TextField(db_column='Beskrivelse', blank=True, null=True)
+    capacity = models.IntegerField(db_column='AntallPlasser', blank=True, null=True)
+    location = models.CharField(db_column='Lokasjon', max_length=128, blank=True, null=True)
+    date = models.DateTimeField(db_column='Tidspunkt', blank=True, null=True)
+    creation_date = models.DateTimeField(db_column='Opprettet')
+    cost = models.IntegerField(db_column='Pris', blank=True, null=True)
+    is_cancelled = models.IntegerField(db_column='Avlyst')
 
     class Meta:
         managed = False
-        db_table = 'vertskap'
+        db_table = 'arrangement'
+
+    def host(self) -> Host:
+        return User.users.get(user_id=Host.hosts.get(event_id=self.event_id).user_id)
 
 
 # ======================================================================================================================
