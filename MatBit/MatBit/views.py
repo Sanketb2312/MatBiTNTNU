@@ -301,8 +301,8 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    #queryset = DinnerEvent.events.filter(date__gte = datetime.today())
-    queryset = DinnerEvent.events.all()
+    queryset = DinnerEvent.events.filter(date__gte = datetime.today())
+    #queryset = DinnerEvent.events.all()
     event_ids = []
     for id in queryset:
         event_ids.append(id.event_id)
@@ -539,3 +539,5 @@ def feedback(request : HttpRequest, event_id: int) -> HttpResponse:
 
 
     return render(request, 'feedback.html', {'check_existing_feedback': str(check_existing_feedback).lower()})
+
+
