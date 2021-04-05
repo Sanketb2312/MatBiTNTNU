@@ -1,11 +1,15 @@
 {% extends 'layout.html' %}
+
 {% load static %}
+
 {% block head %}
-	{{block.super}}
+		{{block.super}}
     <link rel="stylesheet" href="{% static 'CSSDocs/registerUser.css' %}">
     <script type="text/javascript" src="{% static 'javascript/register.js' %}"></script>
 {% endblock %}
+
 {% block content %}
+
 {{ properties|json_script:"properties" }}
 
 <h1 id="title" >Registrer din bruker hos MatBit her: </h1>
@@ -14,7 +18,7 @@
     <div class="signup-content">
         <form method="POST" id="signup-form" class="signup-form" name="SignUpForm" onsubmit="return validate();">
             {% csrf_token %}
-<!--                <div class="form-group">
+                <!--<div class="form-group">
                     <label for="first_name">Brukernavn</label>
                     <input type="text" class="form-input" name="username" id="username" />
                 </div>-->

@@ -7,17 +7,7 @@
     {{ block.super }}
 
     <link rel="stylesheet" href="{% static 'CSSDocs/chooseMeal.css' %}">
-
-    <script type="text/javascript">
-        function validateCancel() {
-            if(confirm("Er du sikker på at du vil avlyse middagen?")) {
-              return true;
-            } else {
-              return false;
-            }
-
-        }
-    </script>
+    <script src="{% static 'javascript/chooseMeal.js' %}" charset="utf-8"></script>
 
 {% endblock %}
 
@@ -33,21 +23,27 @@
                 <h1 id="meal-title">
                     {{ dinner.name }}
                 </h1>
+
                 <p id="meal-description">
                     {{ dinner.description }}
                 </p>
+
                 <p id="meal-date">
                     {{ dinner.date }}
                 </p>
+
                 <h3 id="meal-address">
                      {{ dinner.location }}
                 </h3>
+
                 <p id="meal-capacity">
                     Totale plasser: {{ dinner.capacity }}, ledige: {{ available }}
                 </p>
+
                 <p id="meal-price">
                     Middagskostnad: {{ dinner.cost }} kr
                 </p>
+
                 {% if in_dinner %}
                     <p id ="price-per-guest">
                             Kostnad per gjest : {{guest_price}} kr
@@ -59,11 +55,15 @@
                     <p>Denne middagen har ingen allergier som du må passe på</p>
 
                 {% else %}
+
                     <p>Hvis du har følgende allergier bør du ikke melde deg på middagen:</p>
+
                 {% endif %}
 
                 {% for allergy in allergiesInDinner %}
+
                     <p>{{allergy}}</p>
+                    
                 {% endfor %}
 
                 {% if dinner.is_cancelled == 0 %}

@@ -1,22 +1,10 @@
 {% extends 'layout.html' %}
+
 {% load static %}
 
 {% block head %}
 		{{block.super}}
 		<link rel="stylesheet" href="{% static 'CSSDocs/login.css' %}">
-		<script type="text/javascript">
-				function validateLogin(){
-						let email = window.document.login_form.email.value;
-						let password = window.document.login_form.password.value;
-						if (!email || !password){
-								document.getElementById("error_message").textContent = "Du må ha med brukernavn og passord"
-								return false;
-						}
-						else {
-							return true;
-						}
-				}
-		</script>
 {% endblock %}
 
 {% block content %}
@@ -29,12 +17,14 @@
 						{% csrf_token %}
 						<div class="input-group-append">
 								<label for="email">Epost</label>
-								<input type="text" name="email" class="form-control input_user" placeholder="Epost">
+								<input type="email" name="email" class="form-control input_user" placeholder="Epost">
 						</div>
+
 						<div class="input-group-append">
 								<label for="password">Passord</label>
 								<input type="password" name="password" class="form-control input_pass" placeholder="Passord">
 						</div>
+						
 						<div class="input-group-append">
 								<p id="error_message" class="error_message"></p>
 								<input type="submit" name="submit" id="submit" class="form-submit" value="Logg inn" />
