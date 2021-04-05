@@ -124,3 +124,17 @@ hr {
 .ratingButton {
     display: none;
 }
+
+.checked {
+    color: orange;
+  }
+
+#events {
+    float: left;
+
+}
+#rating {
+    float: right;
+
+}
+

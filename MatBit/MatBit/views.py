@@ -533,7 +533,8 @@ def feedback(request : HttpRequest, event_id: int) -> HttpResponse:
 
     if request.POST:
         comment = request.POST.get("comment")
-        rating = request.POST.get("rating")
+        rating = request.POST.get("rate")
+        print(rating)
         Feedback(comment = comment, rating = rating, user_id_host = user_host, user_id_comment = request.session['user_id_logged_in'], event_id=event_id).save()
         return redirect("../../profil")
 

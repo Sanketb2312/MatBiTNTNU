@@ -4,6 +4,7 @@
 {% block head %}
 		{{block.super}}
         <link rel="stylesheet" href="{% static 'CSSDocs/profile.css' %}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
 
 	function showRatingButtion(id) {
@@ -16,6 +17,31 @@
 			button.style.display = "none";
 		}
 	}
+
+	function createStars() {
+
+		{% for key, value in feedback_dict.items %}
+			var stars = {{value.3}}
+			stars = parseInt(stars);
+			console.log(stars, "g");
+			for (let index = 1; index < stars+1; index++) {
+				console.log(index, "khwbfw");
+				console.log("{{key}}-"+index);
+				document.getElementById("{{key}}-"+index).classList.add("checked")
+				
+			}
+
+
+		{% endfor %}
+
+	}
+
+	window.addEventListener('DOMContentLoaded', (event) => {
+	createStars();
+});
+
+	
+
 </script>
 
 {% endblock %}
@@ -58,159 +84,84 @@
 
 	</div>
 <hr>
-	<div class="isindinner">
-
-
-	</div>
 
 	<div class="arrangeddinners">
+		<div id="events">
+			<div class="parent">
+				{% if arrangement %}
+				<h3> Du har meldt deg på følgende middag: </h3>
 
-		<div class="parent">
-			{% if arrangement %}
-			<h3> Du har meldt deg på følgende middag: </h3>
+					{% for key, name in arrangement.items %}
+					<li><div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
+						{% for dinner in name %}
+							{{ dinner }}
+						{% endfor %}
+					</li>
+				{% endfor %}
+				</div>
+			{% else %}
+				<h3> Du er ikke påmeldt noen middager</h3>
+			{% endif %}
 
-				{% for key, name in arrangement.items %}
-				<li><div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
-					{% for dinner in name %}
-						 {{ dinner }}
-					{% endfor %}
-				</li>
-			{% endfor %}
+				<div class="parent">
+				{% if hosting %}
+				<h3> Du arrangerer disse middagene:  </h3>
+
+					{% for key, name in hosting.items %}
+					<li>
+						<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
+						{% for dinner in name %}
+							<td> {{ dinner }} </td>
+						{% endfor %}
+					</li>
+				{% endfor %}
+					{% else %}
+				<h3> Du arrangerer ingen middager </h3>
+				{% endif %}
 			</div>
-		{% else %}
-			<h3> Du er ikke påmeldt noen middager</h3>
-		{% endif %}
 
 			<div class="parent">
-			{% if hosting %}
-			<h3> Du arrangerer disse middagene:  </h3>
+					<h3> Du har deltatt på disse middagene:  </h3>
 
-				{% for key, name in hosting.items %}
-				<li>
-					<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
-					{% for dinner in name %}
-						<td> {{ dinner }} </td>
+						{% for event, values in past_event_dict.items %}
+						<li>
+							<div class="flex-child" onclick="showRatingButtion({{event}})">
+							{% for dinner in values %}
+								<td> {{ dinner }} </td>
+							{% endfor %}
+						</li>
+						<button id="rating-{{event}}" class="ratingButton" onclick="location.href= '{% url 'feedback' event_id=event %}' ">Gi tilbakemelding</button>
 					{% endfor %}
-				</li>
-			{% endfor %}
-				{% else %}
-			<h3> Du arrangerer ingen middager </h3>
-		{% endif %}
-	</div>
-
-	<div class="parent">
-			<h3> Du har deltatt på disse middagene:  </h3>
-
-				{% for event, values in past_event_dict.items %}
-				<li>
-					<div class="flex-child" onclick="showRatingButtion({{event}})">
-					{% for dinner in values %}
-						<td> {{ dinner }} </td>
-					{% endfor %}
-				</li>
-				<button id="rating-{{event}}" class="ratingButton" onclick="location.href= '{% url 'feedback' event_id=event %}' ">Gi tilbakemelding</button>
-			{% endfor %}
-
-	</div>
-
-	<div class="parent">
-			<h3> Tilbakemeldinger på middager du har arrangert:  </h3>
-
-				{% for key, value in feedback_dict.items %}
-				<li>
-					<div class="flex-child" onclick="showRatingButtion({{event}})">
-						Kommentar fra <b>{{value.1}}</b>
-						på middagen <b>{{value.0}}</b>:
-						<br>
-						{{value.2}}
-						<br>
-						<br>
-						Rating på middagen er:
-						{{value.3}}
-				</li>
-			{% endfor %}
-
-	</div>
-
-
-
-	</div>
-
-</div>
-
-
-
-
-<!--
-<div class="post-container">
-    <div class="post-thumb">
-		<img src="https://kvener.no/wp-content/uploads/2019/02/blank-profile-picture-973460_640.png" />
-	</div>
-
-	<div class="post-content">
-		<h2>{{user.fornavn }} {{user.etternavn }} </h2>
-		<h3> {{user.epost}}</h3>
-		<h3> {{user.adresse }}</h3>
-		<h3> {{user.postnummer }} {{user.sted }}</h3>
-
-        <div class="form-row">
-			<div class = "button-style">
-				<a onclick="location.href= '{% url 'editUser' %}'"><button type="button">  Endre Bruker </button></a>
 			</div>
+	</div>
+		<div class="parent" id="rating">
+				<h3> Tilbakemeldinger på middager du har arrangert:  </h3>
+
+					{% for key, value in feedback_dict.items %}
+					<li>
+						<div class="flex-child" onclick="showRatingButtion({{event}})">
+							Kommentar fra <b>{{value.1}}</b>
+							på middagen <b>{{value.0}}</b>:
+							<br>
+							{{value.2}}
+							<br>
+							<br>
+							Rating:
+							<span class="fa fa-star" id="{{key}}-1"></span>
+							<span class="fa fa-star" id="{{key}}-2"></span>
+							<span class="fa fa-star" id="{{key}}-3"></span>
+							<span class="fa fa-star" id="{{key}}-4"></span>
+							<span class="fa fa-star" id="{{key}}-5"></span>
+
+					</li>
+				{% endfor %}
+
 		</div>
 
-	</div>
-	<div>
-		{% if userAllergies %}
-			<h3> {{user.fornavn}} har allergier </h3>
-			<div>
-				{% for key, value in userAllergies.items %}
-				<tr>
-					<td> {{ value }} </td>
-				</tr>
-			{% endfor %}
-			</div>
-		{% else %}
-			<h3> {{user.fornavn}} har ingen allergier</h3>
-		{% endif %}
-
-	</div>
-		<div>
-			{% if arrangement %}
-			<h3> {{user.fornavn}} har meldt seg på følgende middag </h3>
-			<div>
-				{% for key, name in arrangement.items %}
-				<li>
-					{{ name.arrangementnavn }}
-					{% for dinner in name %}
-						<td> {{ dinner }} </td>
-					{% endfor %}
-				</li>
-			{% endfor %}
-			</div>
-		{% else %}
-			<h3> {{user.fornavn}} er ikke påmeldt noen middager</h3>
-		{% endif %}
-
-	</div>
-			<div>
-			{% if hosting %}
-			<h3> {{user.fornavn}} arrangerer disse middagene:  </h3>
-			<div>
-				{% for key, name in hosting.items %}
-				<li>
-					{% for dinner in name %}
-						<td> {{ dinner }} </td>
-					{% endfor %}
-				</li>
-			{% endfor %}
-				{% else %}
-			<h3> {{user.fornavn}} arrangerer ingen middager </h3>
-		{% endif %}
 
 
 	</div>
+
 </div>
-</div>
-</div>-->
+
 {% endblock %}

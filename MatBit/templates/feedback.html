@@ -4,7 +4,7 @@
 {% block head %}
 		{{block.super}}
         <link rel="stylesheet" href="{% static 'CSSDocs/feedback.css' %}">
-
+        <!--<link href="https://maxcdn.bootstrapcdn.com/font-awsome/4.7.0/css/font-awsome.min.css" rel="stylesheet">-->
         <script>
 
             function hideSubmit() {
@@ -23,12 +23,20 @@
                 var errormessage = document.getElementById("errormessage")
                 errormessage.innerHTML= "";
                 s.setAttribute('initial','initial')
+                var x = document.getElementById("star5")
+                console.log(x);
+                console.log(x.value);
             }
+            
+
+          
 
         </script>
 {% endblock %}
 
 {% block content %}
+
+
 <button onclick="location.href= '{% url 'profile'  %}' ">Tilbake</button>
 
 <div>
@@ -37,8 +45,20 @@
 		{% csrf_token %}
 		<input name="comment" id="comment">
 		<label>Skriv din tilbakemelding på middagen</label>
-		<input name="rating" id="rating">
-		<label>Gi rating mellom 1 og 5</label>
+		<!--<input name="rating" id="rating">
+        <label>Gi rating mellom 1 og 5</label> -->
+        <div class="rate">
+            <input type="radio" id="star5" name="rate" value="5" />
+            <label for="star5" title="text">5 stars</label>
+            <input type="radio" id="star4" name="rate" value="4" />
+            <label for="star4" title="text">4 stars</label>
+            <input type="radio" id="star3" name="rate" value="3" />
+            <label for="star3" title="text">3 stars</label>
+            <input type="radio" id="star2" name="rate" value="2" />
+            <label for="star2" title="text">2 stars</label>
+            <input type="radio" id="star1" name="rate" value="1" />
+            <label for="star1" title="text">1 star</label>
+          </div>
 		<input type="submit" id="feedback_submit"  onmouseover="hideSubmit()" onmouseout="showSubmit()">
         <label id="errormessage"></label>
 	</form>

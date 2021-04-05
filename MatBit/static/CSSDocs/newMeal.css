@@ -1,3 +1,7 @@
 .allergies {
 width: 100px;
 }
+
+.checked {
+    color: orange;
+  }
