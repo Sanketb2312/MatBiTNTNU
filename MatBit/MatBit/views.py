@@ -218,6 +218,15 @@ def edit_user(request: HttpRequest) -> HttpResponse:
     })
 
 
+def profiles_list(request: HttpRequest) -> HttpResponse:
+    if not (is_logged_in(request) and has_admin_privileges(request)):
+        return redirect("/")
+
+
+
+    return render_page(request, 'profilesList.html', {})
+
+
 def new_meal(request: HttpRequest) -> HttpResponse:
     if not is_logged_in(request):
         return redirect("/")
