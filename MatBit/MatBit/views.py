@@ -218,13 +218,16 @@ def edit_user(request: HttpRequest) -> HttpResponse:
     })
 
 
+# FIXME: please welcome one of the most inefficient functions in existence.
 def profiles_list(request: HttpRequest) -> HttpResponse:
     if not (is_logged_in(request) and has_admin_privileges(request)):
         return redirect("/")
 
+    accounts = User.users.all()
 
-
-    return render_page(request, 'profilesList.html', {})
+    return render_page(request, 'profilesList.html', {
+        "accounts": accounts
+    })
 
 
 def new_meal(request: HttpRequest) -> HttpResponse:
