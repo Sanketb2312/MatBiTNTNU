@@ -13,7 +13,11 @@ def is_logged_in(request: HttpRequest) -> bool:
 
 
 def has_admin_privileges(request: HttpRequest) -> bool:
-    token = request.session['admin_token']
+    try:
+        token = request.session['admin_token']
+    except KeyError:
+        # This key not existing means the user is logged out.
+        return False
 
     if token == 1:
         return True
