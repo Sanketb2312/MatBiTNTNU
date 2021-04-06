@@ -86,7 +86,7 @@
 		<hr>
 
 		<div class="arrangeddinners">
-
+			<div id="events">
 				<div class="parent">
 						{% if arrangement %}
 								<h3> Du har meldt deg på følgende middag: </h3>
@@ -107,27 +107,27 @@
 						{% endif %}
 				</div>
 
-				<div class="parent">
-						{% if hosting %}
-								<h3> Du arrangerer disse middagene:  </h3>
+					<div class="parent">
+							{% if hosting %}
+									<h3> Du arrangerer disse middagene:  </h3>
 
-								{% for key, name in hosting.items %}
-										<li>
-											<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
-											{% for dinner in name %}
-													{{ dinner }}
-											{% endfor %}
-											</div>
-										</li>
-								{% endfor %}
+									{% for key, name in hosting.items %}
+											<li>
+												<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
+												{% for dinner in name %}
+														{{ dinner }}
+												{% endfor %}
+												</div>
+											</li>
+									{% endfor %}
 
-						{% else %}
-								<h3> Du arrangerer ingen middager </h3>
+							{% else %}
+									<h3> Du arrangerer ingen middager </h3>
 
-						{% endif %}
+							{% endif %}
 
+					</div>
 				</div>
-
 			<div class="parent" id="rating">
 				<h3> Tilbakemeldinger på middager du har arrangert:  </h3>
 
@@ -151,7 +151,8 @@
 					</li>
 				{% endfor %}
 
-		</div>
+			</div>
+
 		</div>
 </div>
 
