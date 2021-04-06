@@ -136,6 +136,7 @@
 					{% for dinner in values %}
 						<td> {{ dinner }} </td>
 					{% endfor %}
+					</div>
 				</li>
 				<button id="rating-{{event}}" class="ratingButton" onclick="location.href= '{% url 'feedback' event_id=event %}' ">Gi tilbakemelding</button>
 			{% endfor %}
