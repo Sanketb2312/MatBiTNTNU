@@ -110,10 +110,6 @@ class DinnerEvent(models.Model):
     def host(self) -> Host:
         return User.users.get(user_id=Host.hosts.get(event_id=self.event_id).user_id)
 
-
-# ======================================================================================================================
-# ----- Authentication models
-# ======================================================================================================================
 class Feedback(models.Model):
     feedbacks = models.Manager()
 
@@ -128,7 +124,9 @@ class Feedback(models.Model):
         managed = False
         db_table = 'tilbakemelding'
 
-
+# ======================================================================================================================
+# ----- Authentication models
+# ======================================================================================================================
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
