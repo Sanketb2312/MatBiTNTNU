@@ -316,7 +316,6 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     guest_count = guests.count()
     available = dinner.capacity - guest_count
 
-
     if guest_count == 0:
         guest_price = dinner.cost
     else:
@@ -349,7 +348,6 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     for allergy in EventIngredient.event_ingredients.all():
         if allergy.event_id == event_id:
             allergies_in_dinner.append(allergy.ingredient_id)
-
 
     counter = 0
     if not len(allergies_in_dinner) == 0:
