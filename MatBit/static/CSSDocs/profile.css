@@ -119,6 +119,22 @@ font-size: 20px;
 
 hr {
  border-top: 2px solid #000;
+}
 
+.ratingButton {
+    display: none;
+}
+
+.checked {
+    color: orange;
+  }
+
+#events {
+    float: left;
 
 }
+#rating {
+    float: right;
+
+}
+
