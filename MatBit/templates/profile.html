@@ -127,6 +127,21 @@
 							{% endif %}
 
 					</div>
+					<div class="parent">
+			<h3> Du har deltatt på disse middagene:  </h3>
+
+				{% for event, values in past_event_dict.items %}
+				<li>
+					<div class="flex-child" onclick="showRatingButtion({{event}})">
+					{% for dinner in values %}
+						<td> {{ dinner }} </td>
+					{% endfor %}
+				</li>
+				<button id="rating-{{event}}" class="ratingButton" onclick="location.href= '{% url 'feedback' event_id=event %}' ">Gi tilbakemelding</button>
+			{% endfor %}
+
+	</div>
+
 				</div>
 			<div class="parent" id="rating">
 				<h3> Tilbakemeldinger på middager du har arrangert:  </h3>
