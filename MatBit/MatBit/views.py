@@ -11,14 +11,22 @@ from datetime import datetime
 from django.contrib.auth.hashers import check_password, make_password
 
 
-
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
 # commonly known as an anti-pattern. The type is: django/db/models/manager.py:Manager, which so usefully is empty.
 # HttpRequest.session is set by the session middleware; also an anti-pattern.
 
+def render_page(request: HttpRequest, document: str, arguments: {str: object} or None = None) -> HttpResponse:
+    if arguments is None:
+        arguments = {}
+
+    return render(request, document, arguments | {
+        "site_logged_in": is_logged_in(request),
+        "is_admin": has_admin_privileges(request)
+    })
+
 
 def frontpage(request: HttpRequest) -> HttpResponse:
-    return render(request, 'frontpage.html', {'site_logged_in': is_logged_in(request)})
+    return render_page(request, 'frontpage.html')
 
 
 def register(request: HttpRequest) -> HttpResponse:
@@ -66,7 +74,7 @@ def register(request: HttpRequest) -> HttpResponse:
             else:
                 return redirect('/')
 
-    return render(request, "registerUser.html", {
+    return render_page(request, "registerUser.html", {
         "properties": {
             'invalidFormData': invalid_form_data,
             'emailUsed': email_used,
@@ -76,8 +84,7 @@ def register(request: HttpRequest) -> HttpResponse:
             'address': address,
             'post_code': post_code,
             'location': location
-        },
-        'site_logged_in': is_logged_in(request)  # FIXME: see fixme above.
+        }
     })
 
 
@@ -107,9 +114,8 @@ def login(request: HttpRequest) -> HttpResponse:
 
             return redirect('/')
 
-    return render(request, 'login.html', {
-        'error_login': error_login,
-        'site_logged_in': is_logged_in(request)
+    return render_page(request, 'login.html', {
+        'error_login': error_login
     })
 
 
@@ -168,13 +174,12 @@ def profile(request: HttpRequest) -> HttpResponse:
             hosting_information.capacity
         ]
 
-    return render(request, 'profile.html', {
+    return render_page(request, 'profile.html', {
         'user': user,
         'userAllergies': allergy_dict,
         'arrangement': event_dict,
         'hosting': hosting_dict,
-        'admin_user': has_admin_privileges(request),
-        'site_logged_in': is_logged_in(request)
+        'admin_user': has_admin_privileges(request)
     })
 
 
@@ -208,9 +213,8 @@ def edit_user(request: HttpRequest) -> HttpResponse:
 
             return logout(request)
 
-    return render(request, 'editUser.html', {
-        'user': user,
-        'site_logged_in': is_logged_in(request)
+    return render_page(request, 'editUser.html', {
+        'user': user
     })
 
 
@@ -248,7 +252,7 @@ def new_meal(request: HttpRequest) -> HttpResponse:
 
     allergens = Ingredient.ingredients.all()
 
-    return render(request, 'newMeal.html', {'allergens': allergens, 'site_logged_in': is_logged_in(request)})
+    return render_page(request, 'newMeal.html', {'allergens': allergens})
 
 
 # noinspection SpellCheckingInspection
@@ -292,14 +296,13 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
                 events_allergy[x.event_id] = []
             events_allergy[x.event_id].append(x.ingredient_id)
 
-    return render(request, 'mealOverview.html', {
+    return render_page(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
         'allergies':Ingredient.ingredients.all(),
         'locations' : locations,
         'event_location' : event_location,
         'events_allergy' : events_allergy,
-        'site_logged_in': is_logged_in(request),
         'event_ids':event_ids
     })
 
@@ -361,7 +364,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 
                 counter += 1
 
-    return render(request, 'chooseMeal.html', {
+    return render_page(request, 'chooseMeal.html', {
         'dinner': dinner,
         'in_dinner': in_dinner,
         'is_owner': is_owner,
@@ -370,8 +373,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         'available': available,
         'allergiesInDinner': allergies_in_dinner,
         'checkLen': len(allergies_in_dinner) == 0,
-        'admin_user': has_admin_privileges(request),
-        'site_logged_in': is_logged_in(request)
+        'admin_user': has_admin_privileges(request)  # FIXME: unnecessary. Needs to switch to "is_admin" in the HTML.
     })
 
 
@@ -385,7 +387,7 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     day = time_stamp[0]
     time = time_stamp[1]
 
-    event_ingredients = EventIngredient.event_ingredients.filter(event_id = dinner.event_id)
+    event_ingredients = EventIngredient.event_ingredients.filter(event_id=dinner.event_id)
 
     event_ingredients_name = []
     event_ingredients_ids = []
@@ -413,8 +415,6 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         dinner.date = date_and_time
         dinner.cost = prize
 
-
-
         max_allergy_id = Ingredient.ingredients.all().last().ingredient_id
 
         for allergy_id in range(max_allergy_id + 1):
@@ -428,22 +428,17 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
                     print(allergy)
                     allergy.delete()
 
-
-
-
         dinner.save()
 
         return redirect('../../../')
 
-
-
-    return render(request, 'editMeal.html', {
+    return render_page(request, 'editMeal.html', {
         'dinner': dinner,
         'date': day,
         'time': time,
-        'allergens':Ingredient.ingredients.all(),
-        'event_ingredients_name' : event_ingredients_name,
-        'site_logged_in': is_logged_in(request)})
+        'allergens': Ingredient.ingredients.all(),
+        'event_ingredients_name': event_ingredients_name
+    })
 
 
 def add_allergies(request: HttpRequest) -> HttpResponse:
@@ -481,8 +476,7 @@ def add_allergies(request: HttpRequest) -> HttpResponse:
         # noinspection SpellCheckingInspection
         return redirect("../../profil")
 
-    return render(request, 'addAllergies.html', {
+    return render_page(request, 'addAllergies.html', {
         'object_list': allergens,
-        'allergiesList': allergies_list,
-        'site_logged_in': is_logged_in(request)
+        'allergiesList': allergies_list
     })
