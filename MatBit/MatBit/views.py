@@ -2,13 +2,13 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 
-from .database_access import is_logged_in, has_admin_privileges, add_user, get_in_dinner, create_dinner
+from .database_access import is_logged_in, has_admin_privileges, add_user, get_in_dinner, create_dinner, delete_user, \
+    cancel_dinner
 from .mymodels import User, UserAllergy, DinnerEvent, EventIngredient, Ingredient, Registration, Host, Feedback
 from django.utils import timezone
 from datetime import datetime
 
 from django.contrib.auth.hashers import check_password, make_password
-
 
 
 
@@ -86,7 +86,7 @@ def login(request: HttpRequest) -> HttpResponse:
         return redirect('/')
 
     error_login = False
-    make_password("bestePassord123")
+
     if request.POST:
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -149,7 +149,6 @@ def profile(request: HttpRequest) -> HttpResponse:
 
     for registration in registrations:
 
-
         dinner_information = DinnerEvent.events.get(event_id=registration.event_id)
 
         event_dict[dinner_information.event_id] = [
@@ -165,7 +164,6 @@ def profile(request: HttpRequest) -> HttpResponse:
             dinner_information.location,
             dinner_information.date
         ]
-    print(past_event_dict)
 
     # Collecting all the events the user is hosting.
     hosting = Host.hosts.filter(user_id=user_id).all()
@@ -187,10 +185,6 @@ def profile(request: HttpRequest) -> HttpResponse:
     feedback_event = None
 
 
-    #for x in feedback_event_name:
-     #   feedback_event_name = x.name
-    #for x in user_comment_name:
-     #   user_comment_name = x.first_name + " " + x.last_name
 
     for feed in feedback:
         user_comment = feed.user_id_comment
@@ -233,23 +227,28 @@ def edit_user(request: HttpRequest) -> HttpResponse:
     user = User.users.get(user_id=request.session['user_id_logged_in'])
 
     if request.POST:
-        # FIXME: Why are these queried like this, instead of just using: user.<> = request.POST.get('<>')?
-        #  In case one of them throws an error, nothing is updated?
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        address = request.POST.get('address')
-        post_code = request.POST.get('post_code')
-        place = request.POST.get('location')
+        if "edit" in request.POST:
+            # FIXME: Why are these queried like this, instead of just using: user.<> = request.POST.get('<>')?
+            #  In case one of them throws an error, nothing is updated?
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            address = request.POST.get('address')
+            post_code = request.POST.get('post_code')
+            place = request.POST.get('location')
 
-        user.first_name = first_name
-        user.last_name = last_name
-        user.address = address
-        user.post_code = post_code
-        user.location = place
-        user.save()
+            user.first_name = first_name
+            user.last_name = last_name
+            user.address = address
+            user.post_code = post_code
+            user.location = place
+            user.save()
 
-        # noinspection SpellCheckingInspection
-        return redirect('../../profil/')
+            # noinspection SpellCheckingInspection
+            return redirect('../../profil/')
+        elif "delete" in request.POST:
+            delete_user(user)
+
+            return logout(request)
 
     return render(request, 'editUser.html', {
         'user': user,
@@ -279,8 +278,8 @@ def new_meal(request: HttpRequest) -> HttpResponse:
         max_allergy_id = Ingredient.ingredients.all().last().ingredient_id
 
         for allergy_id in range(max_allergy_id + 1):
-            print(request.POST)
-            print(meal.event_id)
+            #print(request.POST)
+            #print(meal.event_id)
 
             if str(allergy_id) in request.POST:
 
@@ -301,62 +300,47 @@ def meal_overview(request: HttpRequest) -> HttpResponse:
 
     available_dict = {}
 
-    queryset = DinnerEvent.events.filter(date__gte = datetime.today())
-    #queryset = DinnerEvent.events.all()
+    queryset = DinnerEvent.events.filter(date__gte = datetime.today())  #Gets the objects from database with datetime after now
+    queryset = queryset.order_by('date')    #Sorts the input by date
+
+    #Adds event ids in a array for use in filtration
     event_ids = []
     for id in queryset:
         event_ids.append(id.event_id)
 
-    future_events_dict = {}
-
-
     # Gives the number of guests already booked for this dinner
     for event in queryset:
-
         event_id = event.event_id
 
         guests = Registration.registrations.filter(event_id=event_id)
         available = event.capacity - guests.count()
         available_dict[event_id] = available
 
-
-
+    #Creates an array for filtration with locations on the webpage
     locations = []
     event_location = {}
     for dinner_place in queryset:
         if dinner_place.event_id not in event_location:
-            print(type(dinner_place.location))
             event_location[dinner_place.event_id] = dinner_place.location.lower()
         if dinner_place.location.lower() not in locations:
             locations.append(dinner_place.location.lower())
-    print(event_location)
 
-    events = {}
-
+    #Creates an array for filtration with allergies on the webpage
+    events_allergy = {}
     for event in queryset:
         query = EventIngredient.event_ingredients.filter(event_id=event.event_id)
         for x in query:
-            if x.event_id not in events:
-                events[x.event_id] = []
-            events[x.event_id].append(x.ingredient_id)
-    print(events)
-
-    #for x in event_location:
-    #    if x in events:
-    #        events[x].append(event_location[x])
-    #    else:
-    #        events[x]=[x]
-    #print(events)
-
+            if x.event_id not in events_allergy:
+                events_allergy[x.event_id] = []
+            events_allergy[x.event_id].append(x.ingredient_id)
 
     return render(request, 'mealOverview.html', {
         "object_list": queryset,
         'available_dict': available_dict,
-        'future_events_dict': future_events_dict,
         'allergies':Ingredient.ingredients.all(),
         'locations' : locations,
         'event_location' : event_location,
-        'events' : events,
+        'events_allergy' : events_allergy,
         'site_logged_in': is_logged_in(request),
         'event_ids':event_ids
     })
@@ -374,7 +358,6 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     guest_count = guests.count()
     available = dinner.capacity - guest_count
 
-
     if guest_count == 0:
         guest_price = dinner.cost
     else:
@@ -383,6 +366,8 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     in_dinner = get_in_dinner(request, event_id)
     signed_up = in_dinner is not None
     is_owner = Host.hosts.filter(user_id=request.session['user_id_logged_in'], event_id=event_id).exists()
+    # TODO: legg til navn på verten i brukergrensesnittet. Hvis verten ikke eksisterer, er den kontoen slettet.
+    #  I så fall skal middagen være avlyst. Hvis den ikke er det, har vi en intern feil.
 
     if request.POST:
         if 'book_dinner' in request.POST:
@@ -396,8 +381,7 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
                 )
                 in_dinner.save()
         elif 'cancel_dinner' in request.POST:
-            dinner.is_cancelled = 1
-            dinner.save()
+            cancel_dinner(dinner)
 
         # noinspection SpellCheckingInspection
         return redirect("../../oversikt/")
@@ -409,11 +393,12 @@ def choose_meal(request: HttpRequest, event_id: int) -> HttpResponse:
 
     counter = 0
     if not len(allergies_in_dinner) == 0:
+        allergies_in_dinner.sort()
         for ingredient in Ingredient.ingredients.all():
             if allergies_in_dinner[counter] == ingredient.ingredient_id:
                 allergies_in_dinner[counter] = ingredient.name
 
-                if counter == len(allergies_in_dinner) - 1:
+                if counter >= len(allergies_in_dinner) - 1:
                     break
 
                 counter += 1
@@ -442,6 +427,16 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
     day = time_stamp[0]
     time = time_stamp[1]
 
+    event_ingredients = EventIngredient.event_ingredients.filter(event_id = dinner.event_id)
+
+    event_ingredients_name = []
+    event_ingredients_ids = []
+    for ingredients in event_ingredients:
+        for ingredient_id in Ingredient.ingredients.all():
+            if ingredients.ingredient_id == ingredient_id.ingredient_id:
+                event_ingredients_name.append(ingredient_id.name)
+                event_ingredients_ids.append(ingredient_id.ingredient_id)
+
     if request.POST:
         arrangement_name = request.POST.get('arrangement_name')
         description = request.POST.get('description')
@@ -460,14 +455,36 @@ def edit_meal(request: HttpRequest, event_id: int) -> HttpResponse:
         dinner.date = date_and_time
         dinner.cost = prize
 
+
+
+        max_allergy_id = Ingredient.ingredients.all().last().ingredient_id
+
+        for allergy_id in range(max_allergy_id + 1):
+            if str(allergy_id) in request.POST:
+                if allergy_id not in event_ingredients_ids:
+                    EventIngredient(event_id=event_id, ingredient_id=allergy_id).save()
+            else:
+                if allergy_id in event_ingredients_ids:
+
+                    allergy = EventIngredient.event_ingredients.get(event_id=dinner.event_id, ingredient_id=allergy_id)
+                    print(allergy)
+                    allergy.delete()
+
+
+
+
         dinner.save()
 
         return redirect('../../../')
+
+
 
     return render(request, 'editMeal.html', {
         'dinner': dinner,
         'date': day,
         'time': time,
+        'allergens':Ingredient.ingredients.all(),
+        'event_ingredients_name' : event_ingredients_name,
         'site_logged_in': is_logged_in(request)})
 
 
@@ -484,7 +501,7 @@ def add_allergies(request: HttpRequest) -> HttpResponse:
 
     for x in range(0, len(allergies_list_with_id)):
         allergies_list.append(Ingredient.ingredients.get(ingredient_id=allergies_list_with_id[x]).name)
-    print(allergies_list_with_id)
+    #print(allergies_list_with_id)
     allergens = Ingredient.ingredients.all()
     max_allergy_id = allergens.last().ingredient_id
 

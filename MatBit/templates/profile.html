@@ -1,8 +1,11 @@
 {% extends 'layout.html' %}
+
 {% load static %}
 
 {% block head %}
 		{{block.super}}
+
+    <link rel="stylesheet" href="{% static 'CSSDocs/profile.css' %}">
         <link rel="stylesheet" href="{% static 'CSSDocs/profile.css' %}">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
@@ -28,7 +31,7 @@
 				console.log(index, "khwbfw");
 				console.log("{{key}}-"+index);
 				document.getElementById("{{key}}-"+index).classList.add("checked")
-				
+
 			}
 
 
@@ -40,101 +43,92 @@
 	createStars();
 });
 
-	
+
 
 </script>
 
 {% endblock %}
+
 {% block content %}
 
-
 <div class="allstuff">
+		<div class="topstuff">
+				<img src="{% static 'images/blank_profile_pic.png' %}"/>
 
-	<div class="topstuff">
-		<img src="https://kvener.no/wp-content/uploads/2019/02/blank-profile-picture-973460_640.png"/>
-
-		<div class="userinfo">
-
-			<h2>{{user.first_name }} {{user.last_name }} </h2>
-			<h3> {{user.email}}</h3>
-			<h3> {{user.address }}</h3>
-			<h3> {{user.post_code }} {{user.location }}</h3>
+				<div class="userinfo">
+						<h2>{{ user.first_name }} {{ user.last_name }} </h2>
+						<h3>{{ user.email }}</h3>
+						<h3>{{ user.address }}</h3>
+						<h3>{{ user.post_code }} {{ user.location }}</h3>
+				</div>
 
 		</div>
 
+		<a onclick="location.href='{% url 'editUser' %}'"><button type="button">Endre Bruker</button></a>
+		<hr>
 
-	</div>
-	<a onclick="location.href= '{% url 'editUser' %}'"><button type="button">  Endre Bruker </button></a>
-<hr>
-	<div class="allergies">
+		<div class="allergies">
 
-		{% if userAllergies %}
-			<h3> Dine allergier </h3>
-			<div class="allergyList">
-				{% for key, value in userAllergies.items %}
-					 {{ value }},
-			{% endfor %}
-			</div>
-		<a onclick="location.href = '{% url 'addAllergies' %}' "> <button type="button">Rediger allergier</button></a>
-		{% else %}
-			<h3> Du har ingen allergier:</h3>
-		<a onclick="location.href = '{% url 'addAllergies' %}' "> <button type="button">Legg til allergier</button></a>
-		{% endif %}
+				{% if userAllergies %}
+						<h3> Dine allergier </h3>
+						<div class="allergyList">
+								{% for key, value in userAllergies.items %}
+								 		{{ value }},
+					 		 	{% endfor %}
+						</div>
+						<a onclick="location.href = '{% url 'addAllergies' %}'"> <button type="button">Rediger allergier</button></a>
+				{% else %}
+						<h3> Du har ingen allergier:</h3>
+						<a onclick="location.href = '{% url 'addAllergies' %}'"> <button type="button">Legg til allergier</button></a>
+				{% endif %}
 
+		</div>
+		<hr>
 
-	</div>
-<hr>
-
-	<div class="arrangeddinners">
-		<div id="events">
-			<div class="parent">
-				{% if arrangement %}
-				<h3> Du har meldt deg på følgende middag: </h3>
-
-					{% for key, name in arrangement.items %}
-					<li><div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
-						{% for dinner in name %}
-							{{ dinner }}
-						{% endfor %}
-					</li>
-				{% endfor %}
-				</div>
-			{% else %}
-				<h3> Du er ikke påmeldt noen middager</h3>
-			{% endif %}
+		<div class="arrangeddinners">
 
 				<div class="parent">
-				{% if hosting %}
-				<h3> Du arrangerer disse middagene:  </h3>
+						{% if arrangement %}
+								<h3> Du har meldt deg på følgende middag: </h3>
 
-					{% for key, name in hosting.items %}
-					<li>
-						<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
-						{% for dinner in name %}
-							<td> {{ dinner }} </td>
-						{% endfor %}
-					</li>
-				{% endfor %}
-					{% else %}
-				<h3> Du arrangerer ingen middager </h3>
-				{% endif %}
-			</div>
+								{% for key, name in arrangement.items %}
+										<li>
+												<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
+												{% for dinner in name %}
+											 			{{ dinner }}
+												{% endfor %}
+												</div>
+										</li>
+								{% endfor %}
 
-			<div class="parent">
-					<h3> Du har deltatt på disse middagene:  </h3>
+						{% else %}
+								<h3> Du er ikke påmeldt noen middager</h3>
 
-						{% for event, values in past_event_dict.items %}
-						<li>
-							<div class="flex-child" onclick="showRatingButtion({{event}})">
-							{% for dinner in values %}
-								<td> {{ dinner }} </td>
-							{% endfor %}
-						</li>
-						<button id="rating-{{event}}" class="ratingButton" onclick="location.href= '{% url 'feedback' event_id=event %}' ">Gi tilbakemelding</button>
-					{% endfor %}
-			</div>
-	</div>
-		<div class="parent" id="rating">
+						{% endif %}
+				</div>
+
+				<div class="parent">
+						{% if hosting %}
+								<h3> Du arrangerer disse middagene:  </h3>
+
+								{% for key, name in hosting.items %}
+										<li>
+											<div class="flex-child" onclick="location.href= '{% url 'chooseMeal' event_id=key %}' ">
+											{% for dinner in name %}
+													{{ dinner }}
+											{% endfor %}
+											</div>
+										</li>
+								{% endfor %}
+
+						{% else %}
+								<h3> Du arrangerer ingen middager </h3>
+
+						{% endif %}
+
+				</div>
+
+			<div class="parent" id="rating">
 				<h3> Tilbakemeldinger på middager du har arrangert:  </h3>
 
 					{% for key, value in feedback_dict.items %}
@@ -152,16 +146,15 @@
 							<span class="fa fa-star" id="{{key}}-3"></span>
 							<span class="fa fa-star" id="{{key}}-4"></span>
 							<span class="fa fa-star" id="{{key}}-5"></span>
+						</div>
 
 					</li>
 				{% endfor %}
 
 		</div>
-
-
-
-	</div>
-
+		</div>
 </div>
 
 {% endblock %}
+
+

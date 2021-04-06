@@ -6,8 +6,8 @@
 
     {{ block.super }}
     <script type="text/javascript">
-        //This has to be here and not in the .js file, because python code can't be in .js files
-        events_allergy = {{events|safe}}
+        // This has to be here and not in the .js file, because python code can't be in .js files
+        events_allergy = {{events_allergy|safe}}
         events_location = {{event_location|safe}}
         allEvents = {{event_ids}}
     </script>
@@ -17,30 +17,29 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="meal-overview-header">
-        Middagsoversikt
-    </h1>
+    <h1 class="meal-overview-header">Middagsoversikt</h1>
 
+    <!-- Dropdown menu for filtering based on allergies -->
     <div class="dropdown">
         <button class="dropbtn" onclick="dropdown_allergies()">Filtrer allergi</button>
         <div id="dropdownAllergies" class="dropdown-content">
             <form>
                 {% for allergy in allergies %}
-                    <input class="allergyCheck" type="checkbox" id={{allergy.ingredient_id}} name={{allergy.name}} value={{allergy.ingredient_id}} onclick="filter()">
-                    <label for={{allergy.ingredient_id}} id="allergi"> {{allergy.name}}</label><br>
+                    <input class="allergyCheck" type="checkbox" id="{{ allergy.ingredient_id }}" name="{{ allergy.name }}" value="{{ allergy.ingredient_id }}" onclick="filter()">
+                    <label for="{{ allergy.ingredient_id }}" id="allergi">{{ allergy.name }}</label><br>
                  {% endfor %}
             </form>
         </div>
     </div>
 
-
+    <!-- Dropdown menu for filtering based on locations -->
     <div class="dropdown">
         <button class="dropbtn" onclick="dropdown_locations()">Filtrer sted</button>
         <div id="dropdownLocations" class="dropdown-content">
             <form>
                 {% for loc in locations %}
-                    <input class="locationCheck" type="checkbox" id="{{loc}}" name={{loc}} value={{loc}} onclick="filter()">
-                    <label for={{loc}}> {{loc}}</label><br>
+                    <input class="locationCheck" type="checkbox" id="{{ loc }}" name="{{ loc }}" value="{{ loc }}" onclick="filter()">
+                    <label for="{{ loc }}">{{ loc }}</label><br>
                  {% endfor %}
             </form>
         </div>
@@ -48,20 +47,26 @@
 
     <div class="flex-container">
         {% for instance in object_list %}
-            <div class="url" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}' " id="allergy-{{instance.event_id}}">
+            <!-- Sets the cancelled events to unclickable and adds a cancelled image on top of them -->
+            {% if instance.is_cancelled == 0 %}
+            <div class="url" id="allergy-{{ instance.event_id }}" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}'">
                 <div class="flex-child">
-                    <h3>{{instance.name}}</h3>
+            {% elif instance.is_cancelled == 1 %}
+            <div class="url" id="allergy-{{ instance.event_id }}">
+                <div class="flex-child" style="background-image: url({% static 'images/cancelled_image.png' %}); background-repeat: no-repeat;">
+            {% endif %}
+                    <h3>{{ instance.name }}</h3>
                     {% for key, item in available_dict.items %}
                         {% if key == instance.event_id %}
-                            <h5>Ledige plasser: {{ item }}/{{instance.capacity}}</h5>
+                            <h5>Ledige plasser: {{ item }}/{{ instance.capacity }}</h5>
                         {% endif %}
                     {% endfor %}
 
                     {% for x in mealAllergies %}
-                    {{x.ingredient_id}}
+                    {{ x.ingredient_id }}
                     {% endfor %}
-                    <h5>Tidspunkt: {{instance.date}}</h5>
-                    <h5>Pris: {{instance.cost}}</h5>
+                    <h5>Tidspunkt: {{ instance.date }}</h5>
+                    <h5>Pris: {{ instance.cost }}</h5>
                     <br>
                 </div>
             </div>
