@@ -1,55 +1,53 @@
-
 {% extends 'layout.html' %}
+
 {% load static %}
 
 {% block head %}
 		{{block.super}}
 
-<script>
+		<!-- <script>
 
-    function getvalues() {
+		    function getvalues() {
 
-    var selected = new Array();
-    var chkBox = document.getElementById("checBox");
-    var selectedchkBox = document.getElementsByTagName("form-check-input")
-		for (var i=0; i< selectedchkBox.length(; i++)) {
-			if(selectedchkBox[i].checked) {
-				selected.push(selectedchkBox[i].value);
-			}
-		}
+		    var selected = new Array();
+		    var chkBox = document.getElementById("checBox");
+		    var selectedchkBox = document.getElementsByTagName("form-check-input")
+				for (var i=0; i< selectedchkBox.length(; i++)) {
+					if(selectedchkBox[i].checked) {
+						selected.push(selectedchkBox[i].value);
+					}
+				}
 
-		if(selected.length > 0) {
-			document.getElementById("displayValues").innerHTML = selected;
-		}
+				if(selected.length > 0) {
+					document.getElementById("displayValues").innerHTML = selected;
+				}
 
-    }
+		    }
 
-</script>
+		</script> -->
 {% endblock %}
 
 
 {% block content %}
 
     <h1>Legg til allergi</h1>
-<form method="POST" id="add-allergies" class="add-allergies-form">
+		<form method="POST" id="add-allergies" class="add-allergies-form">
     {% csrf_token %}
-		<div class="form-check">
-				<table id = "checBox">
-    		{% for i in object_list %}
-						<tr>
-		    		{% if i.name in allergiesList %}
-								<td><input type="checkbox" class="form-check-input flexCheckDefault" id="allergy-{{ i.ingredient_id }}"  name = "{{ i.ingredient_id }}" checked></td>
-		        {% else %}
-								<td><input type="checkbox" class="form-check-input flex" id="allergy-{{ i.ingredient_id }}" name = "{{ i.ingredient_id }}"></td>
-		        {% endif %}
-								<td><label for="allergy-{{ i.ingredient_id }}"> {{i.name}} </label></td>
-						</tr>
-				{% endfor %}
-				</table>
-		</div>
-    <input type="submit" name="submit" id="submit" class="form-submit" value="Legg til">
-
-		<b id="displayValues"></b>
-</form>
+				<div class="form-check">
+						<table id = "checBox">
+			  		{% for i in object_list %}
+								<tr>
+										<td><label for="allergy-{{ i.ingredient_id }}"> {{i.name}} </label></td>
+				    		{% if i.name in allergiesList %}
+										<td><input type="checkbox" class="form-check-input flexCheckDefault" id="allergy-{{ i.ingredient_id }}"  name = "{{ i.ingredient_id }}" checked></td>
+				        {% else %}
+										<td><input type="checkbox" class="form-check-input flex" id="allergy-{{ i.ingredient_id }}" name = "{{ i.ingredient_id }}"></td>
+				        {% endif %}
+								</tr>
+						{% endfor %}
+						</table>
+				</div>
+			  <input type="submit" name="submit" id="submit" class="form-submit" value="Legg til">
+		</form>
 
 {% endblock %}

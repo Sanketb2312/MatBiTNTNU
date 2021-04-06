@@ -1,9 +1,13 @@
 {% extends 'layout.html' %}
+
 {% load static %}
+
 {% block head %}
-	{{block.super}}
-<link rel="stylesheet" href="{% static 'CSSDocs/editUser.css' %}">
+
+		{{block.super}}
+		<link rel="stylesheet" href="{% static 'CSSDocs/editUser.css' %}">
 {% endblock %}
+
 {% block content %}
 <h1 id="title" >Rediger profil</h1>
 
@@ -11,7 +15,7 @@
     <div class="signup-content">
         <form method="POST" id="edit-user-form" class="signup-form" name="editUser">
             {% csrf_token %}
-<!--                <div class="form-group">
+               <!-- <div class="form-group">
                     <label for="first_name">Brukernavn</label>
                     <input type="text" class="form-input" name="username" id="username" />
                 </div>-->
@@ -21,13 +25,12 @@
                     <label for="first_name">Fornavn</label>
                     <input type="text" class="form-input" name="first_name" id="first_name" value = "{{user.first_name}}"/>
                 </div>
+								
                 <div class="form-group">
                     <label for="last_name">Etternavn</label>
                     <input type="text" class="form-input" name="last_name" id="last_name" value = "{{user.last_name}}" />
                 </div>
             </div>
-
-
 
             <!--<div class="form-group">
                 <label for="phone_number">Phone number</label>
@@ -40,19 +43,17 @@
                     <div class="form-group">
                         <label for="address">Adresse</label>
                         <input type="text" class="form-input" name="address" id="address" value = "{{user.address}}"/>
-
                     </div>
+
                     <div class="form-row">
                         <div class="form-group">
                             <label for="post_code">Postnummer</label>
                             <input type="text" class="form-input" name="post_code" id="post_code" value = "{{user.post_code}}"/>
-
-
                         </div>
+
                         <div class="form-group">
                             <label for="location">Sted</label>
                             <input type="text" class="form-input" name="location" id="location" value = "{{user.location}}"/>
-
                         </div>
                     </div>
                 </div>

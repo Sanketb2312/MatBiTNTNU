@@ -132,5 +132,5 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    "../../Middagsarrangement/MatBit/static"
+    "../MatBit/static"
 ]
