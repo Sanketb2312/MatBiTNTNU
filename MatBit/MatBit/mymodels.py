@@ -110,6 +110,19 @@ class DinnerEvent(models.Model):
     def host(self) -> Host:
         return User.users.get(user_id=Host.hosts.get(event_id=self.event_id).user_id)
 
+class Feedback(models.Model):
+    feedbacks = models.Manager()
+
+    feedbackid = models.AutoField(db_column='TilbakemeldingID', primary_key=True)  # Field name made lowercase.
+    comment = models.CharField(db_column='Kommentar', max_length=500)  # Field name made lowercase.
+    rating = models.IntegerField(db_column='Rating')  # Field name made lowercase.
+    user_id_host = models.IntegerField(db_column='BrukerID_vertskap')  # Field name made lowercase.
+    user_id_comment = models.IntegerField(db_column='BrukerID_kommentar')  # Field name made lowercase.
+    event_id = models.IntegerField(db_column='ArrangementID')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'tilbakemelding'
 
 # ======================================================================================================================
 # ----- Authentication models
