@@ -179,7 +179,7 @@ def profile(request: HttpRequest) -> HttpResponse:
         'userAllergies': allergy_dict,
         'arrangement': event_dict,
         'hosting': hosting_dict,
-        'admin_user': has_admin_privileges(request)
+        'admin_user': has_admin_privileges(request)  # FIXME: unnecessary. Needs to switch to "is_admin" in the HTML.
     })
 
 
