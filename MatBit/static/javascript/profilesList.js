@@ -18,7 +18,8 @@ function getCookie(name) {
 
 function decrementAccountNumber() {
     const titleField = document.querySelector("#title");
-    let title = titleField.value;
+    console.log(titleField);
+    let title = titleField.innerText;
     const components = title.split(" ");
 
     title = (Number(components[0]) - 1) + components[1];
@@ -47,7 +48,7 @@ async function deleteProfile(event, form) {
     }).then(response => response.json()).then(response => {
         if (response.didDelete) {
             decrementAccountNumber();
-            const container = document.querySelector("#userContainer" + userID);
+            const container = document.querySelector("#userContainer" + userID).parentNode;
             container.parentNode.removeChild(container);
         } else {
             alert("Action failed\n" + response.message);
