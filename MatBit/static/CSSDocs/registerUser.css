@@ -424,3 +424,6 @@ input.error {
 		max-width: 100%;
 	}
 }
+.allergy-checkbox {
+  width: 10 !important;
+}
