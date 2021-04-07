@@ -4,7 +4,7 @@
 {% block head %}
 		{{block.super}}
         <link rel="stylesheet" href="{% static 'CSSDocs/profileList.css' %}">
-
+        <script src="{% static 'javascript/profilesList.js' %}" charset="utf-8"></script>
 {% endblock %}
 {% block content %}
 
@@ -16,11 +16,16 @@
     <ul class="flex-container">
         {% for account in accounts %}
             <li class="flex-child">
-                <div>
+                <div id="userContainer{{ account.user_id }}">
                     <p>ID: {{ account.user_id }}</p>
                     <p>{{ account.display_name }}</p>
                     <p>{{ account.email }}</p>
-                    <button>SLETT</button>
+                    <form action="" method="post" onsubmit="return deleteProfile(event);">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="hidden" name="userID" value="{{ account.user_id }}">
+                        <input type="submit" value="SLETT"/>
+                    </form>
                 </div>
             </li>
         {% endfor %}

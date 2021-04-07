@@ -9,6 +9,7 @@ from django.utils import timezone
 from datetime import datetime
 
 from django.contrib.auth.hashers import check_password, make_password
+import json
 
 
 # Model.objects is set with setattr(__o, __name, __value) in django/db/models/base.py;
@@ -259,6 +260,36 @@ def edit_user(request: HttpRequest) -> HttpResponse:
 def profiles_list(request: HttpRequest) -> HttpResponse:
     if not (is_logged_in(request) and has_admin_privileges(request)):
         return redirect("/")
+
+    print("METHOD = ")
+    print("    " + request.method)
+    print("body = ")
+    print(request.body)
+    print("request.POST = ")
+    print(request.POST)
+    if request.POST:
+        print("POST!")
+        try:
+            user_id = int(request.POST.get("userID"))
+            print("user_id = " + str(user_id))
+        except ValueError:
+            return HttpResponse(json.dumps({
+                "didDelete": False,
+                "message": "Invalid user ID"
+            }), content_type="application/json")
+
+        try:
+            delete_user(user_id)
+        except ObjectDoesNotExist:
+            return HttpResponse(json.dumps({
+                "didDelete": False,
+                "message": "User does not exist"
+            }), content_type="application/json")
+
+        return HttpResponse(json.dumps({
+            "didDelete": True,
+            "message": "User successfully deleted"
+        }), content_type="application/json")
 
     accounts = User.users.all()
 
