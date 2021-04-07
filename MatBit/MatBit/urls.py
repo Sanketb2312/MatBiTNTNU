@@ -14,6 +14,7 @@ urlpatterns = [
     path('profil/', views.profile, name='profile'),
     path('profil/allergier/', views.add_allergies, name='addAllergies'),
     path('profil/rediger/', views.edit_user, name='editUser'),
+    path('brukere/', views.profiles_list, name='profilesList'),
     path('oversikt/middag/<int:event_id>', views.choose_meal, name='chooseMeal'),
     path('oversikt/middag/<int:event_id>/rediger/', views.edit_meal, name='editMeal'),
     path('profil/tilbakemelding/<int:event_id>', views.feedback , name='feedback')

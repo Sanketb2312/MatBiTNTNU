@@ -63,11 +63,11 @@
                     <tr>
                         <td><label for="allergies-{{allergy.ingredient_id}}"> {{allergy.name}} </label></td>
                         {% if allergy.name in event_ingredients_name %}
-                        <td><input type="checkbox" id="allergies-{{allergy.ingredient_id}}" name={{allergy.ingredient_id}} value={{allergy.ingredient_id}} checked></td>
+                        <td><input type="checkbox" class="allergy-checkbox" id="allergies-{{allergy.ingredient_id}}" name={{allergy.ingredient_id}} value={{allergy.ingredient_id}} checked></td>
 
                         {% else %}
 
-                        <td><input type="checkbox" id="allergies-{{allergy.ingredient_id}}" name={{allergy.ingredient_id}} value={{allergy.ingredient_id}}></td>
+                        <td><input type="checkbox" class="allergy-checkbox" id="allergies-{{allergy.ingredient_id}}" name={{allergy.ingredient_id}} value={{allergy.ingredient_id}}></td>
                         {% endif %}
                     </tr>
                 {% endfor %}

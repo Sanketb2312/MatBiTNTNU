@@ -39,6 +39,10 @@
                         <li class="navbarbutton"><a onclick="location.href='{% url 'mealOverview' %}'"><span class="glyphicon glyphicon-profile">Oversikt</a></li>
                         <li class="navbarbutton"><a onclick="location.href='{% url 'newMeal' %}'"><span class="glyphicon glyphicon-profile">Ny Middag</a></li>
                         <li class="navbarbutton"><a onclick="location.href='{% url 'profile' %}'"><span class="glyphicon glyphicon-profile">Profil</a></li>
+
+                        {% if is_admin %}
+                            <li class="navbarbutton"><a onclick="location.href='{% url 'profilesList' %}'"><span class="glyphicon glyphicon-profile">Kontoer</a></li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a class="link" onclick="location.href= '{% url 'logout' %}'"><span class="glyphicon glyphicon-log-out"></span> Logg ut</a></li>

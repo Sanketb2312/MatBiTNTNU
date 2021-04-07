@@ -1,0 +1,61 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block head %}
+		{{block.super}}
+        <link rel="stylesheet" href="{% static 'CSSDocs/profileList.css' %}">
+        <script src="{% static 'javascript/profilesList.js' %}" charset="utf-8"></script>
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="title-bar">
+        <h1 id="title">{{ accounts.count }} kontoer</h1>
+    </div>
+
+    <ul class="flex-container">
+        {% for account in accounts %}
+            <li class="flex-child">
+                <div id="userContainer{{ account.user_id }}">
+                    <p>ID: {{ account.user_id }}</p>
+                    <p>{{ account.display_name }}</p>
+                    <p>{{ account.email }}</p>
+                    <form action="" method="post" onsubmit="return deleteProfile(event, this);">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="hidden" name="userID" value="{{ account.user_id }}">
+                        <input type="submit" value="SLETT"/>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
+
+
+
+<!--
+{% if instance.is_cancelled == 0 %}
+<div class="url" id="allergy-{{ instance.event_id }}" onclick="location.href= '{% url 'chooseMeal' event_id=instance.event_id %}'">
+    <ul class="flex-child">
+{% elif instance.is_cancelled == 1 %}
+<div class="url" id="allergy-{{ instance.event_id }}">
+    <div class="flex-child" style="background-image: url({% static 'images/cancelled_image.png' %}); background-repeat: no-repeat;">
+{% endif %}
+        <h3>{{ instance.name }}</h3>
+        {% for key, item in available_dict.items %}
+            {% if key == instance.event_id %}
+                <h5>Ledige plasser: {{ item }}/{{ instance.capacity }}</h5>
+            {% endif %}
+        {% endfor %}
+
+        {% for x in mealAllergies %}
+        {{ x.ingredient_id }}
+        {% endfor %}
+        <h5>Tidspunkt: {{ instance.date }}</h5>
+        <h5>Pris: {{ instance.cost }}</h5>
+        <br>
+    </div>
+</div>-->
