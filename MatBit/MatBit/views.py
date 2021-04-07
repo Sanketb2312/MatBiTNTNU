@@ -261,17 +261,9 @@ def profiles_list(request: HttpRequest) -> HttpResponse:
     if not (is_logged_in(request) and has_admin_privileges(request)):
         return redirect("/")
 
-    print("METHOD = ")
-    print("    " + request.method)
-    print("body = ")
-    print(request.body)
-    print("request.POST = ")
-    print(request.POST)
     if request.POST:
-        print("POST!")
         try:
             user_id = int(request.POST.get("userID"))
-            print("user_id = " + str(user_id))
         except ValueError:
             return HttpResponse(json.dumps({
                 "didDelete": False,
