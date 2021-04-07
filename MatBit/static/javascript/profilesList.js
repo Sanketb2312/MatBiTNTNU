@@ -16,6 +16,15 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function decrementAccountNumber() {
+    const titleField = document.querySelector("#title");
+    let title = titleField.value;
+    const components = title.split(" ");
+
+    title = (Number(components[0]) - 1) + components[1];
+    titleField.value = title;
+}
+
 async function deleteProfile(event) {
     event.preventDefault();
 
@@ -33,6 +42,7 @@ async function deleteProfile(event) {
         data: new URLSearchParams([...(new FormData(form) as any)])
     }).then(response => response.json()).then(response => {
         if (response.didDelete) {
+            decrementAccountNumber();
             const container = document.querySelector("#userContainer" + userID);
             container.parentNode.removeChild(container);
         } else {
