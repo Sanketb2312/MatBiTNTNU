@@ -138,7 +138,10 @@ def cancel_dinner(dinner: int or DinnerEvent):
 
 def delete_user(user: int or User):
     if isinstance(user, int):
-        user = User.users.get(event_id=user)
+        user = User.users.get(user_id=user)
+
+    if user is None:
+        raise ObjectDoesNotExist
 
     # ====> Hosted dinners
     hosting = Host.hosts.filter(user_id=user.user_id).all()
