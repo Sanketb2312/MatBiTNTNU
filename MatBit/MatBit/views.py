@@ -190,8 +190,6 @@ def profile(request: HttpRequest) -> HttpResponse:
     user_comment = None
     feedback_event = None
 
-
-
     for feed in feedback:
         user_comment = feed.user_id_comment
         feedback_event = feed.event_id
@@ -209,19 +207,16 @@ def profile(request: HttpRequest) -> HttpResponse:
         for user_name in value[1]:
             value[1] = user_name.first_name + " " + user_name.last_name
 
-
-
-
     return render_page(request, 'profile.html', {
         'user': user,
         'userAllergies': allergy_dict,
         'arrangement': event_dict,
         'hosting': hosting_dict,
-        'admin_user': has_admin_privileges(request)  # FIXME: unnecessary. Needs to switch to "is_admin" in the HTML.
+        'admin_user': has_admin_privileges(request),  # FIXME: unnecessary. Needs to switch to "is_admin" in the HTML.
         'past_event_dict': past_event_dict,
-        'event_ids':event_ids,
+        'event_ids': event_ids,
         'feedback': feedback,
-        'feedback_dict' : feedback_dict
+        'feedback_dict': feedback_dict
     })
 
 
