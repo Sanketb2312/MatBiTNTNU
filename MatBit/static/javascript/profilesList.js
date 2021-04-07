@@ -25,10 +25,14 @@ function decrementAccountNumber() {
     titleField.value = title;
 }
 
-async function deleteProfile(event) {
-    event.preventDefault();
+async function deleteProfile(event, form) {
+    if (event.preventDefault) {
+       event.preventDefault();
+    }
 
-    const form = event.target as HTMLFormElement;
+    if (!form) {
+        form = event.target;
+    }
 
     //const csrfToken = document.querySelector("[name=csrfmiddlewaretoken]").value;
     const csrfToken = getCookie("csrftoken");
@@ -39,7 +43,7 @@ async function deleteProfile(event) {
         credentials: "include",
         method: "POST",
         mode: "same-origin",
-        data: new URLSearchParams([...(new FormData(form) as any)])
+        body: new URLSearchParams(new FormData(form))
     }).then(response => response.json()).then(response => {
         if (response.didDelete) {
             decrementAccountNumber();

@@ -10,7 +10,7 @@
 
 <div class="container">
     <div class="title-bar">
-        <h1 id="#title">{{ accounts.count }} kontoer</h1>
+        <h1 id="title">{{ accounts.count }} kontoer</h1>
     </div>
 
     <ul class="flex-container">
@@ -20,7 +20,7 @@
                     <p>ID: {{ account.user_id }}</p>
                     <p>{{ account.display_name }}</p>
                     <p>{{ account.email }}</p>
-                    <form action="" method="post" onsubmit="return deleteProfile(event);">
+                    <form action="" method="post" onsubmit="return deleteProfile(event, this);">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="hidden" name="userID" value="{{ account.user_id }}">
